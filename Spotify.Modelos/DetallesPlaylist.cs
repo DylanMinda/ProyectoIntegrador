@@ -8,6 +8,7 @@ namespace Spotify.Modelos
 {
     public class DetallesPlaylist
     {
+        public int Id { get; set; }
         public int PlaylistId { get; set; }
         public Playlist Playlist { get; set; }
 
