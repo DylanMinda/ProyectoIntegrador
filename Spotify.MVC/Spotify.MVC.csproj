@@ -6,4 +6,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Canciones\" />
+    <Folder Include="Views\Albums\" />
+    <Folder Include="Views\Playlists\" />
+    <Folder Include="Views\Planes\" />
+    <Folder Include="Views\Usuarios\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Spotify.APIConsumer\Spotify.APIConsumer.csproj" />
+    <ProjectReference Include="..\Spotify.API\Spotify.API.csproj" />
+    <ProjectReference Include="..\Spotify.Modelos\Spotify.Modelos.csproj" />
+  </ItemGroup>
+
 </Project>
