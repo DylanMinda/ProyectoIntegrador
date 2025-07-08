@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Spotify.API.Migrations
 {
     /// <inheritdoc />
-    public partial class postgressV01 : Migration
+    public partial class postgress : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

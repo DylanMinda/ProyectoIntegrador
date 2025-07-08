@@ -101,6 +101,7 @@ namespace Spotify.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
+            usuario.Contraseña = BCrypt.Net.BCrypt.HashPassword(usuario.Contraseña); // Asegúrate de hashear la contraseña
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 

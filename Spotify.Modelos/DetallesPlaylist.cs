@@ -10,9 +10,9 @@ namespace Spotify.Modelos
     {
         public int Id { get; set; }
         public int PlaylistId { get; set; }
-        public Playlist Playlist { get; set; }
-
         public int CancionId { get; set; }
-        public Cancion Cancion { get; set; } 
+
+        public Playlist?Playlist { get; set; }
+        public Cancion? Cancion { get; set; } 
     }
 }

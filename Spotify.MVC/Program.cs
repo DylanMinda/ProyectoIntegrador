@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Spotify.APIConsumer;
 using Spotify.Modelos;
 using Spotify.MVC.Interface;
@@ -7,19 +8,18 @@ using static System.Net.WebRequestMethods;
 CRUD<Cancion>.EndPoint = "https://localhost:7028/api/Canciones";
 CRUD<Usuario>.EndPoint = "https://localhost:7028/api/Usuarios"; 
 CRUD<Plan>.EndPoint = "https://localhost:7028/api/Planes"; 
-//CRUD<Suscripcion>.EndPoint = "https://localhost:7028/api/Suscripciones"; 
+CRUD<Playlist>.EndPoint = "https://localhost:7028/api/Playlists"; 
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")));
+
 //Registrar Servicios
-//builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-//builder.Services.AddScoped<IMetodoPagoService, MetodoPagoService>();
-//builder.Services.AddScoped<ISuscripcionService, SuscripcionService>();
-//builder.Services.AddScoped<IPlanService, PlanService>();
+
 builder.Services.AddScoped<IAutorizarService, AutorizarService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-//builder.Services.AddScoped<IPerfilService, PerfilService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -54,7 +54,7 @@ app.UseAuthorization();//cokies
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"); 
 
 app.Run();
 
