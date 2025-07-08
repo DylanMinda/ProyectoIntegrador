@@ -1,0 +1,62 @@
+﻿@model Spotify.Modelos.Usuario
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - BeatHouse</title>
+    <link rel="stylesheet" href="~/css/dashboard.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-music"></i>
+                <span>BeatHouse</span>
+            </div>
+            <div class="auth-buttons">
+                <a href="/Home/Logout" class="btn btn-logout">Cerrar sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="dashboard-content">
+        <div class="welcome-message">
+            <h1>Bienvenido, @Model.Nombre</h1>
+            <p>Explora y disfruta de la música, crea beats, y más.</p>
+        </div>
+
+        <div class="user-info">
+            <h3>Tu Plan Actual:</h3>
+            @if (Model.Plan != null)
+            {
+                <p>Plan: @Model.Plan.Nombre</p>
+                <p><strong>Descripción:</strong> @Model.Plan.Descripcion</p>
+                <p><strong>Precio Mensual:</strong> $@Model.Plan.PrecioMensual</p>
+            }
+            else
+            {
+                <p>Actualmente no tienes un plan activo.</p>
+            }
+        </div>
+
+        <div class="actions">
+            <h3>¿Qué quieres hacer ahora?</h3>
+            <div class="action-buttons">
+                <a href="/Music/Explore" class="btn btn-primary">Explorar Música</a>
+                <a href="/Beats/Create" class="btn btn-secondary">Crear Beats</a>
+                <a href="/Playlists/Manage" class="btn btn-secondary">Gestionar Playlists</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 BeatHouse. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="~/js/site.js"></script>
+</body>
+</html>

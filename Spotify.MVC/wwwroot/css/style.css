@@ -72,6 +72,12 @@ body {
     }
 }
 
+/*Contenedor
+*/
+
+.Contenedor {
+    display:
+}
 /* Navegación */
 .navbar {
     position: fixed;
@@ -85,14 +91,6 @@ body {
     box-shadow: 0 5px 20px rgba(140, 231, 12, 0.1);
 }
 
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-}
 
 .logo {
     font-size: 2rem;
@@ -172,6 +170,10 @@ body {
         background: radial-gradient(circle at 30% 50%, rgba(140, 231, 12, 0.15) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(111, 45, 168, 0.15) 0%, transparent 50%), radial-gradient(circle at 50% 80%, rgba(251, 175, 0, 0.1) 0%, transparent 50%);
         animation: pulse 6s ease-in-out infinite;
     }
+
+.navegacion-hero {
+    margin-top: 74px;
+}
 
 @keyframes pulse {
     0%, 100% {

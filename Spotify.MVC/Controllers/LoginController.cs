@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Spotify.APIConsumer;
 using Spotify.Modelos;
 using Spotify.MVC.Interface;
 using Spotify.MVC.Services;
@@ -10,12 +11,14 @@ namespace Spotify.MVC.Controllers
     {
         private readonly IAutorizarService _autoService;
         private readonly AppDbContext _context;  // Cambiado a AppDbContext
+        private readonly IEmailService _emailService;
 
         // Modificado el constructor para inyectar el contexto de la base de datos
-        public LoginController(IAutorizarService autoService, AppDbContext context)
+        public LoginController(IAutorizarService autoService, AppDbContext context, IEmailService emailService)
         {
             _autoService = autoService;
             _context = context;  // Asignamos el contexto aquí
+            _emailService = emailService;
         }
 
 
@@ -29,9 +32,9 @@ namespace Spotify.MVC.Controllers
         {
             if (await _autoService.Login(email, contraseña))
             {
-                // Aquí puedes guardar datos de usuario en la sesión o en cookies si lo deseas
-                // Ejemplo: HttpContext.Session.SetString("Usuario", email);
-                return RedirectToAction("Index", "Home");
+                var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+                HttpContext.Session.SetInt32("UserId", usuario.Id);  // Guardar el ID del usuario en la sesión
+                return RedirectToAction("Dashboard", "Home");  // Redirigir al dashboard con las funcionalidades
             }
             else
             {
@@ -82,6 +85,26 @@ namespace Spotify.MVC.Controllers
 
             ViewBag.SuccessMessage = "Registro exitoso. Ahora puedes iniciar sesión.";  // Mensaje de éxito
             return RedirectToAction("Index", "Login");  // Redirige al login después de un registro exitoso
+        }
+        [HttpGet]
+        public IActionResult RecuperarContraseña()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RecuperarContraseña(string email)
+        {
+            var usuario = CRUD<Usuario>.GetAll().FirstOrDefault(u => u.Email == email);
+            if (usuario == null)
+            {
+                ViewBag.ErrorMessage = "El correo electrónico no está registrado.";
+                return View("Index");
+            }
+            // Enviar correo electrónico de recuperación de contraseña
+            await _emailService.enviarEmailRecuperacionContraseña(email);
+            ViewBag.SuccessMessage = "Se ha enviado un correo electrónico para recuperar la contraseña.";
+            return RedirectToAction("Index", "Login");
         }
 
         public IActionResult Logout()
