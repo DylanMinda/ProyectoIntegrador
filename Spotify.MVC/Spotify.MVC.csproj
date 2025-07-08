@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Canciones\" />
-    <Folder Include="Views\Albums\" />
     <Folder Include="Views\Usuarios\" />
   </ItemGroup>
 

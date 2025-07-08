@@ -11,10 +11,10 @@ namespace Spotify.MVC.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly string _smtpServer = "smtp.gmail.com"; // Servidor SMTP de Gmail
-        private readonly int _smptPort = 587; // Puerto SMTP para TLS
-        private readonly string _fromEmail = "soyeljoni123@gmail.com"; // Correo electrónico del remitente (debe ser una cuenta de Gmail)
-        private readonly string _fromPassword = "isst qlfk eetu anzt"; // Contraseña de la cuenta de correo electrónico
+        private readonly string _smtpServer = "smtp.gmail.com"; 
+        private readonly int _smptPort = 587; 
+        private readonly string _fromEmail = "soyeljoni123@gmail.com"; 
+        private readonly string _fromPassword = "isst qlfk eetu anzt"; 
         public async Task enviarEmailBienvenida(string email)
         {
             try
@@ -31,10 +31,10 @@ namespace Spotify.MVC.Services
 
                 using (var cliente = new SmtpClient())
                 {
-                    await cliente.ConnectAsync(_smtpServer, _smptPort, SecureSocketOptions.StartTls); // Conectar al servidor SMTP con TLS
-                    await cliente.AuthenticateAsync(_fromEmail, _fromPassword); // Autenticar con el servidor SMTP usando las credenciales del remitente
-                    await cliente.SendAsync(mensaje); // Enviar el mensaje
-                    await cliente.DisconnectAsync(true); // Desconectar del servidor SMTP
+                    await cliente.ConnectAsync(_smtpServer, _smptPort, SecureSocketOptions.StartTls); 
+                    await cliente.AuthenticateAsync(_fromEmail, _fromPassword); 
+                    await cliente.SendAsync(mensaje);
+                    await cliente.DisconnectAsync(true); 
                 }
 
             }
@@ -69,10 +69,10 @@ namespace Spotify.MVC.Services
                 };
                 using (var cliente = new SmtpClient())
                 {
-                    await cliente.ConnectAsync(_smtpServer, _smptPort, SecureSocketOptions.StartTls); // Conectar al servidor SMTP con TLS
-                    await cliente.AuthenticateAsync(_fromEmail, _fromPassword); // Autenticar con el servidor SMTP usando las credenciales del remitente
-                    await cliente.SendAsync(mensaje); // Enviar el mensaje
-                    await cliente.DisconnectAsync(true); // Desconectar del servidor SMTP
+                    await cliente.ConnectAsync(_smtpServer, _smptPort, SecureSocketOptions.StartTls); 
+                    await cliente.AuthenticateAsync(_fromEmail, _fromPassword);
+                    await cliente.SendAsync(mensaje); 
+                    await cliente.DisconnectAsync(true);
                 }
 
                 var usuario = CRUD<Usuario>.GetAll().FirstOrDefault(u => u.Email == email); 
