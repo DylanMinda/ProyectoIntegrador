@@ -1,10 +1,13 @@
-    using Microsoft.EntityFrameworkCore;
-    using Spotify.APIConsumer;
-    using Spotify.Modelos;
-    using Spotify.MVC.Interface;
-    using Spotify.MVC.Services;
-    using static System.Net.WebRequestMethods;
+using Microsoft.EntityFrameworkCore;
+using Spotify.APIConsumer;
+using Spotify.Modelos;
+using Spotify.MVC.Interface;
+using Spotify.MVC.Services;
+using static System.Net.WebRequestMethods;
 
+// Configurar los endpoints para el CRUD
+
+CRUD<Album>.EndPoint = "https://localhost:7028/api/Albums";
     CRUD<Cancion>.EndPoint = "https://localhost:7028/api/Canciones";
     CRUD<Usuario>.EndPoint = "https://localhost:7028/api/Usuarios"; 
     CRUD<Plan>.EndPoint = "https://localhost:7028/api/Planes"; 
@@ -13,8 +16,10 @@
 
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Services.AddDbContext<AppDbContext>(options =>
+
+builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")));
+
 // Configurar sesiones
 builder.Services.AddSession(options =>
 {
@@ -36,7 +41,9 @@ builder.Services.AddControllersWithViews();
         });
     builder.Services.AddHttpContextAccessor(); // Para acceder al contexto HTTP en los servicios //cokies
 
-    var app = builder.Build();
+
+
+var app = builder.Build();
 
     // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())

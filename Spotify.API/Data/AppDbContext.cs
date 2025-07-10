@@ -1,18 +1,18 @@
-﻿    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Microsoft.EntityFrameworkCore;
-    using Spotify.Modelos;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Spotify.Modelos;
 
-        public class AppDbContext : DbContext
-        {
-            public AppDbContext (DbContextOptions<AppDbContext> options)
-                : base(options)
-            {
-            }
+public class AppDbContext : DbContext
+{
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options)
+    {
+    }
 
-            public DbSet<Spotify.Modelos.Usuario> Usuarios { get; set; } = default!;
+    public DbSet<Spotify.Modelos.Usuario> Usuarios { get; set; } = default!;
 
     public DbSet<Spotify.Modelos.Album> Albums { get; set; } = default!;
 
@@ -23,5 +23,5 @@
     public DbSet<Spotify.Modelos.Playlist> Playlists { get; set; } = default!;
 
     public DbSet<Spotify.Modelos.DetallesPlaylist> DetallesPlaylist { get; set; } = default!;
-   
-    }
+
+}
