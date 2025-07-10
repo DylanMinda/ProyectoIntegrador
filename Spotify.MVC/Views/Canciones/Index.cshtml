@@ -1,0 +1,10 @@
+﻿@model List<Spotify.Modelos.Cancion>
+
+@foreach (var cancion in Model)
+{
+    <div>
+        <h3>@cancion.Titulo</h3>
+        <p>@cancion.Genero - @cancion.Duracion</p>
+        <a href="@Url.Action("Reproducir", "Canciones", new { usuarioId = 3, cancionId = cancion.Id })">Reproducir</a>
+    </div>
+}

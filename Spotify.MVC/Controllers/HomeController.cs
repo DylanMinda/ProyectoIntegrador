@@ -33,7 +33,18 @@ namespace Spotify.MVC.Controllers
 
             return View("Dashboard", usuario);  // Especifica la vista correctamente
         }
+        public IActionResult DashboardArtista()
+        {
+            var usuarioId = HttpContext.Session.GetInt32("UserId");
 
+            var usuario = _context.Usuarios.Include(u => u.Plan).FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario == null)
+            {
+                return RedirectToAction("Index", "Login");  // Redirige al login si no está logueado
+            }
+
+            return View("DashboardArtista", usuario);   // Esto busca automáticamente la vista DashboardArtista.cshtml en la carpeta Views/Home
+        }
         // Acción para cerrar sesión
         public IActionResult Logout()
         {
