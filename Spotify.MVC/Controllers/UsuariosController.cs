@@ -2,13 +2,10 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-<<<<<<< Updated upstream
-=======
 using Microsoft.EntityFrameworkCore;
 using Spotify.APIConsumer;
 using Spotify.Modelos;
 using System.Security.Claims;
->>>>>>> Stashed changes
 
 namespace Spotify.MVC.Controllers
 {
@@ -24,7 +21,8 @@ namespace Spotify.MVC.Controllers
         // GET: UsuariosController
         public ActionResult Index()
         {
-            return View();
+            var lista = CRUD<Usuario>.GetAll();
+            return View(lista);
         }
 
         // GET: UsuariosController/Details/5
@@ -62,9 +60,6 @@ namespace Spotify.MVC.Controllers
         // GET: UsuariosController/Edit/5
         public ActionResult Edit(int id)
         {
-<<<<<<< Updated upstream
-            return View();
-=======
             var usuario = CRUD<Usuario>.GetById(id);
             if (usuario == null)
             {
@@ -72,18 +67,15 @@ namespace Spotify.MVC.Controllers
             }
             ViewBag.TiposUsuario = new List<string> { "cliente", "artista", "admin" };
             return View(usuario);
->>>>>>> Stashed changes
         }
 
         // POST: UsuariosController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Usuario usuario)
         {
             try
             {
-<<<<<<< Updated upstream
-=======
                 // Asegúrate de obtener el usuario por ID y actualizarlo
                 var usuarioExistente = CRUD<Usuario>.GetById(id);
                 if (usuarioExistente != null)
@@ -95,7 +87,6 @@ namespace Spotify.MVC.Controllers
                     // Actualiza el usuario en la base de datos
                     CRUD<Usuario>.Update(id, usuarioExistente);
                 }
->>>>>>> Stashed changes
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -171,16 +162,12 @@ namespace Spotify.MVC.Controllers
         // GET: UsuariosController/Delete/5
         public ActionResult Delete(int id)
         {
-<<<<<<< Updated upstream
-            return View();
-=======
             var usuario = CRUD<Usuario>.GetById(id);
             if (usuario == null)
             {
                 return NotFound();
             }
             return View(usuario);
->>>>>>> Stashed changes
         }
 
         // POST: UsuariosController/Delete/5

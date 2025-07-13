@@ -4,31 +4,18 @@
 
 <h2>Bienvenido al Dashboard, @User.Identity.Name</h2>
 
-<div class="row mt-4">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h4>Sube tu música</h4>
-            </div>
-            <div class="card-body">
-                <form method="post" enctype="multipart/form-data" asp-action="SubirMusica">
-                    <div class="form-group">
-                        <label for="cancionTitulo">Título de la Canción</label>
-                        <input type="text" class="form-control" id="cancionTitulo" name="cancionTitulo" required placeholder="Introduce el título de la canción">
-                    </div>
-                    <div class="form-group">
-                        <label for="archivoCancion">Selecciona la canción (mp3, wav)</label>
-                        <input type="file" class="form-control" id="archivoCancion" name="archivoCancion" accept=".mp3,.wav" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="descripcion">Descripción</label>
-                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Escribe una descripción para la canción (opcional)"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-3">Subir Canción</button>
-                </form>
-            </div>
+<!-- Gestión de Musicas -->
+<div class="col-md-4">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Gestión de Musica</h5>
+        </div>
+        <div class="card-body">
+            <p>Sube tu propia cnacion aqui</p>
+            <a asp-controller="Canciones" asp-action="Subir" class="btn btn-outline-primary">Subir cancion</a>
         </div>
     </div>
+</div>
 
     <div class="col-md-6">
         <div class="card">
