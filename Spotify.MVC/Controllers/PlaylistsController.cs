@@ -17,11 +17,31 @@ namespace Spotify.MVC.Controllers
         // GET: Playlists/Index
         public async Task<IActionResult> Index()
         {
+<<<<<<< Updated upstream
             var playlists = await _context.Playlists.Include(p => p.DetallesPlaylists).ToListAsync();
+=======
+            if (!User.Identity.IsAuthenticated)
+            {
+                Console.WriteLine("Usuario no autenticado. Redirigiendo al login...");
+                return RedirectToAction("Index", "Login");
+            }
+
+            // 1. Obtenemos el Id del usuario logueado
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            // 2. Filtramos solo las playlists de este usuario
+            var playlists = await _context.Playlists
+                .Where(p => p.UsuarioId == userId)
+                .Include(p => p.DetallesPlaylists)
+                    .ThenInclude(d => d.Cancion)
+                .ToListAsync();
+
+>>>>>>> Stashed changes
             return View(playlists);
         }
 
         // GET: Playlists/Create
+<<<<<<< Updated upstream
         // GET: Playlists/Create
         public async Task<IActionResult> Create(string searchTerm = "", List<int> selectedSongs = null)
         {
@@ -57,6 +77,41 @@ namespace Spotify.MVC.Controllers
             return View(new Playlist { FechaCreacion = DateTime.Now });
         }
 
+=======
+        public async Task<IActionResult> Create(string searchTerm = "", List<int> selectedSongs = null)
+        {
+            ViewBag.SearchTerm = searchTerm;
+
+            // Obtener todas las canciones y aplicar filtro de búsqueda si es necesario
+            var cancionesQuery = _context.Canciones.Include(c => c.Album).ThenInclude(a => a.Artista).AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                cancionesQuery = cancionesQuery.Where(c =>
+                    c.Titulo.Contains(searchTerm) ||
+                    c.Album.Nombre.Contains(searchTerm) ||
+                    c.Album.Artista.Nombre.Contains(searchTerm));
+            }
+
+            var canciones = await cancionesQuery.Take(20).ToListAsync();
+            ViewBag.Canciones = canciones;
+
+            // Mantener las canciones seleccionadas
+            if (selectedSongs != null && selectedSongs.Any())
+            {
+                var cancionesSeleccionadas = canciones.Where(c => selectedSongs.Contains(c.Id)).ToList();
+                ViewBag.CancionesSeleccionadas = cancionesSeleccionadas;
+                ViewBag.SelectedSongIds = selectedSongs;
+            }
+            else
+            {
+                ViewBag.CancionesSeleccionadas = new List<Cancion>();
+                ViewBag.SelectedSongIds = new List<int>();
+            }
+
+            return View(new Playlist { FechaCreacion = DateTime.Now });
+        }
+>>>>>>> Stashed changes
         // POST: Buscar canciones
         [HttpPost]
         public async Task<IActionResult> SearchSongs(string searchTerm, List<int> selectedSongs)
@@ -145,6 +200,7 @@ namespace Spotify.MVC.Controllers
             }
         }
 
+<<<<<<< Updated upstream
         // Método auxiliar para agregar canciones seleccionadas a la playlist
         private async Task AddSelectedSongsToPlaylist(int playlistId, List<int> selectedSongs)
         {
@@ -162,5 +218,78 @@ namespace Spotify.MVC.Controllers
                 await _context.SaveChangesAsync();
             }
         }
+=======
+        //EDIT Y DELETE 
+
+        // GET: Playlists/Details/5
+        public async Task<IActionResult> Details(int id)
+        {
+            var playlist = await _context.Playlists
+                .Include(p => p.Creador)
+                .Include(p => p.DetallesPlaylists)
+                    .ThenInclude(dp => dp.Cancion)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (playlist == null) return NotFound();
+            return View(playlist);
+        }
+
+        // GET: Playlists/Edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
+            var playlist = await _context.Playlists
+                .Include(p => p.DetallesPlaylists)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (playlist == null) return NotFound();
+
+            // Poblamos ViewBag con todas las canciones y con las ya seleccionadas
+            ViewBag.AllSongs = await _context.Canciones.ToListAsync();
+            ViewBag.SelectedSongIds = playlist.DetallesPlaylists.Select(d => d.CancionId).ToList();
+            return View(playlist);
+        }
+
+        // POST: Playlists/Edit/5
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Playlist model, List<int> selectedSongs)
+        {
+            if (id != model.Id) return BadRequest();
+            if (!ModelState.IsValid)
+            {
+                ViewBag.AllSongs = await _context.Canciones.ToListAsync();
+                ViewBag.SelectedSongIds = selectedSongs;
+                return View(model);
+            }
+
+            // Actualizar datos básicos
+            _context.Update(model);
+            // Primero eliminamos viejos detalles
+            var viejos = _context.DetallesPlaylist.Where(d => d.PlaylistId == id);
+            _context.DetallesPlaylist.RemoveRange(viejos);
+            // Luego agregamos los nuevos
+            foreach (var songId in selectedSongs)
+                _context.DetallesPlaylist.Add(new DetallesPlaylist { PlaylistId = id, CancionId = songId });
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Playlists/Delete/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            var playlist = await _context.Playlists.FirstOrDefaultAsync(p => p.Id == id);
+            if (playlist == null) return NotFound();
+            return View(playlist);
+        }
+
+        // POST: Playlists/Delete/5
+        [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var playlist = await _context.Playlists.FindAsync(id);
+            _context.Playlists.Remove(playlist);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+>>>>>>> Stashed changes
     }
 }

@@ -45,8 +45,19 @@ namespace Spotify.MVC.Controllers
                 return View("Index");  // Si el login falla, mostrar mensaje de error y retornar al login
             }
 
+<<<<<<< Updated upstream
             // Guardar el ID del usuario en la sesión
             HttpContext.Session.SetInt32("UserId", usuario.Id);
+=======
+            // Crear los claims para el usuario autenticado
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
+                new Claim(ClaimTypes.Name, usuario.Nombre),
+                new Claim(ClaimTypes.Email, usuario.Email),
+                new Claim("TipoUsuario", usuario.TipoUsuario)
+            };
+>>>>>>> Stashed changes
 
             // Verificar el tipo de usuario y redirigir al dashboard correspondiente
             if (usuario.TipoUsuario == "artista")
@@ -96,8 +107,21 @@ namespace Spotify.MVC.Controllers
             _context.Usuarios.Add(nuevoUsuario);
             await _context.SaveChangesAsync();
 
+<<<<<<< Updated upstream
             ViewBag.SuccessMessage = "Registro exitoso. Ahora puedes iniciar sesión.";
             return RedirectToAction("Index", "Login");
+=======
+            await _emailService.enviarEmailBienvenida(email);
+            ViewBag.SuccessMessage = "Se ha enviado un correo electrónico de bienvenida";
+
+            ViewBag.SuccessMessage = "Registro exitoso. Ahora puedes iniciar sesión.";  // Mensaje de éxito
+            return RedirectToAction("Index", "Login");  // Redirige al login después de un registro exitoso
+        }
+        [HttpGet]
+        public IActionResult RegisterArtista()
+        {
+            return View();
+>>>>>>> Stashed changes
         }
 
         // Registro para Artista
