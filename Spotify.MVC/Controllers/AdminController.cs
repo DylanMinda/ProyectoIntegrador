@@ -1,118 +1,73 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Spotify.Modelos;
 
 namespace Spotify.MVC.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly UserManager<Usuario> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly AppDbContext _context;
 
-        public AdminController(UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager)
+        public AdminController(AppDbContext context)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+            _context = context;
         }
 
-        // GET: AdminController
-        public ActionResult Index()
+        // Vista para el dashboard del Admin
+        public IActionResult DashboardAdmin()
         {
             return View();
         }
-        [HttpPost]
-        public async Task<IActionResult> AsignarAdmin(string email)
+
+        // Ver todos los usuarios
+        public async Task<IActionResult> Usuarios()
         {
-            // Verificar si el usuario existe
-            var usuario = await _userManager.FindByEmailAsync(email);
+            var usuarios = await _context.Usuarios
+                .Where(u => u.TipoUsuario != "admin") // Excluye los admins si no deseas verlos
+                .ToListAsync();
+
+            return View(usuarios);
+        }
+
+        // Eliminar usuario (cliente o artista)
+        public async Task<IActionResult> EliminarUsuario(int id)
+        {
+            var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario == null)
             {
-                ViewBag.ErrorMessage = "Usuario no encontrado.";
-                return View("DashboardAdmin");  // Redirige a la vista o dashboard correspondiente
+                return NotFound();
             }
 
-            // Verificar si el usuario ya tiene el rol Admin
-            var roles = await _userManager.GetRolesAsync(usuario);
-            if (roles.Contains("Admin"))
-            {
-                ViewBag.ErrorMessage = "El usuario ya tiene el rol de Admin.";
-                return View("DashboardAdmin");
-            }
+            _context.Usuarios.Remove(usuario);
+            await _context.SaveChangesAsync();
 
-            // Asignar el rol Admin
-            await _userManager.AddToRoleAsync(usuario, "Admin");
-
-            ViewBag.SuccessMessage = "El rol de Admin ha sido asignado correctamente.";
-            return RedirectToAction("DashboardAdmin");  // Redirige al dashboard o página administrativa
-        }
-        // GET: AdminController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
+            return RedirectToAction("Usuarios");
         }
 
-        // GET: AdminController/Create
-        public ActionResult Create()
+        // Ver todas las canciones
+        public async Task<IActionResult> Canciones()
         {
-            return View();
+            var canciones = await _context.Canciones
+                .Include(c => c.Album)
+                .Include(c => c.Album.Artista)
+                .ToListAsync();
+
+            return View(canciones);
         }
 
-        // POST: AdminController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        // Eliminar canción
+        public async Task<IActionResult> EliminarCancion(int id)
         {
-            try
+            var cancion = await _context.Canciones.FindAsync(id);
+            if (cancion == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: AdminController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+            _context.Canciones.Remove(cancion);
+            await _context.SaveChangesAsync();
 
-        // POST: AdminController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: AdminController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: AdminController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Canciones");
         }
     }
 }

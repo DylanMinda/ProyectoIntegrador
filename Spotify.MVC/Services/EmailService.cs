@@ -19,6 +19,7 @@ namespace Spotify.MVC.Services
         {
             try
             {
+                Console.WriteLine("Enviando correo de recuperación...");
                 var mensaje = new MimeMessage(); 
                 mensaje.From.Add(new MailboxAddress("BeatHouse", _fromEmail)); 
                 mensaje.To.Add(new MailboxAddress("", email)); 
@@ -36,7 +37,7 @@ namespace Spotify.MVC.Services
                     await cliente.SendAsync(mensaje);
                     await cliente.DisconnectAsync(true); 
                 }
-
+                Console.WriteLine("Correo enviado con éxito.");
             }
             catch (Exception ex)
             {
