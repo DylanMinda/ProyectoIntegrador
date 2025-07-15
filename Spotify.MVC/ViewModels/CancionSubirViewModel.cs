@@ -2,7 +2,7 @@
 namespace Spotify.MVC.ViewModels
 
 {
-    public class CancionUploadViewModel
+    public class CancionSubirViewModel
     {
         [Required] public string Titulo { get; set; } = null!;
         [Required] public IFormFile Archivo { get; set; } = null!;
