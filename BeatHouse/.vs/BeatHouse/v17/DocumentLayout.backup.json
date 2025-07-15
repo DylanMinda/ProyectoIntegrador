@@ -1,0 +1,377 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse\\cancion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|solutionrelative:beathouse\\cancion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse\\album.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|solutionrelative:beathouse\\album.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse.api\\controllers\\cancionescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|solutionrelative:beathouse.api\\controllers\\cancionescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse.api\\controllers\\albumscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|solutionrelative:beathouse.api\\controllers\\albumscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse.api\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|solutionrelative:beathouse.api\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse.api\\controllers\\playlistscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|solutionrelative:beathouse.api\\controllers\\playlistscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse.api\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|solutionrelative:beathouse.api\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse.api\\controllers\\planescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|solutionrelative:beathouse.api\\controllers\\planescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse.api\\controllers\\detalleplaylistscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|solutionrelative:beathouse.api\\controllers\\detalleplaylistscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse.api\\migrations\\20250711042254_v01beathouse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|solutionrelative:beathouse.api\\migrations\\20250711042254_v01beathouse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse\\beathouse.models.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|solutionrelative:beathouse\\beathouse.models.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse.api\\beathouse.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|solutionrelative:beathouse.api\\beathouse.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|solutionrelative:beathouse.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|solutionrelative:beathouse.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{2FA8B517-1FD0-4601-9AD4-AF3F0FC9ADA6}|BeatHouse.Api\\BeatHouse.Api.csproj|solutionrelative:beathouse.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|solutionrelative:beathouse\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse\\detalleplaylist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|solutionrelative:beathouse\\detalleplaylist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse\\playlist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|solutionrelative:beathouse\\playlist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|c:\\users\\gaming\\documents\\visual studio community\\beathouse_ander\\beathouse\\beathouse\\plan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC913626-8F66-47A8-BEEE-F4B4438490DD}|BeatHouse\\BeatHouse.Models.csproj|solutionrelative:beathouse\\plan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UsuariosController.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Controllers\\UsuariosController.cs",
+              "RelativeDocumentMoniker": "BeatHouse.Api\\Controllers\\UsuariosController.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Controllers\\UsuariosController.cs",
+              "RelativeToolTip": "BeatHouse.Api\\Controllers\\UsuariosController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T04:11:59.816Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AlbumsController.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Controllers\\AlbumsController.cs",
+              "RelativeDocumentMoniker": "BeatHouse.Api\\Controllers\\AlbumsController.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Controllers\\AlbumsController.cs",
+              "RelativeToolTip": "BeatHouse.Api\\Controllers\\AlbumsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE8AAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T04:09:03.118Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CancionesController.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Controllers\\CancionesController.cs",
+              "RelativeDocumentMoniker": "BeatHouse.Api\\Controllers\\CancionesController.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Controllers\\CancionesController.cs",
+              "RelativeToolTip": "BeatHouse.Api\\Controllers\\CancionesController.cs",
+              "ViewState": "AgIAAFwAAAAAAAAAAAAswGcAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T04:09:29.887Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Album.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\Album.cs",
+              "RelativeDocumentMoniker": "BeatHouse\\Album.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\Album.cs",
+              "RelativeToolTip": "BeatHouse\\Album.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T03:54:17.362Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Cancion.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\Cancion.cs",
+              "RelativeDocumentMoniker": "BeatHouse\\Cancion.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\Cancion.cs",
+              "RelativeToolTip": "BeatHouse\\Cancion.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T03:59:00.648Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "PlaylistsController.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Controllers\\PlaylistsController.cs",
+              "RelativeDocumentMoniker": "BeatHouse.Api\\Controllers\\PlaylistsController.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Controllers\\PlaylistsController.cs",
+              "RelativeToolTip": "BeatHouse.Api\\Controllers\\PlaylistsController.cs",
+              "ViewState": "AgIAAFQAAAAAAAAAAAAowGcAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T04:11:27.334Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PlanesController.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Controllers\\PlanesController.cs",
+              "RelativeDocumentMoniker": "BeatHouse.Api\\Controllers\\PlanesController.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Controllers\\PlanesController.cs",
+              "RelativeToolTip": "BeatHouse.Api\\Controllers\\PlanesController.cs",
+              "ViewState": "AgIAAFQAAAAAAAAAAAAowGcAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T04:10:23.82Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "DetallePlaylistsController.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Controllers\\DetallePlaylistsController.cs",
+              "RelativeDocumentMoniker": "BeatHouse.Api\\Controllers\\DetallePlaylistsController.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Controllers\\DetallePlaylistsController.cs",
+              "RelativeToolTip": "BeatHouse.Api\\Controllers\\DetallePlaylistsController.cs",
+              "ViewState": "AgIAAFwAAAAAAAAAAAAswGcAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T04:09:57.505Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "BeatHouse.Api\\Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "BeatHouse.Api\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBYAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T04:12:25.064Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "20250711042254_v01Beathouse.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Migrations\\20250711042254_v01Beathouse.cs",
+              "RelativeDocumentMoniker": "BeatHouse.Api\\Migrations\\20250711042254_v01Beathouse.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Migrations\\20250711042254_v01Beathouse.cs",
+              "RelativeToolTip": "BeatHouse.Api\\Migrations\\20250711042254_v01Beathouse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T04:22:55.148Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "BeatHouse.Api\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\appsettings.Development.json",
+              "RelativeToolTip": "BeatHouse.Api\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-11T04:12:39.655Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "BeatHouse.Models",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\BeatHouse.Models.csproj",
+              "RelativeDocumentMoniker": "BeatHouse\\BeatHouse.Models.csproj",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\BeatHouse.Models.csproj",
+              "RelativeToolTip": "BeatHouse\\BeatHouse.Models.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-07-11T04:18:46.12Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "BeatHouse.Api\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\Properties\\launchSettings.json",
+              "RelativeToolTip": "BeatHouse.Api\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-11T04:20:59.876Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "BeatHouse.Api",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\BeatHouse.Api.csproj",
+              "RelativeDocumentMoniker": "BeatHouse.Api\\BeatHouse.Api.csproj",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\BeatHouse.Api.csproj",
+              "RelativeToolTip": "BeatHouse.Api\\BeatHouse.Api.csproj",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAACEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-07-11T04:21:11.196Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\appsettings.json",
+              "RelativeDocumentMoniker": "BeatHouse.Api\\appsettings.json",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse.Api\\appsettings.json",
+              "RelativeToolTip": "BeatHouse.Api\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-11T04:12:06.767Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Usuario.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\Usuario.cs",
+              "RelativeDocumentMoniker": "BeatHouse\\Usuario.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\Usuario.cs",
+              "RelativeToolTip": "BeatHouse\\Usuario.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T04:04:47.43Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "DetallePlaylist.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\DetallePlaylist.cs",
+              "RelativeDocumentMoniker": "BeatHouse\\DetallePlaylist.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\DetallePlaylist.cs",
+              "RelativeToolTip": "BeatHouse\\DetallePlaylist.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T04:04:01.467Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Playlist.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\Playlist.cs",
+              "RelativeDocumentMoniker": "BeatHouse\\Playlist.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\Playlist.cs",
+              "RelativeToolTip": "BeatHouse\\Playlist.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T04:03:08.235Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Plan.cs",
+              "DocumentMoniker": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\Plan.cs",
+              "RelativeDocumentMoniker": "BeatHouse\\Plan.cs",
+              "ToolTip": "C:\\Users\\GAMING\\Documents\\VISUAL STUDIO COMMUNITY\\BeatHouse_Ander\\BeatHouse\\BeatHouse\\Plan.cs",
+              "RelativeToolTip": "BeatHouse\\Plan.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABQAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T04:01:21.161Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 237,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
