@@ -1,48 +1,115 @@
 ﻿@model Spotify.Modelos.Album
-
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear Álbum - BeatHouse";
+    Layout = "_Layout";
 }
 
-<h1>Create</h1>
+<link rel="stylesheet" href="~/css/playlistsCreate.css">
 
-<h4>Album</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+<div class="particles"></div>
+
+<div class="main-container">
+    <h1 class="page-title">🎵 Crear Nuevo Álbum</h1>
+    <p class="page-subtitle">Comparte tu música con el mundo y deja tu huella sonora</p>
+
+    <div class="form-container">
+        <form asp-action="Create" method="post" class="album-form">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+            <!-- Campo oculto para ArtistaId -->
+            <input asp-for="ArtistaId" type="hidden" />
+
+            <!-- Información del Álbum -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">📀</span>
+                    Información del Álbum
+                </h2>
+
+                <div class="form-group">
+                    <label asp-for="Nombre" class="form-label">
+                        <span class="label-icon">🎶</span>
+                        Nombre del Álbum
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <input asp-for="Nombre" class="form-input" placeholder="Ingresa el nombre de tu álbum..." />
+                    <span asp-validation-for="Nombre" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Genero" class="form-label">
+                        <span class="label-icon">🎸</span>
+                        Género Musical
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <select asp-for="Genero" class="form-input">
+                        <option value="">Selecciona un género</option>
+                        <option value="Rock">🎸 Rock</option>
+                        <option value="Pop">🎤 Pop</option>
+                        <option value="Hip Hop">🎵 Hip Hop</option>
+                        <option value="Electronic">🎹 Electronic</option>
+                        <option value="Jazz">🎺 Jazz</option>
+                        <option value="Classical">🎻 Classical</option>
+                        <option value="Reggae">🥁 Reggae</option>
+                        <option value="Country">🪕 Country</option>
+                        <option value="Blues">🎷 Blues</option>
+                        <option value="Folk">🎶 Folk</option>
+                        <option value="Metal">⚡ Metal</option>
+                        <option value="Indie">🎨 Indie</option>
+                        <option value="Alternative">🌟 Alternative</option>
+                        <option value="Funk">🎸 Funk</option>
+                        <option value="R&B">🎤 R&B</option>
+                        <option value="Otro">🎵 Otro</option>
+                    </select>
+                    <span asp-validation-for="Genero" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="FechaLanzamiento" class="form-label">
+                        <span class="label-icon">📅</span>
+                        Fecha de Lanzamiento
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <input asp-for="FechaLanzamiento" type="date" class="form-input" />
+                    <span asp-validation-for="FechaLanzamiento" class="validation-message"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Genero" class="control-label"></label>
-                <input asp-for="Genero" class="form-control" />
-                <span asp-validation-for="Genero" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaLanzamiento" class="control-label"></label>
-                <input asp-for="FechaLanzamiento" class="form-control" />
-                <span asp-validation-for="FechaLanzamiento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ArtistaId" class="control-label"></label>
-                <input asp-for="ArtistaId" class="form-control" />
-                <span asp-validation-for="ArtistaId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <!-- Acciones del formulario -->
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">
+                    <span class="btn-icon">🚀</span>
+                    Crear Álbum
+                </button>
+                <a asp-action="Index" class="cancel-btn">
+                    <span class="btn-icon">⬅️</span>
+                    Volver a Lista
+                </a>
             </div>
         </form>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    <!-- Mostrar mensajes de éxito/error -->
+    @if (ViewBag.SuccessMessage != null)
+    {
+        <div class="alert alert-success">
+            <span class="alert-icon">✅</span>
+            @ViewBag.SuccessMessage
+        </div>
+    }
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            <span class="alert-icon">❌</span>
+            @ViewBag.ErrorMessage
+        </div>
+    }
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
