@@ -1,0 +1,14 @@
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\bin\Debug\net8.0\BeatHouse.Models.deps.json
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\bin\Debug\net8.0\BeatHouse.Models.dll
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\bin\Debug\net8.0\BeatHouse.Models.pdb
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\obj\Debug\net8.0\BeatHouse.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\obj\Debug\net8.0\BeatHouse.Models.AssemblyInfoInputs.cache
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\obj\Debug\net8.0\BeatHouse.Models.AssemblyInfo.cs
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\obj\Debug\net8.0\BeatHouse.Models.csproj.CoreCompileInputs.cache
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\obj\Debug\net8.0\BeatHouse.Models.dll
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\obj\Debug\net8.0\refint\BeatHouse.Models.dll
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\obj\Debug\net8.0\BeatHouse.Models.pdb
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\obj\Debug\net8.0\ref\BeatHouse.Models.dll
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\obj\Debug\net8.0\BeatHouse.Models.csproj.AssemblyReference.cache
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\bin\Debug\net8.0\BeatHouse.Models.runtimeconfig.json
+C:\Users\GAMING\Documents\VISUAL STUDIO COMMUNITY\BeatHouse_Ander\BeatHouse\BeatHouse\obj\Debug\net8.0\BeatHouse.Models.genruntimeconfig.cache

@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "5XOGgLAM+x3BUfz5b3l/jT56LLhPjzDF2ha4tz6p1cE=",
+  "Source": "BeatHouse.Api",
+  "BasePath": "_content/BeatHouse.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
