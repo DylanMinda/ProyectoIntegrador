@@ -1,16 +1,30 @@
-﻿@model IEnumerable<Spotify.Modelos.Cancion>
+﻿@using System.Security.Claims
+@using Spotify.MVC.ViewModels
 
 @{
-    ViewData["Title"] = "Listado de Canciones";
+    ViewData["Title"] = "Tus Canciones";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2 class="text-center text-success">Tu Biblioteca de Canciones</h2>
 
-<p>
-    <a asp-action="SubirCancion" class="btn btn-primary">
-        <i class="bi bi-upload"></i> Subir nueva canción
-    </a>
-</p>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@model IEnumerable<Spotify.Modelos.Cancion>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-warning">
+        @Html.Raw(ViewBag.Message)  <!-- Muestra el mensaje si se ha alcanzado el límite -->
+    </div>
+}
 
 <table class="table table-striped align-middle">
     <thead>
@@ -18,10 +32,8 @@
             <th>Código</th>
             <th>Título</th>
             <th>Duración</th>
-            <th>Genero</th>
+            <th>Género</th>
             <th>Reproducción</th>
-            <th>Reproducciones</th>
-            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -40,12 +52,6 @@
                         <code>audio</code>.
                     </audio>
                 </td>
-                <td>@item.TotalReproducciones</td>
-                <td>
-                    @* Si tienes acciones como Detalles o Eliminar en MVC *@
-                    <a asp-action="Detalles" asp-route-id="@item.Id" class="btn btn-sm btn-info">Detalles</a>
-                    <a asp-action="Eliminar" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Eliminar</a>
-                </td>
             </tr>
         }
     </tbody>
@@ -53,6 +59,38 @@
 
 @section Scripts {
     <script>
-       
+        // Obtener el plan del usuario desde el ViewBag
+        var userPlan = "@ViewBag.Plan"; // Se espera que ViewBag.Plan esté disponible en el controlador.
+
+        // Intervalos de pausa
+        var pauseIntervals = {
+            'Free': 30000,  // 30 segundos para los usuarios Free
+            'Estudiantil': 15000,  // 15 segundos para los usuarios Estudiantiles
+            'Premium': 0, // Sin pausa para los usuarios Premium
+            'Empresarial': 0 // Solo 1 pausa para los usuarios Empresariales
+        };
+
+        // Reproducir y pausar según el plan
+        document.querySelectorAll('.audio-player').forEach(function(player) {
+            var plan = userPlan;
+            var interval;
+
+            // Función para pausar la canción en el intervalo adecuado
+            function pauseSong() {
+                if (plan === 'Free' || plan === 'Estudiantil') {
+                    // Pausar solo si la canción está reproduciéndose
+                    if (!player.paused) {
+                        player.pause();
+                    }
+                }
+            }
+
+            // Si el plan es Free o Estudiantil, aplicar pausa a intervalos
+            if (plan === 'Free' || plan === 'Estudiantil') {
+                interval = setInterval(function() {
+                    pauseSong();
+                }, pauseIntervals[plan]);
+            }
+        });
     </script>
 }

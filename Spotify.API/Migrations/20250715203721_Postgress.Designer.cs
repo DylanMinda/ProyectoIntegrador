@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Spotify.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250708014428_postgress")]
-    partial class postgress
+    [Migration("20250715203721_Postgress")]
+    partial class Postgress
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,10 @@ namespace Spotify.API.Migrations
                     b.Property<int>("AlbumId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ArchivoUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("ArtistaId")
                         .HasColumnType("integer");
 
@@ -78,14 +82,11 @@ namespace Spotify.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("UsuarioId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AlbumId");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("ArtistaId");
 
                     b.ToTable("Canciones");
                 });
@@ -191,6 +192,9 @@ namespace Spotify.API.Migrations
                     b.Property<int?>("PlanId")
                         .HasColumnType("integer");
 
+                    b.Property<double?>("Saldo")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("TipoUsuario")
                         .IsRequired()
                         .HasColumnType("text");
@@ -221,11 +225,15 @@ namespace Spotify.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Spotify.Modelos.Usuario", null)
+                    b.HasOne("Spotify.Modelos.Usuario", "ArtistaCodigoNav")
                         .WithMany("Canciones")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("ArtistaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Album");
+
+                    b.Navigation("ArtistaCodigoNav");
                 });
 
             modelBuilder.Entity("Spotify.Modelos.DetallesPlaylist", b =>

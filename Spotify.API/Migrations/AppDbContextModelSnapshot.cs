@@ -189,6 +189,9 @@ namespace Spotify.API.Migrations
                     b.Property<int?>("PlanId")
                         .HasColumnType("integer");
 
+                    b.Property<double?>("Saldo")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("TipoUsuario")
                         .IsRequired()
                         .HasColumnType("text");

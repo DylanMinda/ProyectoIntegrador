@@ -8,6 +8,7 @@ using Spotify.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Spotify.API.Controllers
@@ -61,7 +62,23 @@ namespace Spotify.API.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(cancion).State = EntityState.Modified;
+            // Verificamos que la canción existe
+            var cancionExistente = await _context.Canciones.FindAsync(id);
+            if (cancionExistente == null)
+            {
+                return NotFound();
+            }
+
+            // Si se desea actualizar la propiedad TotalReproducciones, no la actualizamos aquí, ya que se maneja automáticamente.
+            // Solo actualizamos los campos necesarios, por ejemplo, Titulo, Duracion, etc.
+
+            cancionExistente.Titulo = cancion.Titulo;
+            cancionExistente.Duracion = cancion.Duracion;
+            cancionExistente.Genero = cancion.Genero;
+            cancionExistente.ArtistaId = cancion.ArtistaId;
+            cancionExistente.AlbumId = cancion.AlbumId;
+
+            _context.Entry(cancionExistente).State = EntityState.Modified;
 
             try
             {
@@ -81,6 +98,7 @@ namespace Spotify.API.Controllers
 
             return NoContent();
         }
+
 
         // POST: api/Canciones
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -115,7 +133,7 @@ namespace Spotify.API.Controllers
         }
 
         [HttpPost("upload")]
-        public async Task<ActionResult<Cancion>> UploadCancion([FromForm] CancionSubir dto)
+        public async Task<ActionResult<Cancion>> UploadCancion([FromForm] CancionDTO dto)
         {
             // 1. Obtener/crear contenedor
             var container = _blobService.GetBlobContainerClient(_containerName);
@@ -145,25 +163,50 @@ namespace Spotify.API.Controllers
             return CreatedAtAction(nameof(GetCancion), new { id = cancion.Id }, cancion);
         }
 
-
-        // En CancionesController.cs
         [HttpPost("{id}/incrementar-reproduccion")]
         public async Task<IActionResult> IncrementarReproduccion(int id)
         {
+            // Obtener el usuario logueado
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); // Obtener el usuario logueado
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+
+            if (usuario == null)
+            {
+                return Unauthorized(); // Si no está logueado
+            }
+
             var cancion = await _context.Canciones.FindAsync(id);
             if (cancion == null)
             {
                 return NotFound();
             }
 
-            // Incrementamos la cantidad de reproducciones
-            cancion.TotalReproducciones++;
+            // Si el usuario tiene el plan Free, aplicar las restricciones
+            if (usuario.Plan.Nombre == "Free")
+            {
+                if (cancion.TotalReproducciones >= 5) // Límite de 5 reproducciones
+                {
+                    // Mostrar el anuncio
+                    return BadRequest("Límite de reproducciones alcanzado. Cambia de plan o espera.");
+                }
 
-            // Guardamos los cambios en la base de datos
+                // Si no se alcanzó el límite, incrementar la reproducción
+                cancion.TotalReproducciones++;
+
+                // Guardamos los cambios
+                _context.Canciones.Update(cancion);
+                await _context.SaveChangesAsync();
+
+                // Respuesta con anuncio
+                return Ok("Reproducción exitosa, mostrando anuncio...");
+            }
+
+            // Si es Premium, simplemente incrementa las reproducciones sin restricciones
+            cancion.TotalReproducciones++;
             _context.Canciones.Update(cancion);
             await _context.SaveChangesAsync();
 
-            return NoContent(); // Respuesta exitosa sin contenido
+            return Ok("Reproducción exitosa sin restricciones.");
         }
 
 
