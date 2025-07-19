@@ -1,353 +1,417 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Spotify.APIConsumer;
 using Spotify.Modelos;
+using System.Security.Claims;
 
 namespace Spotify.MVC.Controllers
 {
     public class PlanesController : Controller
     {
-        private const string EndPoint = "https://localhost:7028/api/Planes";
-        // GET: PlanesController - Mostrar vista de selección de planes
-        //public ActionResult Index()
-        //{
-        //    // Crear lista de planes disponibles
-        //    var planes = ObtenerPlanesDisponibles();
-        //    return View(planes);
-        //}
-        public PlanesController()
+        private readonly AppDbContext _context;
+
+        public PlanesController(AppDbContext context)
         {
-            CRUD<Plan>.EndPoint = EndPoint; // Establecemos el endpoint de la API
+            _context = context;
         }
 
-        // GET: PlanesController - Mostrar todos los planes
-        public ActionResult Index()
+        // Ver los planes disponibles
+        public async Task<IActionResult> Index()
         {
-            try
+            var planes = await _context.Planes.ToListAsync();
+            return View(planes);
+        }
+
+        // Comprar un plan
+        [HttpPost]
+        public async Task<IActionResult> ComprarPlan(int planId)
+        {
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+
+            if (usuario == null)
             {
-                var planes = CRUD<Plan>.GetAll();  // Obtener los planes desde la API
-                return View(planes);  // Pasar los planes a la vista
+                return RedirectToAction("Index", "Login");
             }
-            catch (Exception ex)
+
+            var plan = await _context.Planes.FindAsync(planId);
+            if (plan == null)
             {
-                TempData["Error"] = "Error al cargar los planes: " + ex.Message;
+                return NotFound();
+            }
+
+            // Verificar si ya tiene este plan
+            if (usuario.Plan != null && usuario.Plan.Id == planId)
+            {
+                TempData["ErrorMessage"] = "Ya tienes este plan activo.";
+                return RedirectToAction("Index");
+            }
+
+            // Verificar saldo suficiente
+            if (usuario.Saldo < plan.PrecioMensual)
+            {
+                TempData["ErrorMessage"] = "No tienes suficiente saldo para comprar este plan.";
+                return RedirectToAction("Index");
+            }
+
+            // NUEVA LÓGICA: Verificar límite de usuarios para planes grupales
+            if (plan.MaximoUsuarios > 1) // Es un plan grupal (Familiar/Empresarial)
+            {
+                // Contar usuarios actuales en este plan
+                var usuariosEnPlan = await _context.Usuarios
+                    .Where(u => u.Plan != null && u.Plan.Id == planId)
+                    .CountAsync();
+
+                if (usuariosEnPlan >= plan.MaximoUsuarios)
+                {
+                    TempData["ErrorMessage"] = $"El plan {plan.Nombre} ha alcanzado su límite máximo de {plan.MaximoUsuarios} usuarios.";
+                    return RedirectToAction("Index");
+                }
+            }
+
+            // Descontar saldo y asignar plan
+            usuario.Saldo -= plan.PrecioMensual;
+            usuario.Plan = plan;
+
+            _context.Usuarios.Update(usuario);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = $"¡Plan {plan.Nombre} activado con éxito!";
+            return RedirectToAction("Dashboard", "Home");
+        }
+
+        // Invitar usuario a plan grupal (solo para administradores del plan)
+        [HttpPost]
+        public async Task<IActionResult> InvitarUsuario(string email)
+        {
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+
+            if (usuario == null || usuario.Plan == null)
+            {
+                return Json(new { success = false, message = "No tienes un plan activo" });
+            }
+
+            // Verificar que es un plan grupal
+            if (usuario.Plan.MaximoUsuarios <= 1)
+            {
+                return Json(new { success = false, message = "Solo puedes invitar usuarios en planes grupales" });
+            }
+
+            // Verificar que es el "administrador" (primer usuario que compró el plan)
+            var primerUsuarioDelPlan = await _context.Usuarios
+                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
+                .OrderBy(u => u.FechaRegistro) // O podrías usar otro criterio
+                .FirstOrDefaultAsync();
+
+            if (primerUsuarioDelPlan.Id != usuarioId)
+            {
+                return Json(new { success = false, message = "Solo el administrador del plan puede invitar usuarios" });
+            }
+
+            // Verificar límite de usuarios
+            var usuariosEnPlan = await _context.Usuarios
+                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
+                .CountAsync();
+
+            if (usuariosEnPlan >= usuario.Plan.MaximoUsuarios)
+            {
+                return Json(new { success = false, message = $"Has alcanzado el límite de {usuario.Plan.MaximoUsuarios} usuarios" });
+            }
+
+            // Verificar si el usuario existe
+            var usuarioInvitado = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+            if (usuarioInvitado == null)
+            {
+                return Json(new { success = false, message = "No existe un usuario con ese email" });
+            }
+
+            // Verificar que no esté ya en el plan
+            if (usuarioInvitado.Plan != null && usuarioInvitado.Plan.Id == usuario.Plan.Id)
+            {
+                return Json(new { success = false, message = "Este usuario ya está en tu plan" });
+            }
+
+            // Agregar usuario al plan (sin costo adicional)
+            usuarioInvitado.Plan = usuario.Plan;
+            _context.Usuarios.Update(usuarioInvitado);
+            await _context.SaveChangesAsync();
+
+            return Json(new
+            {
+                success = true,
+                message = $"Usuario {usuarioInvitado.Nombre} agregado al plan exitosamente"
+            });
+        }
+
+        // Ver miembros del plan grupal
+        [HttpGet]
+        public async Task<IActionResult> MiembrosDelPlan()
+        {
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+
+            if (usuario == null || usuario.Plan == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            // Verificar que es un plan grupal
+            if (usuario.Plan.MaximoUsuarios <= 1)
+            {
+                TempData["ErrorMessage"] = "Esta función solo está disponible para planes grupales.";
+                return RedirectToAction("Index");
+            }
+
+            // Obtener todos los miembros del plan
+            var miembrosDelPlan = await _context.Usuarios
+                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
+                .OrderBy(u => u.FechaRegistro)
+                .ToListAsync();
+
+            // Determinar quién es el administrador (primer usuario)
+            var administrador = miembrosDelPlan.FirstOrDefault();
+
+            ViewBag.Plan = usuario.Plan;
+            ViewBag.EsAdministrador = administrador?.Id == usuarioId;
+            ViewBag.Administrador = administrador;
+            ViewBag.EspaciosDisponibles = usuario.Plan.MaximoUsuarios - miembrosDelPlan.Count;
+
+            return View(miembrosDelPlan);
+        }
+
+        // Expulsar miembro del plan
+        [HttpPost]
+        public async Task<IActionResult> ExpulsarMiembro(int miembroId)
+        {
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+
+            if (usuario == null || usuario.Plan == null)
+            {
+                return Json(new { success = false, message = "No tienes un plan activo" });
+            }
+
+            // Verificar que es el administrador
+            var administrador = await _context.Usuarios
+                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
+                .OrderBy(u => u.FechaRegistro)
+                .FirstOrDefaultAsync();
+
+            if (administrador.Id != usuarioId)
+            {
+                return Json(new { success = false, message = "Solo el administrador puede expulsar miembros" });
+            }
+
+            // No puede expulsarse a sí mismo
+            if (miembroId == usuarioId)
+            {
+                return Json(new { success = false, message = "No puedes expulsarte a ti mismo del plan" });
+            }
+
+            var miembro = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == miembroId);
+            if (miembro == null || miembro.Plan?.Id != usuario.Plan.Id)
+            {
+                return Json(new { success = false, message = "Miembro no encontrado en tu plan" });
+            }
+
+            // Remover del plan (vuelve a plan gratuito)
+            var planGratuito = await _context.Planes.FirstOrDefaultAsync(p => p.PrecioMensual == 0);
+            miembro.Plan = planGratuito;
+            _context.Usuarios.Update(miembro);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Miembro expulsado exitosamente" });
+        }
+
+        // Abandonar plan grupal
+        [HttpPost]
+        public async Task<IActionResult> AbandonarPlan()
+        {
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+
+            if (usuario == null || usuario.Plan == null)
+            {
+                return Json(new { success = false, message = "No tienes un plan activo" });
+            }
+
+            // Verificar si es administrador
+            var administrador = await _context.Usuarios
+                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
+                .OrderBy(u => u.FechaRegistro)
+                .FirstOrDefaultAsync();
+
+            if (administrador.Id == usuarioId)
+            {
+                return Json(new { success = false, message = "No puedes abandonar un plan que administras. Debes cancelar el plan." });
+            }
+
+            // Cambiar a plan gratuito
+            var planGratuito = await _context.Planes.FirstOrDefaultAsync(p => p.PrecioMensual == 0);
+            usuario.Plan = planGratuito;
+            _context.Usuarios.Update(usuario);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Has abandonado el plan grupal exitosamente" });
+        }
+
+        // Cancelar plan grupal (solo administrador)
+        [HttpPost]
+        public async Task<IActionResult> CancelarPlan()
+        {
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+
+            if (usuario == null || usuario.Plan == null)
+            {
+                return Json(new { success = false, message = "No tienes un plan activo" });
+            }
+
+            // Verificar que es el administrador
+            var administrador = await _context.Usuarios
+                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
+                .OrderBy(u => u.FechaRegistro)
+                .FirstOrDefaultAsync();
+
+            if (administrador.Id != usuarioId)
+            {
+                return Json(new { success = false, message = "Solo el administrador puede cancelar el plan" });
+            }
+
+            // Obtener todos los miembros del plan
+            var miembrosDelPlan = await _context.Usuarios
+                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
+                .ToListAsync();
+
+            // Cambiar todos los miembros a plan gratuito
+            var planGratuito = await _context.Planes.FirstOrDefaultAsync(p => p.PrecioMensual == 0);
+            foreach (var miembro in miembrosDelPlan)
+            {
+                miembro.Plan = planGratuito;
+            }
+
+            _context.Usuarios.UpdateRange(miembrosDelPlan);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Plan cancelado exitosamente. Todos los miembros han sido movidos al plan gratuito." });
+        }
+
+        // Obtener información del plan actual
+        [HttpGet]
+        public async Task<IActionResult> MiPlan()
+        {
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            if (usuario.Plan == null)
+            {
+                ViewBag.Mensaje = "No tienes un plan activo.";
                 return View();
             }
+
+            // Si es plan grupal, obtener información adicional
+            if (usuario.Plan.MaximoUsuarios > 1)
+            {
+                var miembrosDelPlan = await _context.Usuarios
+                    .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
+                    .CountAsync();
+
+                var administrador = await _context.Usuarios
+                    .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
+                    .OrderBy(u => u.FechaRegistro)
+                    .FirstOrDefaultAsync();
+
+                ViewBag.CantidadMiembros = miembrosDelPlan;
+                ViewBag.EsAdministrador = administrador?.Id == usuarioId;
+                ViewBag.Administrador = administrador;
+            }
+
+            return View(usuario);
         }
-        // POST: Seleccionar un plan
+
+        // Métodos originales mantenidos
+        [HttpGet]
+        public IActionResult RecargarSaldo()
+        {
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario == null)
+                return NotFound();
+
+            return View(usuario);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SelectPlan(string planId)
+        public async Task<IActionResult> RecargarSaldo(double monto)
         {
-            try
-            {
-                // Aquí puedes procesar la selección del plan
-                // Por ejemplo, guardar en sesión, base de datos, etc.
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == usuarioId);
+            if (usuario == null) return NotFound();
 
-                // Guardar en sesión para uso posterior
-                HttpContext.Session.SetString("SelectedPlan", planId);
+            usuario.Saldo = (usuario.Saldo ?? 0) + monto;
+            _context.Update(usuario);
+            await _context.SaveChangesAsync();
 
-                // Redirigir según el plan seleccionado
-                switch (planId.ToLower())
-                {
-                    case "basic":
-                        TempData["Message"] = "¡Bienvenido al plan Básico! Disfruta de música con algunas limitaciones.";
-                        break;
-                    case "premium":
-                        TempData["Message"] = "¡Excelente elección! El plan Premium te da acceso completo.";
-                        return RedirectToAction("Payment", new { planId = planId });
-                    case "family":
-                        TempData["Message"] = "¡Perfecto para toda la familia! Hasta 6 cuentas incluidas.";
-                        return RedirectToAction("Payment", new { planId = planId });
-                    case "student":
-                        TempData["Message"] = "¡Aprovecha el descuento estudiantil!";
-                        return RedirectToAction("StudentVerification", new { planId = planId });
-                    default:
-                        TempData["Error"] = "Plan no válido.";
-                        return RedirectToAction("Index");
-                }
-
-                return RedirectToAction("Confirmation", new { planId = planId });
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "Error al seleccionar el plan: " + ex.Message;
-                return RedirectToAction("Index");
-            }
+            TempData["SuccessMessage"] = $"Has recargado ${monto} con éxito.";
+            return RedirectToAction("Dashboard", "Home");
         }
 
-        // GET: Confirmación de selección de plan
-        public ActionResult Confirmation(string planId)
-        {
-            var plan = ObtenerPlanPorId(planId);
-            if (plan == null)
-            {
-                TempData["Error"] = "Plan no encontrado.";
-                return RedirectToAction("Index");
-            }
-
-            return View(plan);
-        }
-
-        // GET: Página de pago
-        public ActionResult Payment(string planId)
-        {
-            var plan = ObtenerPlanPorId(planId);
-            if (plan == null)
-            {
-                TempData["Error"] = "Plan no encontrado.";
-                return RedirectToAction("Index");
-            }
-
-            return View(plan);
-        }
-
-        // GET: Verificación de estudiante
-        public ActionResult StudentVerification(string planId)
-        {
-            var plan = ObtenerPlanPorId(planId);
-            if (plan == null)
-            {
-                TempData["Error"] = "Plan no encontrado.";
-                return RedirectToAction("Index");
-            }
-
-            return View(plan);
-        }
-
-        // GET: PlanesController/Details/5
-        public ActionResult Details(int id)
-        {
-            var planes = ObtenerPlanesDisponibles();
-            var plan = planes.FirstOrDefault(p => p.Id == id);
-
-            if (plan == null)
-            {
-                TempData["Error"] = "Plan no encontrado.";
-                return RedirectToAction("Index");
-            }
-
-            return View(plan);
-        }
-
-        // GET: PlanesController/Create - Solo para administradores
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: PlanesController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Plan plan)
+        public async Task<IActionResult> CambiarPlan(int nuevoPlanId)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    // Aquí agregarías la lógica para guardar en base de datos
-                    // _context.Planes.Add(plan);
-                    // _context.SaveChanges();
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+            var nuevoPlan = await _context.Planes.FindAsync(nuevoPlanId);
 
-                    TempData["Success"] = "Plan creado exitosamente.";
-                    return RedirectToAction(nameof(Index));
+            if (usuario == null || nuevoPlan == null)
+            {
+                return NotFound();
+            }
+
+            // Verificar si el usuario ya tiene un plan activo
+            if (usuario.Plan != null && usuario.Plan.Id != nuevoPlanId)
+            {
+                TempData["ErrorMessage"] = "Ya tienes un plan activo. Cancela tu plan actual antes de cambiar.";
+                return RedirectToAction("Dashboard", "Home");
+            }
+
+            // Verificar límite para planes grupales
+            if (nuevoPlan.MaximoUsuarios > 1)
+            {
+                var usuariosEnPlan = await _context.Usuarios
+                    .Where(u => u.Plan != null && u.Plan.Id == nuevoPlanId)
+                    .CountAsync();
+
+                if (usuariosEnPlan >= nuevoPlan.MaximoUsuarios)
+                {
+                    TempData["ErrorMessage"] = $"El plan {nuevoPlan.Nombre} ha alcanzado su límite máximo de usuarios.";
+                    return RedirectToAction("Index");
                 }
-
-                return View(plan);
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "Error al crear el plan: " + ex.Message;
-                return View(plan);
-            }
-        }
-
-        // GET: PlanesController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            var planes = ObtenerPlanesDisponibles();
-            var plan = planes.FirstOrDefault(p => p.Id == id);
-
-            if (plan == null)
-            {
-                TempData["Error"] = "Plan no encontrado.";
-                return RedirectToAction("Index");
             }
 
-            return View(plan);
-        }
-
-        // POST: PlanesController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Plan plan)
-        {
-            try
+            // Verificar saldo
+            if (usuario.Saldo >= nuevoPlan.PrecioMensual)
             {
-                if (id != plan.Id)
-                {
-                    TempData["Error"] = "ID de plan no válido.";
-                    return View(plan);
-                }
+                usuario.Saldo -= nuevoPlan.PrecioMensual;
+                usuario.Plan = nuevoPlan;
 
-                if (ModelState.IsValid)
-                {
-                    // Aquí agregarías la lógica para actualizar en base de datos
-                    // _context.Update(plan);
-                    // _context.SaveChanges();
+                _context.Update(usuario);
+                await _context.SaveChangesAsync();
 
-                    TempData["Success"] = "Plan actualizado exitosamente.";
-                    return RedirectToAction(nameof(Index));
-                }
-
-                return View(plan);
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "Error al actualizar el plan: " + ex.Message;
-                return View(plan);
-            }
-        }
-
-        // GET: PlanesController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            var planes = ObtenerPlanesDisponibles();
-            var plan = planes.FirstOrDefault(p => p.Id == id);
-
-            if (plan == null)
-            {
-                TempData["Error"] = "Plan no encontrado.";
-                return RedirectToAction("Index");
+                TempData["SuccessMessage"] = $"¡Plan {nuevoPlan.Nombre} activado con éxito!";
+                return RedirectToAction("Dashboard", "Home");
             }
 
-            return View(plan);
+            TempData["ErrorMessage"] = "No tienes suficiente saldo para cambiar de plan.";
+            return RedirectToAction("Index");
         }
-
-        // POST: PlanesController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // Aquí agregarías la lógica para eliminar de base de datos
-                // var plan = _context.Planes.Find(id);
-                // if (plan != null)
-                // {
-                //     _context.Planes.Remove(plan);
-                //     _context.SaveChanges();
-                // }
-
-                TempData["Success"] = "Plan eliminado exitosamente.";
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "Error al eliminar el plan: " + ex.Message;
-                return RedirectToAction(nameof(Index));
-            }
-        }
-
-        #region Métodos Auxiliares
-
-        /// <summary>
-        /// Obtiene la lista de planes disponibles.
-        /// En un escenario real, esto vendría de la base de datos.
-        /// </summary>
-        private List<Plan> ObtenerPlanesDisponibles()
-        {
-            return new List<Plan>
-            {
-                new Plan
-                {
-                    Id = 1,
-                    Nombre = "Básico",
-                    PrecioMensual = 0.00,
-                    MaximoUsuarios = 1,
-                    Descripcion = "Plan gratuito con acceso limitado y anuncios"
-                },
-                new Plan
-                {
-                    Id = 2,
-                    Nombre = "Premium",
-                    PrecioMensual = 9.99,
-                    MaximoUsuarios = 1,
-                    Descripcion = "Acceso completo sin anuncios, calidad HD y descargas"
-                },
-                new Plan
-                {
-                    Id = 3,
-                    Nombre = "Familiar",
-                    PrecioMensual = 14.99,
-                    MaximoUsuarios = 6,
-                    Descripcion = "Hasta 6 cuentas familiares con todas las funciones Premium"
-                },
-                new Plan
-                {
-                    Id = 4,
-                    Nombre = "Estudiante",
-                    PrecioMensual = 4.99,
-                    MaximoUsuarios = 1,
-                    Descripcion = "Descuento especial para estudiantes verificados"
-                }
-                
-                // AGREGAR MÁS PLANES AQUÍ
-                // Puedes agregar fácilmente más planes a esta lista
-                /*
-                ,
-                new Plan
-                {
-                    Id = 5,
-                    Nombre = "Empresarial",
-                    PrecioMensual = 19.99,
-                    MaximoUsuarios = 50,
-                    Descripcion = "Solución completa para empresas con hasta 50 empleados"
-                },
-                new Plan
-                {
-                    Id = 6,
-                    Nombre = "Premium Plus",
-                    PrecioMensual = 15.99,
-                    MaximoUsuarios = 1,
-                    Descripcion = "Premium con funciones adicionales y audio de alta resolución"
-                }
-                */
-            };
-        }
-
-        /// <summary>
-        /// Obtiene un plan específico por su ID de string.
-        /// </summary>
-        private Plan ObtenerPlanPorId(string planId)
-        {
-            var planes = ObtenerPlanesDisponibles();
-
-            return planId.ToLower() switch
-            {
-                "basic" => planes.FirstOrDefault(p => p.Nombre.ToLower() == "básico"),
-                "premium" => planes.FirstOrDefault(p => p.Nombre.ToLower() == "premium"),
-                "family" => planes.FirstOrDefault(p => p.Nombre.ToLower() == "familiar"),
-                "student" => planes.FirstOrDefault(p => p.Nombre.ToLower() == "estudiante"),
-                _ => null
-            };
-        }
-
-        /// <summary>
-        /// Mapea el ID de string a ID numérico.
-        /// </summary>
-        private int MapearPlanIdANumerico(string planId)
-        {
-            return planId.ToLower() switch
-            {
-                "basic" => 1,
-                "premium" => 2,
-                "family" => 3,
-                "student" => 4,
-                _ => 0
-            };
-        }
-
-        #endregion
     }
 }

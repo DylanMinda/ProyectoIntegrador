@@ -2,7 +2,7 @@
 namespace Spotify.API.DTO
 
 {
-    public class CancionSubir
+    public class CancionDTO
     {
         [Required] public string Titulo { get; set; } = null!;
         [Required] public IFormFile Archivo { get; set; } = null!;

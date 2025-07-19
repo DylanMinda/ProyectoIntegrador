@@ -6,8 +6,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext") ?? throw new InvalidOperationException("Connection string 'AppDbContext' not found.")));
 
 // Add services to the container.
-var blobConn = builder.Configuration["AzureStorage:ConnectionString"];
-builder.Services.AddSingleton(new BlobServiceClient(blobConn));
+//var blobConn = builder.Configuration["AzureStorage:ConnectionString"];
+//builder.Services.AddSingleton(new BlobServiceClient(blobConn));
 
 
 builder.Services

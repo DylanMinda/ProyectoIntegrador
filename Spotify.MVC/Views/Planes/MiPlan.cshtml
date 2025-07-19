@@ -1,0 +1,101 @@
+﻿<!-- Views/Planes/MiPlan.cshtml - Vista para ver el plan actual -->
+@model Spotify.Modelos.Usuario
+@{
+    ViewData["Title"] = "Mi Plan";
+}
+
+<div class="container mt-4">
+    <h2>Mi Plan Actual</h2>
+
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="alert alert-info">@ViewBag.Mensaje</div>
+        <a href="@Url.Action("Index")" class="btn btn-primary">Ver Planes Disponibles</a>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Información del Plan</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Plan:</strong> @Model.Plan.Nombre</p>
+                        <p><strong>Precio:</strong> $@Model.Plan.PrecioMensual/mes</p>
+                        <p><strong>Descripción:</strong> @Model.Plan.Descripcion</p>
+
+                        @if (Model.Plan.MaximoUsuarios > 1)
+                        {
+                            <p><strong>Tipo:</strong> Plan Grupal</p>
+                            <p><strong>Usuarios actuales:</strong> @ViewBag.CantidadMiembros/@Model.Plan.MaximoUsuarios</p>
+
+                            @if (ViewBag.EsAdministrador)
+                            {
+                                <span class="badge badge-primary">Administrador</span>
+                                <div class="mt-3">
+                                    <a href="@Url.Action("MiembrosDelPlan")" class="btn btn-info">Gestionar Miembros</a>
+                                    <button class="btn btn-danger" onclick="cancelarPlan()">Cancelar Plan</button>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="badge badge-secondary">Miembro</span>
+                                <p><strong>Administrador:</strong> @ViewBag.Administrador.Nombre</p>
+                                <div class="mt-3">
+                                    <button class="btn btn-warning" onclick="abandonarPlan()">Abandonar Plan</button>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p><strong>Tipo:</strong> Plan Individual</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    function abandonarPlan() {
+        if (confirm('¿Estás seguro de que quieres abandonar este plan? Serás movido al plan gratuito.')) {
+            fetch('/Planes/AbandonarPlan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+    }
+
+    function cancelarPlan() {
+        if (confirm('¿Estás seguro de que quieres cancelar este plan? Todos los miembros serán movidos al plan gratuito.')) {
+            fetch('/Planes/CancelarPlan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+    }
+</script>

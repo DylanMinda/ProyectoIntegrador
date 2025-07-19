@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Spotify.API.Migrations
 {
     /// <inheritdoc />
-    public partial class postgress : Migration
+    public partial class v01Postgress : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,7 +39,8 @@ namespace Spotify.API.Migrations
                     Contraseña = table.Column<string>(type: "text", nullable: false),
                     TipoUsuario = table.Column<string>(type: "text", nullable: false),
                     FechaRegistro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    PlanId = table.Column<int>(type: "integer", nullable: true)
+                    PlanId = table.Column<int>(type: "integer", nullable: true),
+                    Saldo = table.Column<double>(type: "double precision", nullable: true)
                 },
                 constraints: table =>
                 {

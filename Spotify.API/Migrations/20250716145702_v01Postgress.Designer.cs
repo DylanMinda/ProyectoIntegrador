@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Spotify.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250712042941_Postgress")]
-    partial class Postgress
+    [Migration("20250716145702_v01Postgress")]
+    partial class v01Postgress
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -191,6 +191,9 @@ namespace Spotify.API.Migrations
 
                     b.Property<int?>("PlanId")
                         .HasColumnType("integer");
+
+                    b.Property<double?>("Saldo")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("TipoUsuario")
                         .IsRequired()
