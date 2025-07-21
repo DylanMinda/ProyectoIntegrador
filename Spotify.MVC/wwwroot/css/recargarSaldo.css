@@ -1,5 +1,4 @@
-﻿
-* {
+﻿* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -12,6 +11,7 @@ body {
     min-height: 100vh;
     position: relative;
 }
+
 :root {
     --eva-purple: #6F2DA8;
     --eva-green: #8CE70C;

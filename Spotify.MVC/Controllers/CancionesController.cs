@@ -22,7 +22,59 @@ namespace Spotify.MVC.Controllers
             return View(lista);
         }
 
+        // GET: Cancion/Player/5
+        public async Task<IActionResult> Player(int? id)
+        {
+            var cancion = _context.Canciones.Find(id);
+            if (cancion == null)
+            {
+                return NotFound();
+            }
 
+            return View(cancion);
+        }
+
+        // Método opcional para obtener la siguiente canción de una playlist
+        public async Task<IActionResult> NextSong(int playlistId, int currentSongId)
+        {
+            var playlist = await _context.Playlists
+                .Include(p => p.DetallesPlaylists)
+                .ThenInclude(d => d.Cancion)
+                .FirstOrDefaultAsync(p => p.Id == playlistId);
+
+            if (playlist == null)
+                return NotFound();
+
+            var canciones = playlist.DetallesPlaylists.Select(d => d.Cancion).ToList();
+            var currentIndex = canciones.FindIndex(c => c.Id == currentSongId);
+
+            if (currentIndex == -1 || currentIndex >= canciones.Count - 1)
+                return NotFound();
+
+            var nextSong = canciones[currentIndex + 1];
+            return RedirectToAction("Player", new { id = nextSong.Id });
+        }
+
+        // Método opcional para obtener la canción anterior de una playlist
+        public async Task<IActionResult> PreviousSong(int playlistId, int currentSongId)
+        {
+            var playlist = await _context.Playlists
+                .Include(p => p.DetallesPlaylists)
+                .ThenInclude(d => d.Cancion)
+                .FirstOrDefaultAsync(p => p.Id == playlistId);
+
+            if (playlist == null)
+                return NotFound();
+
+            var canciones = playlist.DetallesPlaylists.Select(d => d.Cancion).ToList();
+            var currentIndex = canciones.FindIndex(c => c.Id == currentSongId);
+
+            if (currentIndex <= 0)
+                return NotFound();
+
+            var previousSong = canciones[currentIndex - 1];
+            return RedirectToAction("Player", new { id = previousSong.Id });
+        }
 
 
         [HttpGet]
