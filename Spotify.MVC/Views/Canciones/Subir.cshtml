@@ -1,0 +1,132 @@
+﻿@model Spotify.MVC.ViewModels.CancionSubirViewModel
+@{
+    ViewData["Title"] = "Subir Canción";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="~/css/subirCancion.css" />
+<div class="upload-page">
+    <div class="upload-container">
+        <div class="upload-header">
+            <h1 class="upload-title">
+                <i class="fas fa-music"></i>
+                Subir Nueva Canción
+            </h1>
+            <p class="upload-subtitle">Comparte tu música con el mundo</p>
+        </div>
+
+        <div class="upload-form-container">
+            <form asp-action="Subir" method="post" enctype="multipart/form-data" class="upload-form">
+                <div class="form-grid">
+                    <!-- Título de la canción -->
+                    <div class="form-group">
+                        <label asp-for="Titulo" class="form-label">
+                            <i class="fas fa-heading"></i>
+                            Título de la Canción
+                        </label>
+                        <input asp-for="Titulo" class="form-control" placeholder="Ingresa el título..." />
+                        <span asp-validation-for="Titulo" class="text-danger"></span>
+                    </div>
+
+                    <!-- Género -->
+                    <div class="form-group">
+                        <label asp-for="Genero" class="form-label">
+                            <i class="fas fa-heading"></i>
+                            Género Musical
+                            <span class="required-indicator">*</span>
+                        </label>
+                        <select asp-for="Genero" class="form-input">
+                            <option value="">Selecciona un género</option>
+                            <option value="Rock">🎸 Rock</option>
+                            <option value="Pop">🎤 Pop</option>
+                            <option value="Hip Hop">🎵 Hip Hop</option>
+                            <option value="Electronic">🎹 Electronic</option>
+                            <option value="Jazz">🎺 Jazz</option>
+                            <option value="Classical">🎻 Classical</option>
+                            <option value="Reggae">🥁 Reggae</option>
+                            <option value="Country">🪕 Country</option>
+                            <option value="Blues">🎷 Blues</option>
+                            <option value="Folk">🎶 Folk</option>
+                            <option value="Metal">⚡ Metal</option>
+                            <option value="Indie">🎨 Indie</option>
+                            <option value="Alternative">🌟 Alternative</option>
+                            <option value="Funk">🎸 Funk</option>
+                            <option value="R&B">🎤 R&B</option>
+                            <option value="Otro">🎵 Otro</option>
+                        </select>
+                        <span asp-validation-for="Genero" class="validation-message"></span>
+                    </div>
+
+                    <!-- Duración -->
+                    <div class="form-group">
+                        <label asp-for="Duracion" class="form-label">
+                            <i class="fas fa-clock"></i>
+                            Duración
+                        </label>
+                        <input asp-for="Duracion" class="form-control" placeholder="hh:mm:ss" />
+                        <span asp-validation-for="Duracion" class="text-danger"></span>
+                    </div>
+
+                    <!-- Álbum -->
+                    <div class="form-group">
+                        <label asp-for="AlbumId" class="form-label">
+                            <i class="fas fa-compact-disc"></i>
+                            Álbum
+                        </label>
+                        <select asp-for="AlbumId" class="form-control" asp-items="ViewBag.Albums">
+                            <option value="">Selecciona un álbum</option>
+                        </select>
+                        <span asp-validation-for="AlbumId" class="text-danger"></span>
+                    </div>
+
+                    <!-- Archivo de audio -->
+                    <div class="form-group file-upload-group">
+                        <label asp-for="Archivo" class="form-label">
+                            <i class="fas fa-file-audio"></i>
+                            Archivo de Audio
+                        </label>
+                        <div class="file-upload-container">
+                            <div class="file-input-wrapper">
+                                <input asp-for="Archivo" type="file" class="form-control" id="audioFile" style="position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; z-index: 2;" />
+                                <div class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span class="file-upload-text">Seleccionar archivo de audio</span>
+                                </div>
+                            </div>
+                            <div class="file-info" id="fileInfo"></div>
+                        </div>
+                        <span asp-validation-for="Archivo" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Campo oculto para ArtistaId -->
+                <input type="hidden" asp-for="ArtistaId" />
+
+                <!-- Botones de acción -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="history.back()">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload"></i>
+                        Subir Canción
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Información adicional -->
+        <div class="upload-info">
+            <div class="info-card">
+                <h3><i class="fas fa-info-circle"></i> Información</h3>
+                <ul>
+                    <li>Formatos soportados: MP3, WAV, FLAC, AAC</li>
+                    <li>Tamaño máximo: 50MB</li>
+                    <li>Calidad recomendada: 320kbps o superior</li>
+                    <li>Asegúrate de tener los derechos de la música</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

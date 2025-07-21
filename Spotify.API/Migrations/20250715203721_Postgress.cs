@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Spotify.API.Migrations
 {
     /// <inheritdoc />
-    public partial class postgress : Migration
+    public partial class Postgress : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,7 +39,8 @@ namespace Spotify.API.Migrations
                     Contraseña = table.Column<string>(type: "text", nullable: false),
                     TipoUsuario = table.Column<string>(type: "text", nullable: false),
                     FechaRegistro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    PlanId = table.Column<int>(type: "integer", nullable: true)
+                    PlanId = table.Column<int>(type: "integer", nullable: true),
+                    Saldo = table.Column<double>(type: "double precision", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -103,9 +104,9 @@ namespace Spotify.API.Migrations
                     Titulo = table.Column<string>(type: "text", nullable: false),
                     Duracion = table.Column<TimeSpan>(type: "interval", nullable: false),
                     Genero = table.Column<string>(type: "text", nullable: false),
+                    ArchivoUrl = table.Column<string>(type: "text", nullable: false),
                     ArtistaId = table.Column<int>(type: "integer", nullable: false),
-                    AlbumId = table.Column<int>(type: "integer", nullable: false),
-                    UsuarioId = table.Column<int>(type: "integer", nullable: true)
+                    AlbumId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,10 +118,11 @@ namespace Spotify.API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Canciones_Usuarios_UsuarioId",
-                        column: x => x.UsuarioId,
+                        name: "FK_Canciones_Usuarios_ArtistaId",
+                        column: x => x.ArtistaId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -160,9 +162,9 @@ namespace Spotify.API.Migrations
                 column: "AlbumId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Canciones_UsuarioId",
+                name: "IX_Canciones_ArtistaId",
                 table: "Canciones",
-                column: "UsuarioId");
+                column: "ArtistaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DetallesPlaylist_CancionId",

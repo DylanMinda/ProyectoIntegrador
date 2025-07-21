@@ -1,58 +1,62 @@
 ﻿@model IEnumerable<Spotify.Modelos.Cancion>
 
 @{
-    ViewData["Title"] = "Listado de Canciones";
+    ViewData["Title"] = "Tus canciones";
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="particles"></div>
+<link rel="stylesheet" href="~/css/playlistsIndex.css">
 
-<p>
-    <a asp-action="SubirCancion" class="btn btn-primary">
-        <i class="bi bi-upload"></i> Subir nueva canción
+<div class="main-container">
+    <h1 class="page-title">Mis Albums</h1>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-music"></i>
+            </div>
+            <h2>No tienes un canciones aún</h2>
+        </div>
+    }
+    else
+    {
+        <div class="playlists-grid">
+            @foreach (var cancion in Model)
+            {
+                <div class="playlist-card">
+                    <div class="playlist-header">
+                        <h3 class="playlist-name">@cancion.Titulo</h3>
+                        <div class="playlist-info">
+                            <span class="creation-date">
+                                <i class="fas fa-calendar"></i>
+                                @cancion.Duracion
+                            </span>
+                            <span class="song-count">
+                                <i class="fas fa-music"></i>
+                                @cancion.Genero
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="playlist-actions">
+                        <a asp-action="Details" asp-route-id="@cancion.Id" class="action-btn details-btn">
+                            <i class="fas fa-eye"></i> Ver
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@cancion.Id" class="action-btn edit-btn">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@cancion.Id" class="action-btn delete-btn">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    @* Boton que regresa al home *@
+    <a asp-controller="Home" asp-action="DashboardArtista" class="create-btn">
+        <i class="fas fa-home"></i> Volver al Home
     </a>
-</p>
 
-<table class="table table-striped align-middle">
-    <thead>
-        <tr>
-            <th>Código</th>
-            <th>Título</th>
-            <th>Duración</th>
-            <th>Genero</th>
-            <th>Reproducción</th>
-            <th>Reproducciones</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Titulo</td>
-                <td>@item.Duracion.ToString(@"hh\:mm\:ss")</td>
-                <td>@item.Genero</td>
-                <td>
-                    @* Reproductor de audio *@
-                    <audio controls class="audio-player" data-id="@item.Id" style="max-width:200px;">
-                        <source src="@item.ArchivoUrl" type="audio/mp3" />
-                        Tu navegador no soporta el elemento
-                        <code>audio</code>.
-                    </audio>
-                </td>
-                <td>@item.TotalReproducciones</td>
-                <td>
-                    @* Si tienes acciones como Detalles o Eliminar en MVC *@
-                    <a asp-action="Detalles" asp-route-id="@item.Id" class="btn btn-sm btn-info">Detalles</a>
-                    <a asp-action="Eliminar" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Eliminar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-@section Scripts {
-    <script>
-       
-    </script>
-}
+</div>

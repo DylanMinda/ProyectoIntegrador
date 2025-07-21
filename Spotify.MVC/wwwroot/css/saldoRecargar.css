@@ -1,4 +1,12 @@
-﻿* {
+﻿:root {
+    --eva-purple: #6F2DA8;
+    --eva-green: #8CE70C;
+    --eva-black: #1C1C1C;
+    --eva-steel: #6D6E71;
+    --eva-orange: #FBAF00;
+}
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -12,13 +20,6 @@ body {
     position: relative;
 }
 
-:root {
-    --eva-purple: #6F2DA8;
-    --eva-green: #8CE70C;
-    --eva-black: #1C1C1C;
-    --eva-steel: #6D6E71;
-    --eva-orange: #FBAF00;
-}
 /* Navbar EVA-01 */
 .navbar {
     background: linear-gradient(90deg, var(--eva-purple), #8a3cb8) !important;
