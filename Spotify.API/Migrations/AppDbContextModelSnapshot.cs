@@ -171,6 +171,9 @@ namespace Spotify.API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CodigoInvitacion")
+                        .HasColumnType("text");
+
                     b.Property<string>("Contraseña")
                         .IsRequired()
                         .HasColumnType("text");

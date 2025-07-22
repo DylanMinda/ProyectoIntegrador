@@ -23,6 +23,31 @@ namespace Spotify.MVC.Controllers
             return View(planes);
         }
 
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: HomeController1/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Plan plan)
+        {
+            try
+            {
+                // Usamos CRUD<Plan> para crear el nuevo plan a través de la API
+                var nuevoPlan = CRUD<Plan>.Create(plan);
+
+                // Redirigimos a la acción Index después de crear el plan
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+
         // Comprar un plan
         [HttpPost]
         public async Task<IActionResult> ComprarPlan(int planId)

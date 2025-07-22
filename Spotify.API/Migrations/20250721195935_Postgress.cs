@@ -40,7 +40,8 @@ namespace Spotify.API.Migrations
                     TipoUsuario = table.Column<string>(type: "text", nullable: false),
                     FechaRegistro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     PlanId = table.Column<int>(type: "integer", nullable: true),
-                    Saldo = table.Column<double>(type: "double precision", nullable: true)
+                    Saldo = table.Column<double>(type: "double precision", nullable: true),
+                    CodigoInvitacion = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

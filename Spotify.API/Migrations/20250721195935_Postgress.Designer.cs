@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Spotify.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250715203721_Postgress")]
+    [Migration("20250721195935_Postgress")]
     partial class Postgress
     {
         /// <inheritdoc />
@@ -173,6 +173,9 @@ namespace Spotify.API.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CodigoInvitacion")
+                        .HasColumnType("text");
 
                     b.Property<string>("Contraseña")
                         .IsRequired()
