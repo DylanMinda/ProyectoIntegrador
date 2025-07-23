@@ -55,43 +55,22 @@ namespace Spotify.MVC.Controllers
                 return RedirectToAction("Index");
             }
 
-<<<<<<< HEAD
             // CORRECCIÓN: Cada usuario que compra un plan grupal crea su PROPIO plan independiente
             // Ya no verificamos límites aquí porque cada compra crea un plan nuevo
-=======
-            // NUEVA LÓGICA: Verificar límite de usuarios para planes grupales
-            if (plan.MaximoUsuarios > 1) // Es un plan grupal (Familiar/Empresarial)
-            {
-                // Contar usuarios actuales en este plan
-                var usuariosEnPlan = await _context.Usuarios
-                    .Where(u => u.Plan != null && u.Plan.Id == planId)
-                    .CountAsync();
-
-                if (usuariosEnPlan >= plan.MaximoUsuarios)
-                {
-                    TempData["ErrorMessage"] = $"El plan {plan.Nombre} ha alcanzado su límite máximo de {plan.MaximoUsuarios} usuarios.";
-                    return RedirectToAction("Index");
-                }
-            }
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
 
             // Descontar saldo y asignar plan
             usuario.Saldo -= plan.PrecioMensual;
             usuario.Plan = plan;
-<<<<<<< HEAD
 
             // Si es un plan grupal, generar código de invitación único
             if (plan.MaximoUsuarios > 1)
             {
                 usuario.CodigoInvitacion = GenerarCodigoInvitacion();
             }
-=======
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
 
             _context.Usuarios.Update(usuario);
             await _context.SaveChangesAsync();
 
-<<<<<<< HEAD
             if (plan.MaximoUsuarios > 1)
             {
                 TempData["SuccessMessage"] = $"¡Plan {plan.Nombre} activado con éxito! Tu código de invitación es: {usuario.CodigoInvitacion}";
@@ -177,19 +156,6 @@ namespace Spotify.MVC.Controllers
             var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
 
-=======
-            TempData["SuccessMessage"] = $"¡Plan {plan.Nombre} activado con éxito!";
-            return RedirectToAction("Dashboard", "Home");
-        }
-
-        // Invitar usuario a plan grupal (solo para administradores del plan)
-        [HttpPost]
-        public async Task<IActionResult> InvitarUsuario(string email)
-        {
-            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
-
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
             if (usuario == null || usuario.Plan == null)
             {
                 return Json(new { success = false, message = "No tienes un plan activo" });
@@ -198,7 +164,6 @@ namespace Spotify.MVC.Controllers
             // Verificar que es un plan grupal
             if (usuario.Plan.MaximoUsuarios <= 1)
             {
-<<<<<<< HEAD
                 return Json(new { success = false, message = "Solo puedes compartir códigos en planes grupales" });
             }
 
@@ -228,58 +193,6 @@ namespace Spotify.MVC.Controllers
         }
 
         // Ver miembros del plan grupal (MEJORADO)
-=======
-                return Json(new { success = false, message = "Solo puedes invitar usuarios en planes grupales" });
-            }
-
-            // Verificar que es el "administrador" (primer usuario que compró el plan)
-            var primerUsuarioDelPlan = await _context.Usuarios
-                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
-                .OrderBy(u => u.FechaRegistro) // O podrías usar otro criterio
-                .FirstOrDefaultAsync();
-
-            if (primerUsuarioDelPlan.Id != usuarioId)
-            {
-                return Json(new { success = false, message = "Solo el administrador del plan puede invitar usuarios" });
-            }
-
-            // Verificar límite de usuarios
-            var usuariosEnPlan = await _context.Usuarios
-                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
-                .CountAsync();
-
-            if (usuariosEnPlan >= usuario.Plan.MaximoUsuarios)
-            {
-                return Json(new { success = false, message = $"Has alcanzado el límite de {usuario.Plan.MaximoUsuarios} usuarios" });
-            }
-
-            // Verificar si el usuario existe
-            var usuarioInvitado = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
-            if (usuarioInvitado == null)
-            {
-                return Json(new { success = false, message = "No existe un usuario con ese email" });
-            }
-
-            // Verificar que no esté ya en el plan
-            if (usuarioInvitado.Plan != null && usuarioInvitado.Plan.Id == usuario.Plan.Id)
-            {
-                return Json(new { success = false, message = "Este usuario ya está en tu plan" });
-            }
-
-            // Agregar usuario al plan (sin costo adicional)
-            usuarioInvitado.Plan = usuario.Plan;
-            _context.Usuarios.Update(usuarioInvitado);
-            await _context.SaveChangesAsync();
-
-            return Json(new
-            {
-                success = true,
-                message = $"Usuario {usuarioInvitado.Nombre} agregado al plan exitosamente"
-            });
-        }
-
-        // Ver miembros del plan grupal
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
         [HttpGet]
         public async Task<IActionResult> MiembrosDelPlan()
         {
@@ -298,15 +211,9 @@ namespace Spotify.MVC.Controllers
                 return RedirectToAction("Index");
             }
 
-<<<<<<< HEAD
             // Obtener todos los miembros del plan con el mismo código de invitación
             var miembrosDelPlan = await _context.Usuarios
                 .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-=======
-            // Obtener todos los miembros del plan
-            var miembrosDelPlan = await _context.Usuarios
-                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
                 .OrderBy(u => u.FechaRegistro)
                 .ToListAsync();
 
@@ -317,19 +224,12 @@ namespace Spotify.MVC.Controllers
             ViewBag.EsAdministrador = administrador?.Id == usuarioId;
             ViewBag.Administrador = administrador;
             ViewBag.EspaciosDisponibles = usuario.Plan.MaximoUsuarios - miembrosDelPlan.Count;
-<<<<<<< HEAD
             ViewBag.CodigoInvitacion = usuario.CodigoInvitacion;
-=======
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
 
             return View(miembrosDelPlan);
         }
 
-<<<<<<< HEAD
         // Expulsar miembro del plan (MEJORADO)
-=======
-        // Expulsar miembro del plan
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
         [HttpPost]
         public async Task<IActionResult> ExpulsarMiembro(int miembroId)
         {
@@ -343,11 +243,7 @@ namespace Spotify.MVC.Controllers
 
             // Verificar que es el administrador
             var administrador = await _context.Usuarios
-<<<<<<< HEAD
                 .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-=======
-                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
                 .OrderBy(u => u.FechaRegistro)
                 .FirstOrDefaultAsync();
 
@@ -363,11 +259,7 @@ namespace Spotify.MVC.Controllers
             }
 
             var miembro = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == miembroId);
-<<<<<<< HEAD
             if (miembro == null || miembro.Plan?.Id != usuario.Plan.Id || miembro.CodigoInvitacion != usuario.CodigoInvitacion)
-=======
-            if (miembro == null || miembro.Plan?.Id != usuario.Plan.Id)
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
             {
                 return Json(new { success = false, message = "Miembro no encontrado en tu plan" });
             }
@@ -375,21 +267,14 @@ namespace Spotify.MVC.Controllers
             // Remover del plan (vuelve a plan gratuito)
             var planGratuito = await _context.Planes.FirstOrDefaultAsync(p => p.PrecioMensual == 0);
             miembro.Plan = planGratuito;
-<<<<<<< HEAD
             miembro.CodigoInvitacion = null; // Limpiar código de invitación
-=======
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
             _context.Usuarios.Update(miembro);
             await _context.SaveChangesAsync();
 
             return Json(new { success = true, message = "Miembro expulsado exitosamente" });
         }
 
-<<<<<<< HEAD
         // Abandonar plan grupal (MEJORADO)
-=======
-        // Abandonar plan grupal
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
         [HttpPost]
         public async Task<IActionResult> AbandonarPlan()
         {
@@ -403,11 +288,7 @@ namespace Spotify.MVC.Controllers
 
             // Verificar si es administrador
             var administrador = await _context.Usuarios
-<<<<<<< HEAD
                 .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-=======
-                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
                 .OrderBy(u => u.FechaRegistro)
                 .FirstOrDefaultAsync();
 
@@ -419,21 +300,14 @@ namespace Spotify.MVC.Controllers
             // Cambiar a plan gratuito
             var planGratuito = await _context.Planes.FirstOrDefaultAsync(p => p.PrecioMensual == 0);
             usuario.Plan = planGratuito;
-<<<<<<< HEAD
             usuario.CodigoInvitacion = null; // Limpiar código de invitación
-=======
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
             _context.Usuarios.Update(usuario);
             await _context.SaveChangesAsync();
 
             return Json(new { success = true, message = "Has abandonado el plan grupal exitosamente" });
         }
 
-<<<<<<< HEAD
         // Cancelar plan grupal (MEJORADO)
-=======
-        // Cancelar plan grupal (solo administrador)
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
         [HttpPost]
         public async Task<IActionResult> CancelarPlan()
         {
@@ -447,11 +321,7 @@ namespace Spotify.MVC.Controllers
 
             // Verificar que es el administrador
             var administrador = await _context.Usuarios
-<<<<<<< HEAD
                 .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-=======
-                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
                 .OrderBy(u => u.FechaRegistro)
                 .FirstOrDefaultAsync();
 
@@ -460,15 +330,9 @@ namespace Spotify.MVC.Controllers
                 return Json(new { success = false, message = "Solo el administrador puede cancelar el plan" });
             }
 
-<<<<<<< HEAD
             // Obtener todos los miembros del plan con el mismo código
             var miembrosDelPlan = await _context.Usuarios
                 .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-=======
-            // Obtener todos los miembros del plan
-            var miembrosDelPlan = await _context.Usuarios
-                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
                 .ToListAsync();
 
             // Cambiar todos los miembros a plan gratuito
@@ -476,10 +340,7 @@ namespace Spotify.MVC.Controllers
             foreach (var miembro in miembrosDelPlan)
             {
                 miembro.Plan = planGratuito;
-<<<<<<< HEAD
                 miembro.CodigoInvitacion = null; // Limpiar código de invitación
-=======
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
             }
 
             _context.Usuarios.UpdateRange(miembrosDelPlan);
@@ -488,11 +349,7 @@ namespace Spotify.MVC.Controllers
             return Json(new { success = true, message = "Plan cancelado exitosamente. Todos los miembros han sido movidos al plan gratuito." });
         }
 
-<<<<<<< HEAD
         // Obtener información del plan actual (MEJORADO)
-=======
-        // Obtener información del plan actual
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
         [HttpGet]
         public async Task<IActionResult> MiPlan()
         {
@@ -514,29 +371,18 @@ namespace Spotify.MVC.Controllers
             if (usuario.Plan.MaximoUsuarios > 1)
             {
                 var miembrosDelPlan = await _context.Usuarios
-<<<<<<< HEAD
                     .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
                     .CountAsync();
 
                 var administrador = await _context.Usuarios
                     .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-=======
-                    .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
-                    .CountAsync();
-
-                var administrador = await _context.Usuarios
-                    .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id)
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
                     .OrderBy(u => u.FechaRegistro)
                     .FirstOrDefaultAsync();
 
                 ViewBag.CantidadMiembros = miembrosDelPlan;
                 ViewBag.EsAdministrador = administrador?.Id == usuarioId;
                 ViewBag.Administrador = administrador;
-<<<<<<< HEAD
                 ViewBag.CodigoInvitacion = usuario.CodigoInvitacion;
-=======
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
             }
 
             return View(usuario);
@@ -589,23 +435,7 @@ namespace Spotify.MVC.Controllers
                 return RedirectToAction("Dashboard", "Home");
             }
 
-<<<<<<< HEAD
             // CORRECCIÓN: Ya no verificamos límites globales aquí porque cada compra es independiente
-=======
-            // Verificar límite para planes grupales
-            if (nuevoPlan.MaximoUsuarios > 1)
-            {
-                var usuariosEnPlan = await _context.Usuarios
-                    .Where(u => u.Plan != null && u.Plan.Id == nuevoPlanId)
-                    .CountAsync();
-
-                if (usuariosEnPlan >= nuevoPlan.MaximoUsuarios)
-                {
-                    TempData["ErrorMessage"] = $"El plan {nuevoPlan.Nombre} ha alcanzado su límite máximo de usuarios.";
-                    return RedirectToAction("Index");
-                }
-            }
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
 
             // Verificar saldo
             if (usuario.Saldo >= nuevoPlan.PrecioMensual)
@@ -613,15 +443,12 @@ namespace Spotify.MVC.Controllers
                 usuario.Saldo -= nuevoPlan.PrecioMensual;
                 usuario.Plan = nuevoPlan;
 
-<<<<<<< HEAD
                 // Si es un plan grupal, generar nuevo código
                 if (nuevoPlan.MaximoUsuarios > 1)
                 {
                     usuario.CodigoInvitacion = GenerarCodigoInvitacion();
                 }
 
-=======
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
                 _context.Update(usuario);
                 await _context.SaveChangesAsync();
 

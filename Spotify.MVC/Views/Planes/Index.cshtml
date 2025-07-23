@@ -5,33 +5,18 @@
 }
 <div class="container mt-4">
     <h2>Planes Disponibles</h2>
+    <link rel="stylesheet" href="~/css/planes-general.css" />
 
-<<<<<<< HEAD
-=======
-<div class="container mt-4">
-    <h2>Planes Disponibles</h2>
-    
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
     @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
     }
-<<<<<<< HEAD
 
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success">@TempData["SuccessMessage"]</div>
     }
 
-    <link rel="stylesheet" href="~/css/planes-general.css" />
-=======
-    
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-    }
-
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
     <div class="row">
         @foreach (var plan in Model)
         {
@@ -44,20 +29,12 @@
                         <p class="card-text">@plan.Descripcion</p>
                         <p><strong>Precio:</strong> $@plan.PrecioMensual/mes</p>
                         <p><strong>Usuarios:</strong> @plan.MaximoUsuarios</p>
-<<<<<<< HEAD
 
-=======
-                        
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
                         @if (plan.MaximoUsuarios > 1)
                         {
                             <small class="text-muted">Plan grupal - Podrás invitar hasta @(plan.MaximoUsuarios - 1) usuarios adicionales</small>
                         }
-<<<<<<< HEAD
 
-=======
-                        
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5
                         <form method="post" asp-action="ComprarPlan">
                             <input type="hidden" name="planId" value="@plan.Id" />
                             <button type="submit" class="btn btn-primary btn-block">
@@ -76,7 +53,6 @@
             </div>
         }
     </div>
-<<<<<<< HEAD
 
     <!-- NUEVA SECCIÓN: Unirse a plan grupal con código -->
     <div class="row mt-5">
@@ -143,11 +119,3 @@
         });
     }
 </script>
-=======
-    
-    <div class="mt-4">
-        <a href="@Url.Action("MiPlan")" class="btn btn-info">Ver Mi Plan Actual</a>
-    </div>
-</div>
-
->>>>>>> 38bd56aee838ff4ca0ba931573fc2338dff106f5

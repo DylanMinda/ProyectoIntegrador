@@ -1,415 +1,267 @@
 ﻿@{
     ViewData["Title"] = "Beathouse - Tu Biblioteca Musical";
 }
+
 <link rel="stylesheet" href="~/css/dashboard - Copia.css">
-<div class="beathouse-main-container">
+
+<div class="contenedor">
     <!-- SIDEBAR -->
-    <div class="beathouse-sidebar">
-        <div class="sidebar-header">
-            <div class="logo">
-                <i class="fas fa-bolt"></i>
-                <span>Beathouse</span>
+    <div class="sidebar">
+        <div class="logo">⚡ Beathouse</div>
+
+        <a asp-controller="Playlists" asp-action="Create" class="boton-crear">
+            + Crear
+        </a>
+
+        <a asp-controller="Usuarios" asp-action="EditarPerfil" class="menu-item">
+            👤 Perfil
+        </a>
+
+        <a asp-controller="Canciones" asp-action="Index" class="menu-item">
+            🎵 Tus canciones
+        </a>
+
+        <a asp-controller="Playlists" asp-action="Index" class="menu-item">
+            📚 Tu biblioteca
+        </a>
+
+        <div class="biblioteca-titulo">Tu biblioteca</div>
+
+        <div class="cancion-item">
+            <div class="icono-cancion">❤️</div>
+            <div class="info-cancion">
+                <div class="nombre-cancion">Canciones que te gustan</div>
+                <div class="tipo-cancion">Lista • 13 canciones</div>
             </div>
-           <a asp-controller="Playlists" asp-action="Create" class="create-btn">
-                <i class="fas fa-plus"></i>
-                Crear
-            </a>
         </div>
 
-        <div class="sidebar-nav">
-            <div class="nav-section">
-                <a asp-controller="Usuarios" asp-action="EditarPerfil" class="create-btn">
-                    <i class="fas fa-layer-group"></i>
-                    <span>Pefil</span>
-                </a>
-                <a asp-controller="Canciones" asp-action="Index" class="nav-item">
-                    <i class="fas fa-layer-group"></i>
-                    <span>Tus canciones</span>
-                </a>
-                <a asp-controller="Playlists" asp-action="Index" class="nav-item">
-                    <i class="fas fa-layer-group"></i>
-                    <span>Tu biblioteca</span>
-                </a>
+        <div class="cancion-item">
+            <div class="icono-cancion">🎵</div>
+            <div class="info-cancion">
+                <div class="nombre-cancion">phonk</div>
+                <div class="tipo-cancion">Lista • Spotify</div>
             </div>
+        </div>
 
-            <div class="nav-section">
-                <div class="section-header">
-                    <h3>Tu biblioteca</h3>
-                    <button class="expand-btn">
-                        <i class="fas fa-arrows-alt"></i>
-                    </button>
-                </div>
-                <div class="filter-tabs">
-                    <button class="filter-tab active">Todo</button>
-                    <button class="filter-tab">Música</button>
-                    <button class="filter-tab">Podcasts</button>
-                </div>
+        <div class="cancion-item">
+            <div class="icono-cancion">🎮</div>
+            <div class="info-cancion">
+                <div class="nombre-cancion">Arcane League of Legends</div>
+                <div class="tipo-cancion">Álbum • Arcane</div>
             </div>
+        </div>
 
-            <div class="library-items">
-                <div class="library-item">
-                    <div class="item-cover">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <div class="item-info">
-                        <span class="item-name">Canciones que te gustan</span>
-                        <span class="item-type">Lista • 13 canciones</span>
-                    </div>
-                </div>
+        <div class="cancion-item">
+            <div class="icono-cancion">👤</div>
+            <div class="info-cancion">
+                <div class="nombre-cancion">Lil Peep</div>
+                <div class="tipo-cancion">Artista</div>
+            </div>
+        </div>
 
-                <div class="library-item">
-                    <div class="item-cover phonk">
-                        <i class="fas fa-music"></i>
-                    </div>
-                    <div class="item-info">
-                        <span class="item-name">phonk</span>
-                        <span class="item-type">Lista • Spotify</span>
-                    </div>
-                </div>
-
-                <div class="library-item">
-                    <div class="item-cover arcane">
-                        <i class="fas fa-gamepad"></i>
-                    </div>
-                    <div class="item-info">
-                        <span class="item-name">Arcane League of Legends: Season 2</span>
-                        <span class="item-type">Álbum • Arcane</span>
-                    </div>
-                </div>
-
-                <div class="library-item">
-                    <div class="item-cover artist">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="item-info">
-                        <span class="item-name">Lil Peep</span>
-                        <span class="item-type">Artista</span>
-                    </div>
-                </div>
-
-                <div class="library-item">
-                    <div class="item-cover artist">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="item-info">
-                        <span class="item-name">Slipknot</span>
-                        <span class="item-type">Artista</span>
-                    </div>
-                </div>
-
-                <div class="library-item">
-                    <div class="item-cover artist">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="item-info">
-                        <span class="item-name">Korn</span>
-                        <span class="item-type">Artista</span>
-                    </div>
-                </div>
+        <div class="cancion-item">
+            <div class="icono-cancion">👤</div>
+            <div class="info-cancion">
+                <div class="nombre-cancion">Slipknot</div>
+                <div class="tipo-cancion">Artista</div>
             </div>
         </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div class="beathouse-main-content">
-        <div class="main-header">
-            <div class="header-nav">
-                <button class="nav-btn">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="nav-btn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            <label> Logout</label>
-            <a asp-controller="Home" asp-action="Logout" class="create-btn" title="Cerrar sesión">
-                <i class="fas fa-sign-out-alt"></i>
-            </a>
-
-            <div class="header-actions">
-                <a asp-controller="Planes" asp-action="RecargarSaldo" class="btn btn-recargar">Recargar Saldo</a>
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="contenido">
+        <div class="header">
+            <div class="botones-nav">
+                <button class="btn-nav">←</button>
+                <button class="btn-nav">→</button>
             </div>
 
-            <div class="header-actions">
-                <!-- Descubrir Premium va al Index de Planes -->
-                <a asp-controller="Planes" asp-action="Index" class="premium-btn">Descubrir Premium</a>
-                <button class="profile-btn">
-                    @* Solo la inicial del nombre *@
+            <div class="header-derecha">
+                <a asp-controller="Planes" asp-action="RecargarSaldo" class="btn-recargar-header">
+                    Recargar Saldo
+                </a>
+                <a asp-controller="Planes" asp-action="Index" class="btn-premium">
+                    Descubrir Premium
+                </a>
+                <button class="btn-perfil">
                     @Model.Nombre.Substring(0, 1).ToUpper()
                 </button>
+                <label>Logout</label>
+                <a asp-controller="Home" asp-action="Logout" class="btn-logout">
+                    🚪
+                </a>
             </div>
+        </div>
 
+        <!-- Información del Plan y Saldo -->
+        <div class="seccion-plan">
             @if (Model.Plan != null)
             {
-                <p>Tu plan actual es: @Model.Plan.Nombre</p>
-                <p>Precio del plan: $@Model.Plan.PrecioMensual</p>
+                <p><strong>Tu plan actual:</strong> @Model.Plan.Nombre</p>
+                <p><strong>Precio del plan:</strong> $@Model.Plan.PrecioMensual</p>
             }
             else
             {
                 <p>No tienes ningún plan asignado.</p>
             }
+        </div>
 
-            <div class="content-wrapper">
-                <!-- Saldo y Recarga -->
-                <div class="content-section">
-                    <div class="section-header">
-                        <h2>Tu Saldo</h2>
-                    </div>
-                    <p>Saldo Actual: $@Model.Saldo.ToString("F2")</p>
-                    <a asp-controller="Planes" asp-action="RecargarSaldo" class="btn btn-recargar">Recargar Saldo</a>
+        <div class="seccion-saldo">
+            <h2>Tu Saldo</h2>
+            <p class="saldo-actual">Saldo Actual: $@Model.Saldo.ToString("F2")</p>
+            <a asp-controller="Planes" asp-action="RecargarSaldo" class="btn-recargar">
+                Recargar Saldo
+            </a>
+        </div>
+
+        <!-- Contenido Destacado -->
+        <div class="seccion-destacada">
+            <div class="item-destacado">
+                <div class="cover-destacado phonk">🎵</div>
+                <div class="info-destacado">
+                    <h3>phonk</h3>
                 </div>
-                <!-- Resto del contenido... -->
+            </div>
+
+            <div class="item-destacado">
+                <div class="cover-destacado arcane">🎮</div>
+                <div class="info-destacado">
+                    <h3>Arcane League of Legends: Season 2</h3>
+                    <p>Soundtrack from the Animated Series</p>
+                </div>
             </div>
         </div>
 
-        <div class="content-wrapper">
-            <!-- FEATURED CONTENT -->
-            <div class="featured-section">
-                <div class="featured-item large">
-                    <div class="featured-cover phonk-featured">
-                        <i class="fas fa-music"></i>
-                    </div>
-                    <div class="featured-info">
-                        <h3>phonk</h3>
-                    </div>
-                </div>
-
-                <div class="featured-item large">
-                    <div class="featured-cover arcane-featured">
-                        <i class="fas fa-gamepad"></i>
-                    </div>
-                    <div class="featured-info">
-                        <h3>Arcane League of Legends: Season 2</h3>
-                        <p>(Soundtrack from the Animated Series)</p>
-                    </div>
-                </div>
+        <!-- Hecho para el Usuario -->
+        <div class="seccion">
+            <div class="titulo-seccion">
+                <h2>Hecho para Dylan</h2>
+                <button class="btn-mostrar-todo">Mostrar todos</button>
             </div>
 
-            <!-- MADE FOR USER -->
-            <div class="content-section">
-                <div class="section-header">
-                    <h2>Hecho para Dylan</h2>
-                    <button class="show-all-btn">Mostrar todos</button>
+            <div class="tarjetas">
+                <div class="tarjeta">
+                    <div class="icono-tarjeta mix1">🎵</div>
+                    <div class="nombre-tarjeta">Mix diario 1</div>
+                    <div class="descripcion-tarjeta">HI$TED, Eternxlkz, DJZRX y más</div>
                 </div>
 
-                <div class="cards-grid">
-                    <div class="music-card">
-                        <div class="card-cover mix1">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h4>Mix diario 1</h4>
-                            <p>HI$TED, Eternxlkz, DJZRX y más</p>
-                        </div>
-                    </div>
+                <div class="tarjeta">
+                    <div class="icono-tarjeta mix2">🎵</div>
+                    <div class="nombre-tarjeta">Mix diario 2</div>
+                    <div class="descripcion-tarjeta">Kordhell, 2KE, SXID y más</div>
+                </div>
 
-                    <div class="music-card">
-                        <div class="card-cover mix2">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h4>Mix diario 2</h4>
-                            <p>Kordhell, 2KE, SXID y más</p>
-                        </div>
-                    </div>
+                <div class="tarjeta">
+                    <div class="icono-tarjeta mix3">🎵</div>
+                    <div class="nombre-tarjeta">Mix diario 3</div>
+                    <div class="descripcion-tarjeta">Lil Peep, RØN1N, XXXTENTACION y más</div>
+                </div>
 
-                    <div class="music-card">
-                        <div class="card-cover mix3">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h4>Mix diario 3</h4>
-                            <p>Lil Peep, RØN1N, XXXTENTACION y más</p>
-                        </div>
-                    </div>
+                <div class="tarjeta">
+                    <div class="icono-tarjeta mix4">🎵</div>
+                    <div class="nombre-tarjeta">Mix diario 4</div>
+                    <div class="descripcion-tarjeta">Slipknot, System Of A Down</div>
+                </div>
 
-                    <div class="music-card">
-                        <div class="card-cover mix4">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h4>Mix diario 4</h4>
-                            <p>Slipknot, System Of A Down, Linkin Park y más</p>
-                        </div>
-                    </div>
+                <div class="tarjeta">
+                    <div class="icono-tarjeta discovery">🔍</div>
+                    <div class="nombre-tarjeta">Descubrimiento Semanal</div>
+                    <div class="descripcion-tarjeta">Joyas ocultas y canciones que no...</div>
+                </div>
 
-                    <div class="music-card">
-                        <div class="card-cover discovery">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h4>Descubrimiento Semanal</h4>
-                            <p>Joyas ocultas y canciones que no...</p>
-                        </div>
-                    </div>
-
-                    <div class="music-card">
-                        <div class="card-cover radar">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h4>Radar de Novedades</h4>
-                            <p>Las novedades de artistas que sigues</p>
-                        </div>
-                    </div>
+                <div class="tarjeta">
+                    <div class="icono-tarjeta radar">📡</div>
+                    <div class="nombre-tarjeta">Radar de Novedades</div>
+                    <div class="descripcion-tarjeta">Las novedades de artistas</div>
                 </div>
             </div>
+        </div>
 
-            <!-- RECOMMENDATIONS -->
-            <div class="content-section">
-                <div class="section-header">
-                    <h2>Descubre recomendaciones para ti</h2>
-                    <button class="show-all-btn">Mostrar todos</button>
+        <!-- Recomendaciones -->
+        <div class="seccion">
+            <div class="titulo-seccion">
+                <h2>Descubre recomendaciones para ti</h2>
+                <button class="btn-mostrar-todo">Mostrar todos</button>
+            </div>
+
+            <div class="tarjetas">
+                <div class="tarjeta">
+                    <div class="icono-tarjeta rec1">⚡</div>
+                    <div class="nombre-tarjeta">Cyberpunk Beats</div>
+                    <div class="descripcion-tarjeta">Música electrónica futurista</div>
                 </div>
 
-                <div class="cards-grid">
-                    <div class="music-card">
-                        <div class="card-cover rec1">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h4>Cyberpunk Beats</h4>
-                            <p>Música electrónica futurista</p>
-                        </div>
-                    </div>
+                <div class="tarjeta">
+                    <div class="icono-tarjeta rec2">🎌</div>
+                    <div class="nombre-tarjeta">Anime Soundtracks</div>
+                    <div class="descripcion-tarjeta">Los mejores OSTs de anime</div>
+                </div>
 
-                    <div class="music-card">
-                        <div class="card-cover rec2">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h4>Anime Soundtracks</h4>
-                            <p>Los mejores OSTs de anime</p>
-                        </div>
-                    </div>
+                <div class="tarjeta">
+                    <div class="icono-tarjeta rec3">🇧🇷</div>
+                    <div class="nombre-tarjeta">Montagem Brasileira</div>
+                    <div class="descripcion-tarjeta">Lo mejor del funk brasileño</div>
+                </div>
 
-                    <div class="music-card">
-                        <div class="card-cover rec3">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h4>Montagem Brasileira</h4>
-                            <p>Lo mejor del funk brasileño</p>
-                        </div>
-                    </div>
+                <div class="tarjeta">
+                    <div class="icono-tarjeta rec4">🌃</div>
+                    <div class="nombre-tarjeta">Synthwave Nights</div>
+                    <div class="descripcion-tarjeta">Sonidos retro-futuristas</div>
+                </div>
 
-                    <div class="music-card">
-                        <div class="card-cover rec4">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h4>Synthwave Nights</h4>
-                            <p>Sonidos retro-futuristas</p>
-                        </div>
-                    </div>
+                <div class="tarjeta">
+                    <div class="icono-tarjeta rec5">🎮</div>
+                    <div class="nombre-tarjeta">Gaming Anthems</div>
+                    <div class="descripcion-tarjeta">Música épica para gamers</div>
+                </div>
 
-                    <div class="music-card">
-                        <div class="card-cover rec5">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h4>Gaming Anthems</h4>
-                            <p>Música épica para gamers</p>
-                        </div>
-                    </div>
-
-                    <div class="music-card">
-                        <div class="card-cover rec6">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h4>EVA-01 Vibes</h4>
-                            <p>Música inspirada en Evangelion</p>
-                        </div>
-                    </div>
+                <div class="tarjeta">
+                    <div class="icono-tarjeta rec6">🤖</div>
+                    <div class="nombre-tarjeta">EVA-01 Vibes</div>
+                    <div class="descripcion-tarjeta">Música inspirada en Evangelion</div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- PLAYER BAR -->
-<div class="beathouse-player">
-    <div class="player-left">
-        <div class="now-playing-cover">
-            <i class="fas fa-music"></i>
+@* <!-- REPRODUCTOR -->
+<div class="reproductor">
+    <div class="info-cancion-actual">
+        <div class="cover-actual">🎵</div>
+        <div class="texto-cancion">
+            <div class="nombre-track">Selecciona una canción</div>
+            <div class="nombre-artista">Beathouse</div>
         </div>
-        <div class="now-playing-info">
-            <span class="track-name">Selecciona una canción</span>
-            <span class="artist-name">Beathouse</span>
-        </div>
-        <button class="like-btn">
-            <i class="far fa-heart"></i>
-        </button>
+        <button class="btn-like">❤️</button>
     </div>
 
-    <div class="player-center">
-        <div class="player-controls">
-            <button class="control-btn">
-                <i class="fas fa-random"></i>
-            </button>
-            <button class="control-btn">
-                <i class="fas fa-step-backward"></i>
-            </button>
-            <button class="control-btn play-pause">
-                <i class="fas fa-play"></i>
-            </button>
-            <button class="control-btn">
-                <i class="fas fa-step-forward"></i>
-            </button>
-            <button class="control-btn">
-                <i class="fas fa-redo"></i>
-            </button>
+    <div class="controles-centro">
+        <div class="botones-control">
+            <button class="btn-control">🔀</button>
+            <button class="btn-control">⏮️</button>
+            <button class="btn-control btn-play">▶️</button>
+            <button class="btn-control">⏭️</button>
+            <button class="btn-control">🔁</button>
         </div>
-        <div class="progress-bar">
-            <span class="time-current">0:00</span>
-            <div class="progress-track">
-                <div class="progress-fill"></div>
-                <div class="progress-handle"></div>
+        <div class="barra-progreso">
+            <span class="tiempo-actual">0:00</span>
+            <div class="linea-progreso">
+                <div class="progreso-completado"></div>
             </div>
-            <span class="time-total">0:00</span>
+            <span class="tiempo-total">0:00</span>
         </div>
     </div>
 
-    <div class="player-right">
-        <button class="control-btn">
-            <i class="fas fa-list"></i>
-        </button>
-        <button class="control-btn">
-            <i class="fas fa-desktop"></i>
-        </button>
-        <button class="control-btn">
-            <i class="fas fa-volume-up"></i>
-        </button>
-        <div class="volume-bar">
-            <div class="volume-track">
-                <div class="volume-fill"></div>
-                <div class="volume-handle"></div>
+    <div class="controles-derecha">
+        <button class="btn-control">📋</button>
+        <button class="btn-control">🖥️</button>
+        <button class="btn-control">🔊</button>
+        <div class="barra-volumen">
+            <div class="linea-volumen">
+                <div class="volumen-completado"></div>
             </div>
         </div>
     </div>
-</div>
+</div> *@
