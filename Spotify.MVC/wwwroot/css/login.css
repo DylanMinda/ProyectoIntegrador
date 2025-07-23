@@ -27,27 +27,7 @@ body {
     overflow: hidden;
 }
 
-    .container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #8CE70C, #FBAF00, #8CE70C);
-        animation: energyFlow 3s ease-in-out infinite;
-    }
-
-@keyframes energyFlow {
-    0%, 100% {
-        transform: translateX(-100%);
-    }
-
-    50% {
-        transform: translateX(100%);
-    }
-}
-
+    
 .mt-5 {
     margin-top: 50px;
 }
@@ -117,7 +97,6 @@ label {
         border-color: #8CE70C;
         background: rgba(28, 28, 28, 0.95);
         box-shadow: 0 0 20px rgba(140, 231, 12, 0.3);
-        transform: translateY(-2px);
         color: #FBAF00;
     }
 
@@ -135,7 +114,7 @@ label {
 .btn {
     width: 100%;
     padding: 18px;
-    background: linear-gradient(135deg, #6F2DA8, #8CE70C);
+    background: linear-gradient(#8CE70C);
     border: none;
     border-radius: 15px;
     color: #1C1C1C;
@@ -161,20 +140,10 @@ label {
         width: 100%;
         height: 100%;
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-        transition: left 0.5s ease;
     }
 
     .btn:hover {
-        transform: translateY(-3px);
         box-shadow: 0 15px 30px rgba(111, 45, 168, 0.4);
-    }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-    .btn:active {
-        transform: translateY(-1px);
     }
 
 .alert {
@@ -183,7 +152,6 @@ label {
     border-radius: 10px;
     font-weight: 500;
     text-align: center;
-    animation: slideIn 0.3s ease;
 }
 
 .alert-danger {
@@ -194,18 +162,6 @@ label {
 
 .alert.mt-3 {
     margin-top: 30px;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .mt-3 {
@@ -260,19 +216,6 @@ label {
     height: 30px;
     background: #FBAF00;
     border-radius: 50%;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 0.8;
-    }
-
-    50% {
-        transform: scale(1.2);
-        opacity: 1;
-    }
 }
 
 .tech-lines {

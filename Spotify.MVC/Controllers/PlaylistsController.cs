@@ -250,3 +250,45 @@ namespace Spotify.MVC.Controllers
 
     }
 }
+// GET: Playlists/Index - MÉTODO ACTUALIZADO
+//public async Task<IActionResult> Index()
+//{
+//    if (!User.Identity.IsAuthenticated)
+//    {
+//        Console.WriteLine("Usuario no autenticado. Redirigiendo al login...");
+//        return RedirectToAction("Index", "Login");
+//    }
+
+//    // 1. Obtenemos el Id del usuario logueado
+//    var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+//    // 2. Obtenemos el usuario completo con sus datos
+//    var usuario = await _context.Usuarios
+//        .Include(u => u.Plan)
+//        .FirstOrDefaultAsync(u => u.Id == userId);
+
+//    if (usuario == null)
+//    {
+//        return RedirectToAction("Index", "Login");
+//    }
+
+//    // 3. Obtenemos las playlists del usuario
+//    var playlists = await _context.Playlists
+//        .Where(p => p.UsuarioId == userId)
+//        .Include(p => p.DetallesPlaylists)
+//            .ThenInclude(d => d.Cancion)
+//        .OrderByDescending(p => p.FechaCreacion) // Las más recientes primero
+//        .ToListAsync();
+
+//    // 4. Creamos el ViewModel
+//    var viewModel = new DashboardViewModel
+//    {
+//        Nombre = usuario.Nombre,
+//        Saldo = usuario.Saldo,
+//        Plan = usuario.Plan,
+//        Playlists = playlists
+//    };
+
+//    return View(viewModel);
+//}
+// GET: Playlists/Create

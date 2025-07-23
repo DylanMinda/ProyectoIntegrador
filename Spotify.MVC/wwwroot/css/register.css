@@ -1,11 +1,4 @@
-﻿<!DOCTYPE html >
-<html lang="es" >
-<head >
-<meta charset="UTF-8" >
-<meta name="viewport" content="width=device-width, initial-scale=1.0" >
-<title > Registro</title >
-<style >
-* {
+﻿* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -28,34 +21,27 @@ body {
     padding: 40px;
     box-shadow: 0 20px 40px rgba(111, 45, 168, 0.3);
     border: 2px solid #6F2DA8;
-    max-width: 500px;
+    max-width: 450px;
     width: 100%;
     position: relative;
     overflow: hidden;
 }
 
-    .container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #8CE70C, #FBAF00, #8CE70C);
-        animation: energyFlow 3s ease-in-out infinite;
-    }
 
-@keyframes energyFlow {
-    0%, 100% {
-        transform: translateX(-100%);
-    }
-
-    50% {
-        transform: translateX(100%);
-    }
+.mt-5 {
+    margin-top: 50px;
 }
 
-h1 {
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.col-md-4 {
+    width: 100%;
+}
+
+h2 {
     color: #8CE70C;
     font-size: 2.5em;
     font-weight: 300;
@@ -66,13 +52,21 @@ h1 {
     text-shadow: 0 0 20px rgba(140, 231, 12, 0.5);
 }
 
+.text-center {
+    text-align: center;
+}
+
+.mb-4 {
+    margin-bottom: 40px;
+}
+
 .form-group {
     margin-bottom: 25px;
     position: relative;
 }
 
-    .form-group.mt-2 {
-        margin-top: 8px;
+    .form-group.mb-3 {
+        margin-bottom: 30px;
     }
 
 label {
@@ -103,7 +97,6 @@ label {
         border-color: #8CE70C;
         background: rgba(28, 28, 28, 0.95);
         box-shadow: 0 0 20px rgba(140, 231, 12, 0.3);
-        transform: translateY(-2px);
         color: #FBAF00;
     }
 
@@ -121,7 +114,7 @@ label {
 .btn {
     width: 100%;
     padding: 18px;
-    background: linear-gradient(135deg, #6F2DA8, #8CE70C);
+    background: linear-gradient(#8CE70C);
     border: none;
     border-radius: 15px;
     color: #1C1C1C;
@@ -133,35 +126,15 @@ label {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    margin-top: 20px;
 }
 
-    .btn.mt-3 {
-        margin-top: 30px;
+    .btn.w-100 {
+        width: 100%;
     }
 
-    .btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-        transition: left 0.5s ease;
-    }
 
     .btn:hover {
-        transform: translateY(-3px);
         box-shadow: 0 15px 30px rgba(111, 45, 168, 0.4);
-    }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-    .btn:active {
-        transform: translateY(-1px);
     }
 
 .alert {
@@ -170,12 +143,7 @@ label {
     border-radius: 10px;
     font-weight: 500;
     text-align: center;
-    animation: slideIn 0.3s ease;
 }
-
-    .alert.mt-2 {
-        margin-top: 20px;
-    }
 
 .alert-danger {
     background: rgba(220, 53, 69, 0.2);
@@ -183,44 +151,34 @@ label {
     color: #ff6b7a;
 }
 
-.alert-success {
-    background: rgba(140, 231, 12, 0.2);
-    border: 2px solid #8CE70C;
-    color: #8CE70C;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.alert.mt-3 {
+    margin-top: 30px;
 }
 
 .mt-3 {
     margin-top: 30px;
 }
 
-p {
+.links-container {
     text-align: center;
     color: #6D6E71;
-    font-size: 0.95em;
+    font-size: 0.9em;
     margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-    p a {
+    .links-container a {
         color: #8CE70C;
         text-decoration: none;
         font-weight: 600;
         transition: all 0.3s ease;
         position: relative;
+        display: inline-block;
     }
 
-        p a::after {
+        .links-container a::after {
             content: '';
             position: absolute;
             bottom: -2px;
@@ -231,12 +189,12 @@ p {
             transition: width 0.3s ease;
         }
 
-        p a:hover {
+        .links-container a:hover {
             color: #FBAF00;
             text-shadow: 0 0 10px rgba(140, 231, 12, 0.5);
         }
 
-            p a:hover::after {
+            .links-container a:hover::after {
                 width: 100%;
                 background: #FBAF00;
             }
@@ -249,19 +207,6 @@ p {
     height: 30px;
     background: #FBAF00;
     border-radius: 50%;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 0.8;
-    }
-
-    50% {
-        transform: scale(1.2);
-        opacity: 1;
-    }
 }
 
 .tech-lines {
@@ -282,7 +227,11 @@ p {
         margin: 10px;
     }
 
-    h1 {
+    h2 {
         font-size: 2em;
+    }
+
+    .links-container {
+        font-size: 0.85em;
     }
 }
