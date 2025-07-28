@@ -6,42 +6,12 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #1C1C1C 0%, #6F2DA8 100%);
-    color: #8CE70C;
+    background-color: #2A2A2A;
     overflow-x: hidden;
     min-height: 100vh;
 }
 
-.particles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
-    background-image: radial-gradient(2px 2px at 20px 30px, #8CE70C, transparent), radial-gradient(2px 2px at 40px 70px, #FBAF00, transparent), radial-gradient(1px 1px at 90px 40px, #6F2DA8, transparent);
-    background-repeat: repeat;
-    background-size: 400px 400px;
-    animation: sparkle 8s linear infinite;
-}
 
-@keyframes sparkle {
-    0% {
-        transform: translateY(0);
-        opacity: 0.3;
-    }
-
-    50% {
-        transform: translateY(-50px);
-        opacity: 0.8;
-    }
-
-    100% {
-        transform: translateY(-100px);
-        opacity: 0.3;
-    }
-}
 
 .main-container {
     padding: 2rem;
@@ -57,18 +27,9 @@ body {
     margin-bottom: 3rem;
     color: #8CE70C;
     text-shadow: 0 0 20px #8CE70C;
-    animation: titlePulse 3s ease-in-out infinite;
+   
 }
 
-@keyframes titlePulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
-}
 
 .actions-bar {
     display: flex;
@@ -113,60 +74,11 @@ body {
     background-clip: padding-box;
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    animation: cardFloat 8s ease-in-out infinite;
+    
+
 }
 
-    .playlist-card::before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        background: linear-gradient(45deg, #8CE70C, #6F2DA8, #FBAF00, #8CE70C);
-        border-radius: 20px;
-        z-index: -1;
-        animation: cardBorder 4s linear infinite;
-    }
-
-@keyframes cardBorder {
-    0% {
-        background: linear-gradient(45deg, #8CE70C, #6F2DA8, #FBAF00, #8CE70C);
-    }
-
-    25% {
-        background: linear-gradient(45deg, #6F2DA8, #FBAF00, #8CE70C, #6F2DA8);
-    }
-
-    50% {
-        background: linear-gradient(45deg, #FBAF00, #8CE70C, #6F2DA8, #FBAF00);
-    }
-
-    75% {
-        background: linear-gradient(45deg, #8CE70C, #6F2DA8, #FBAF00, #8CE70C);
-    }
-
-    100% {
-        background: linear-gradient(45deg, #6F2DA8, #FBAF00, #8CE70C, #6F2DA8);
-    }
-}
-
-@keyframes cardFloat {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-.playlist-card:hover {
-    transform: translateY(-15px) scale(1.03);
-    box-shadow: 0 25px 50px rgba(140, 231, 12, 0.3);
-}
+  
 
 .playlist-header {
     margin-bottom: 1.5rem;
@@ -254,15 +166,7 @@ body {
     animation: iconFloat 3s ease-in-out infinite;
 }
 
-@keyframes iconFloat {
-    0%, 100% {
-        transform: translateY(0px);
-    }
 
-    50% {
-        transform: translateY(-10px);
-    }
-}
 
 .empty-state h2 {
     color: #8CE70C;
