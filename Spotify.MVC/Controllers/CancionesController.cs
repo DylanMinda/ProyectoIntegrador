@@ -95,58 +95,6 @@ namespace Spotify.MVC.Controllers
             return Json(new { success = true, pausar = false });
         }
 
-        // Acción para descargar canción (solo usuarios premium)
-        //public async Task<IActionResult> DescargarCancion(int id)
-        //{
-        //    var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-        //    var usuario = await _context.Usuarios
-        //        .Include(u => u.Plan)
-        //        .FirstOrDefaultAsync(u => u.Id == usuarioId);
-
-        //    if (usuario == null) return RedirectToAction("Index", "Login");
-
-        //    // Verificar que tiene plan premium
-        //    bool esPlanGratuito = usuario.Plan?.PrecioMensual == 0 || usuario.Plan?.PrecioMensual == null;
-        //    if (esPlanGratuito)
-        //    {
-        //        TempData["ErrorMessage"] = "La descarga de canciones solo está disponible para usuarios Premium.";
-        //        return RedirectToAction("Index", "Planes");
-        //    }
-
-        //    var cancion = await _context.Canciones
-        //        .Include(c => c.ArtistaCodigoNav)
-        //        .FirstOrDefaultAsync(c => c.Id == id);
-
-        //    if (cancion == null) return NotFound();
-
-        //    // Aquí puedes implementar la lógica de descarga
-        //    // Por ejemplo, devolver el archivo directamente o crear un enlace de descarga temporal
-
-        //    try
-        //    {
-        //        // Simulación de descarga - ajustar según tu implementación de almacenamiento
-        //        var rutaArchivo = cancion.ArchivoUrl;
-
-        //        if (System.IO.File.Exists(rutaArchivo))
-        //        {
-        //            var archivoBytes = await System.IO.File.ReadAllBytesAsync(rutaArchivo);
-        //            var nombreArchivo = $"{cancion.Titulo} - {cancion.ArtistaCodigoNav?.Nombre}.mp3";
-
-        //            return File(archivoBytes, "audio/mpeg", nombreArchivo);
-        //        }
-        //        else
-        //        {
-        //            TempData["ErrorMessage"] = "Archivo de audio no encontrado.";
-        //            return RedirectToAction("Player", new { id = id });
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        TempData["ErrorMessage"] = "Error al descargar el archivo.";
-        //        return RedirectToAction("Player", new { id = id });
-        //    }
-        //}
-
         // Verificar estado de reproducciones restantes
         [HttpGet]
         public IActionResult VerificarLimiteReproducciones(int cancionId)

@@ -49,65 +49,97 @@ namespace Spotify.MVC.Controllers
 
 
         // Comprar un plan
+        // Comprar un plan
         [HttpPost]
         public async Task<IActionResult> ComprarPlan(int planId)
         {
-            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); // Obtener el ID del usuario logueado
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);// Buscar el usuario por ID
 
             if (usuario == null)
             {
                 return RedirectToAction("Index", "Login");
             }
 
-            var plan = await _context.Planes.FindAsync(planId);
+            var plan = await _context.Planes.FindAsync(planId);// Buscar el plan por ID
             if (plan == null)
             {
                 return NotFound();
             }
 
-            // Verificar si ya tiene este plan
+            // VALIDACIÓN 1: Verificar si ya tiene este plan
             if (usuario.Plan != null && usuario.Plan.Id == planId)
             {
                 TempData["ErrorMessage"] = "Ya tienes este plan activo.";
                 return RedirectToAction("Index");
             }
 
-            // Verificar saldo suficiente
-            if (usuario.Saldo < plan.PrecioMensual)
+            // VALIDACIÓN 2: Verificar saldo suficiente (SOLO para planes de pago)
+            if (plan.PrecioMensual > 0 && (usuario.Saldo == null || usuario.Saldo < plan.PrecioMensual))// Verificar si el saldo es nulo o insuficiente
             {
-                TempData["ErrorMessage"] = "No tienes suficiente saldo para comprar este plan.";
+                TempData["ErrorMessage"] = $"No tienes suficiente saldo para comprar este plan. Necesitas ${plan.PrecioMensual:F2} y tienes ${usuario.Saldo ?? 0:F2}.";// Mensaje de error con formato
                 return RedirectToAction("Index");
             }
 
-            // CORRECCIÓN: Cada usuario que compra un plan grupal crea su PROPIO plan independiente
-            // Ya no verificamos límites aquí porque cada compra crea un plan nuevo
+            // VALIDACIÓN 3: Prevenir downgrade de premium a gratuito
+            if (usuario.Plan != null && usuario.Plan.PrecioMensual > 0 && plan.PrecioMensual == 0)// Verificar si el usuario tiene un plan premium y está intentando cambiar a un plan gratuito
+            {
+                TempData["ErrorMessage"] = "No puedes cambiar de un plan premium a un plan gratuito. Primero debes cancelar tu plan actual.";
+                return RedirectToAction("Index");
+            }
 
-            // Descontar saldo y asignar plan
-            usuario.Saldo -= plan.PrecioMensual;
+            // VALIDACIÓN 4: Si tiene un plan premium, solo puede upgradear a otro premium más caro
+            if (usuario.Plan != null && usuario.Plan.PrecioMensual > 0 && plan.PrecioMensual > 0)// Verificar si el usuario tiene un plan premium y está intentando cambiar a otro plan premium
+            {
+                if (plan.PrecioMensual <= usuario.Plan.PrecioMensual)// Verificar si el nuevo plan es igual o más barato que el actual
+                {
+                    TempData["ErrorMessage"] = "Solo puedes upgradear a un plan superior. Para cambiar a un plan del mismo nivel o inferior, primero cancela tu plan actual.";
+                    return RedirectToAction("Index");
+                }
+            }
+
+            // PROCESAMIENTO: Descontar saldo SOLO si es un plan de pago
+            if (plan.PrecioMensual > 0)//verificar si el plan tiene un costo mensual
+            {
+                usuario.Saldo -= plan.PrecioMensual;
+            }
+
+            // Asignar el nuevo plan
             usuario.Plan = plan;
 
             // Si es un plan grupal, generar código de invitación único
-            if (plan.MaximoUsuarios > 1)
+            if (plan.MaximoUsuarios > 1)// Verificar si el plan es grupal (más de 1 usuario)
             {
-                usuario.CodigoInvitacion = GenerarCodigoInvitacion();
-            }
-
-            _context.Usuarios.Update(usuario);
-            await _context.SaveChangesAsync();
-
-            if (plan.MaximoUsuarios > 1)
-            {
-                TempData["SuccessMessage"] = $"¡Plan {plan.Nombre} activado con éxito! Tu código de invitación es: {usuario.CodigoInvitacion}";
+                usuario.CodigoInvitacion = GenerarCodigoInvitacion();// Generar un código de invitación único
             }
             else
             {
-                TempData["SuccessMessage"] = $"¡Plan {plan.Nombre} activado con éxito!";
+                // Limpiar código de invitación si no es plan grupal
+                usuario.CodigoInvitacion = null;// Limpiar el código de invitación si no es un plan grupal
+            }
+
+            _context.Usuarios.Update(usuario);// Actualizar el usuario en la base de datos
+            await _context.SaveChangesAsync();
+
+            // Mensaje de éxito
+            if (plan.MaximoUsuarios > 1)// Verificar si es un plan grupal
+            {
+                TempData["SuccessMessage"] = $"¡Plan {plan.Nombre} activado con éxito! Tu código de invitación es: {usuario.CodigoInvitacion}";// Mensaje de éxito con el código de invitación
+            }
+            else
+            {
+                if (plan.PrecioMensual == 0)// Verificar si el plan es gratuito
+                {
+                    TempData["SuccessMessage"] = $"¡Plan {plan.Nombre} activado con éxito!";
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = $"¡Plan {plan.Nombre} activado con éxito! Se han descontado ${plan.PrecioMensual:F2} de tu saldo.";
+                }
             }
 
             return RedirectToAction("Dashboard", "Home");
         }
-
         // Método para generar código de invitación único
         private string GenerarCodigoInvitacion()
         {
@@ -453,36 +485,109 @@ namespace Spotify.MVC.Controllers
                 return NotFound();
             }
 
-            // Verificar si el usuario ya tiene un plan activo
-            if (usuario.Plan != null && usuario.Plan.Id != nuevoPlanId)
+            // VALIDACIÓN 1: Verificar si ya tiene este plan
+            if (usuario.Plan != null && usuario.Plan.Id == nuevoPlanId)
             {
-                TempData["ErrorMessage"] = "Ya tienes un plan activo. Cancela tu plan actual antes de cambiar.";
+                TempData["ErrorMessage"] = "Ya tienes este plan activo.";
                 return RedirectToAction("Dashboard", "Home");
             }
 
-            // CORRECCIÓN: Ya no verificamos límites globales aquí porque cada compra es independiente
+            // VALIDACIÓN 2: Verificar saldo suficiente para planes de pago
+            if (nuevoPlan.PrecioMensual > 0 && (usuario.Saldo == null || usuario.Saldo < nuevoPlan.PrecioMensual))
+            {
+                TempData["ErrorMessage"] = $"No tienes suficiente saldo para cambiar a este plan. Necesitas ${nuevoPlan.PrecioMensual:F2} y tienes ${usuario.Saldo ?? 0:F2}.";
+                return RedirectToAction("Index");
+            }
 
-            // Verificar saldo
-            if (usuario.Saldo >= nuevoPlan.PrecioMensual)
+            // VALIDACIÓN 3: Prevenir downgrade de premium a gratuito
+            if (usuario.Plan != null && usuario.Plan.PrecioMensual > 0 && nuevoPlan.PrecioMensual == 0)
+            {
+                TempData["ErrorMessage"] = "No puedes cambiar de un plan premium a un plan gratuito. Primero debes cancelar tu plan actual.";
+                return RedirectToAction("Dashboard", "Home");
+            }
+
+            // VALIDACIÓN 4: Si tiene un plan premium, solo puede upgradear
+            if (usuario.Plan != null && usuario.Plan.PrecioMensual > 0 && nuevoPlan.PrecioMensual > 0)
+            {
+                if (nuevoPlan.PrecioMensual <= usuario.Plan.PrecioMensual)
+                {
+                    TempData["ErrorMessage"] = "Solo puedes upgradear a un plan superior. Para cambiar a un plan del mismo nivel o inferior, primero cancela tu plan actual.";
+                    return RedirectToAction("Dashboard", "Home");
+                }
+            }
+
+            // PROCESAMIENTO: Descontar saldo SOLO si es un plan de pago
+            if (nuevoPlan.PrecioMensual > 0)
             {
                 usuario.Saldo -= nuevoPlan.PrecioMensual;
-                usuario.Plan = nuevoPlan;
-
-                // Si es un plan grupal, generar nuevo código
-                if (nuevoPlan.MaximoUsuarios > 1)
-                {
-                    usuario.CodigoInvitacion = GenerarCodigoInvitacion();
-                }
-
-                _context.Update(usuario);
-                await _context.SaveChangesAsync();
-
-                TempData["SuccessMessage"] = $"¡Plan {nuevoPlan.Nombre} activado con éxito!";
-                return RedirectToAction("Dashboard", "Home");
             }
 
-            TempData["ErrorMessage"] = "No tienes suficiente saldo para cambiar de plan.";
-            return RedirectToAction("Index");
+            // Asignar el nuevo plan
+            usuario.Plan = nuevoPlan;
+
+            // Si es un plan grupal, generar nuevo código
+            if (nuevoPlan.MaximoUsuarios > 1)
+            {
+                usuario.CodigoInvitacion = GenerarCodigoInvitacion();
+            }
+            else
+            {
+                // Limpiar código de invitación si no es plan grupal
+                usuario.CodigoInvitacion = null;
+            }
+
+            _context.Update(usuario);
+            await _context.SaveChangesAsync();
+
+            // Mensaje de éxito
+            if (nuevoPlan.PrecioMensual == 0)
+            {
+                TempData["SuccessMessage"] = $"¡Plan {nuevoPlan.Nombre} activado con éxito!";
+            }
+            else
+            {
+                TempData["SuccessMessage"] = $"¡Plan {nuevoPlan.Nombre} activado con éxito! Se han descontado ${nuevoPlan.PrecioMensual:F2} de tu saldo.";
+            }
+
+            return RedirectToAction("Dashboard", "Home");
         }
+
+
+        // MÉTODOS ADICIONALES PARA AGREGAR AL CONTROLADOR (sin dañar nada existente)
+
+        // Método para copiar código (alternativa server-side)
+        [HttpGet]
+        public async Task<IActionResult> ObtenerCodigoInvitacion()
+        {
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+
+            if (usuario == null || usuario.Plan == null)
+            {
+                return Json(new { success = false, message = "No tienes un plan activo" });
+            }
+
+            if (usuario.Plan.MaximoUsuarios <= 1)
+            {
+                return Json(new { success = false, message = "Solo los planes grupales tienen código de invitación" });
+            }
+
+            if (string.IsNullOrEmpty(usuario.CodigoInvitacion))
+            {
+                return Json(new { success = false, message = "No tienes un código de invitación válido" });
+            }
+
+            return Json(new
+            {
+                success = true,
+                codigo = usuario.CodigoInvitacion,
+                message = $"Tu código de invitación es: {usuario.CodigoInvitacion}"
+            });
+        }
+
+       
+     
+
+
     }
 }

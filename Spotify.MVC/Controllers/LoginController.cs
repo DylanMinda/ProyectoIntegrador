@@ -92,48 +92,6 @@ namespace Spotify.MVC.Controllers
         }
 
 
-        //    [HttpPost]
-        //    public async Task<IActionResult> Login(string email, string contraseña)
-        //    { // Verificar las credenciales del usuario
-        //        var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
-
-        //        if (!BCrypt.Net.BCrypt.Verify(contraseña, usuario.Contraseña))
-        //        {
-        //            ViewBag.ErrorMessage = "Email o contraseña no son correctos";
-        //            return View("Index");
-        //        }
-
-        //        var claims = new List<Claim>
-        //{
-        //            new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
-        //            new Claim(ClaimTypes.Name, usuario.Nombre),
-        //            new Claim(ClaimTypes.Email, usuario.Email),
-        //            new Claim("TipoUsuario", usuario.TipoUsuario)
-        //        };      
-
-        //        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        //        var principal = new ClaimsPrincipal(identity);
-
-        //        // Guardar el ID del usuario en la sesión
-        //        HttpContext.Session.SetInt32("UserId", usuario.Id);
-
-        //        // Verificar el tipo de usuario y redirigir al dashboard correspondiente
-        //        if (usuario.TipoUsuario == "artista")
-        //        {
-        //            return RedirectToAction("DashboardArtista", "Home");  // Redirige al dashboard de artista
-        //        }
-        //        else if (usuario.TipoUsuario == "admin")
-        //        {
-        //            return RedirectToAction("DashboardAdmin", "Home");  // Redirige al dashboard del admin
-        //        }
-        //        else if (usuario.TipoUsuario == "cliente")
-        //        {
-        //            return RedirectToAction("Dashboard", "Home");  // Redirige al home del cliente
-        //        }
-
-        //        // Redirige al home en caso de que no sea ninguno de los anteriores (esto debería ser un caso no esperado)
-        //        return RedirectToAction("Index", "Home");
-        //    }
 
         [HttpGet]
         public IActionResult Register()

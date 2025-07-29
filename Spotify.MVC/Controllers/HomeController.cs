@@ -52,22 +52,6 @@ namespace Spotify.MVC.Controllers
         }
 
 
-        //public IActionResult DashboardAdmin()
-        //{
-        //    // Si quieres, carga datos para estadísticas:
-        //    var totalUsers = _context.Usuarios.Count();
-        //    ViewBag.TotalUsers = totalUsers;
-
-        //    var usuarioId = HttpContext.Session.GetInt32("UserId");
-
-        //    var usuario = _context.Usuarios.Include(u => u.Plan).FirstOrDefault(u => u.Id == usuarioId);
-        //    if (usuario == null)
-        //    {
-        //        return RedirectToAction("Index", "Login");  // Redirige al login si no esta logueado
-        //    }
-
-        //    return View("DashboardAdmin", usuario);  // Especifica la vista correctamente
-        //}
         public IActionResult Dashboard()
         {
             var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -120,26 +104,7 @@ namespace Spotify.MVC.Controllers
             return View(model);  // Pasa el modelo a la vista de DashboardArtista
         }
 
-        //public IActionResult DashboardArtista()
-        //{
-        //    var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-        //    var usuario = _context.Usuarios.Include(u => u.Plan).FirstOrDefault(u => u.Id == usuarioId);
-        //    if (usuario == null)
-        //    {
-        //        return RedirectToAction("Index", "Login");  // Redirige al login si no est? logueado
-        //    }
-
-        //    return View("DashboardArtista", usuario);   // Esto busca autom?ticamente la vista DashboardArtista.cshtml en la carpeta Views/Home
-        //}
-
-        // Acción para cerrar sesión
-        //public IActionResult Logout()
-        //{
-        //    HttpContext.Session.Clear();  // Limpiar la sesión
-        //    return RedirectToAction("Index", "Home");  // Redirigir al login
-        //}
-
+  
         public IActionResult Logout()
         {
             // Eliminar las cookies de autenticación y limpiar la sesión
