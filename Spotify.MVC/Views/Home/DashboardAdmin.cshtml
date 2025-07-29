@@ -12,8 +12,9 @@
     <div class="container">
         <div class="welcome-header">
             <h2>
-                <i class="fas fa-robot" style="color: var(--eva-orange); margin-right: 1rem;"></i>
+                <i class="fas fa-robot"></i>
                 Bienvenido, @User.Identity.Name
+                <br>
                 <small>(Administrador)</small>
             </h2>
         </div>
@@ -21,7 +22,7 @@
         <div class="row">
             <!-- Gestionar Usuarios -->
             <div class="col-md-6 col-lg-3 mb-4">
-                <div class="admin-card energy-border">
+                <div class="admin-card">
                     <div class="admin-card-header">
                         <h5>
                             <i class="fas fa-users"></i>
@@ -30,7 +31,6 @@
                     </div>
                     <div class="admin-card-body">
                         <p>Ver, editar roles o eliminar cuentas de usuarios del sistema.</p>
-
                         <a asp-controller="Usuarios" asp-action="Index" class="eva-btn">
                             <i class="fas fa-arrow-right"></i>
                             Usuarios
@@ -39,17 +39,53 @@
                 </div>
             </div>
 
-            <!-- Gestión de Canciones -->
+            <!-- Gestión de Planes -->
             <div class="col-md-6 col-lg-3 mb-4">
-                <div class="admin-card energy-border">
+                <div class="admin-card">
                     <div class="admin-card-header">
                         <h5>
-                            <i class="fas fa-music"></i>
-                            Gestión de Canciones
+                            <i class="fas fa-star"></i>
+                            Gestión de Planes
                         </h5>
                     </div>
                     <div class="admin-card-body">
-                        <p>Ver, editar o eliminar canciones de la biblioteca musical.</p>
+                        <p>Crear y administrar planes de suscripción para los usuarios.</p>
+                        <a asp-controller="Planes" asp-action="Create" class="eva-btn">
+                            <i class="fas fa-arrow-right"></i>
+                            Planes
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Estadísticas -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h5>
+                            <i class="fas fa-chart-bar"></i>
+                            Estadísticas
+                        </h5>
+                    </div>
+                    <div class="admin-card-body">
+                        <p><strong>Total Usuarios:</strong> @Model.TotalUsers</p>
+                        <p><strong>Total Canciones:</strong> @Model.TotalCanciones</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Gestionar Usuarios -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h5>
+                            <i class="fas fa-users"></i>
+                            Gestión de musicas
+                        </h5>
+                    </div>
+                    <div class="admin-card-body">
+                        <p>Ver canciones.</p>
                         <a asp-controller="Canciones" asp-action="Index" class="eva-btn">
                             <i class="fas fa-arrow-right"></i>
                             Canciones
@@ -58,61 +94,11 @@
                 </div>
             </div>
 
-            <!-- Gestión de Planes -->
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="admin-card energy-border">
-                    <div class="admin-card-header">
-                        <h5>
-                            <i class="fas fa-star"></i>
-                            Gestión de Planes
-                        </h5>
-                    </div>
-                    <div class="admin-card-body">
-                        <p>Ver, editar o eliminar planes de suscripción disponibles.</p>
-                        <a asp-controller="Planes" asp-action="Create" class="eva-btn">
-                            <i class="fas fa-arrow-right"></i>
-                            Planes
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="admin-card energy-border">
-                    <div class="admin-card-header">
-                        <h5>
-                            <i class="fas fa-star"></i>
-                            Gestión de Planes
-                        </h5>
-                    </div>
-                    <div class="admin-card-body">
-                        <p>Crear planes de suscripción</p>
-                        <a asp-controller="Planes" asp-action="Create" class="eva-btn">
-                            <i class="fas fa-arrow-right"></i>
-                            Planes
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="admin-card energy-border">
-                    <div class="admin-card-header">
-                        <h5>
-                            <i class="fas fa-star"></i>
-                            Gestión de Planes
-                        </h5>
-                    </div>
-                    <div class="admin-card-body">
-                        <p>Ver, editar o eliminar planes de suscripción disponibles.</p>
-                        <a asp-controller="Planes" asp-action="Index" class="eva-btn">
-                            <i class="fas fa-arrow-right"></i>
-                            Planes
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <a asp-controller="Home" asp-action="Index" class="eva-btn">
-                <i class="fas fa-arrow-right"></i>
-                LogOut
+        <!-- Botón de logout -->
+        <div class="text-center">
+            <a asp-controller="Home" asp-action="Logout" class="eva-btn logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                Cerrar Sesión
             </a>
         </div>
     </div>

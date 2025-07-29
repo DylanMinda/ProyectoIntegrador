@@ -91,10 +91,9 @@ h3, h4, h5 {
     margin-bottom: 1.5rem;
 }
 
-  
-   
+
+
 .card-header {
-   
     font-weight: bold;
     position: relative;
     z-index: 2;
@@ -102,7 +101,6 @@ h3, h4, h5 {
 
     .card-header h5, .card-header h6 {
         margin-bottom: 0;
-      
     }
 
 
@@ -121,7 +119,6 @@ h3, h4, h5 {
         width: 0;
         height: 2px;
         background: linear-gradient(90deg, #8CE70C, #FBAF00);
-      
     }
 
 .card:hover .card-title::after {
@@ -133,7 +130,7 @@ h3, h4, h5 {
     margin-bottom: 1rem;
 }
 
-  
+
 
 
 
@@ -156,13 +153,13 @@ h3, h4, h5 {
     overflow: hidden;
 }
 
- 
+
 
     .btn-primary:hover::before {
         left: 100%;
     }
 
-   
+
 .btn-success {
     border: none !important;
     border-radius: 20px;
@@ -170,13 +167,12 @@ h3, h4, h5 {
     box-shadow: 0 4px 15px rgba(#6f42c1);
 }
 
-   
+
 
 .btn-danger {
-    background: linear-gradient(#dc3545) ;
+    background: linear-gradient(#dc3545);
     border: none !important;
     border-radius: 20px;
- 
     box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
 }
 
@@ -290,7 +286,6 @@ h3, h4, h5 {
 }
 
 .table tbody tr:hover {
-   
 }
 
 .table td, .table th {
@@ -424,8 +419,3 @@ h3, h4, h5 {
 .mt-5 {
     margin-top: 3rem !important;
 }
-
-
-
-
-

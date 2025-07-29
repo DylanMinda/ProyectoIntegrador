@@ -28,7 +28,6 @@ body {
     margin-bottom: 3rem;
     color: #8CE70C;
     text-shadow: 0 0 20px #8CE70C;
-   
 }
 
 @keyframes titlePulse {
@@ -52,7 +51,7 @@ body {
     overflow: hidden;
 }
 
- 
+
 
 .form-section {
     margin-bottom: 2.5rem;

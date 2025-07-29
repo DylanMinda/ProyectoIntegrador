@@ -35,7 +35,6 @@ builder.Services.AddHttpClient();
 // Servicios de tu aplicación
 builder.Services.AddScoped<IAutorizarService, AutorizarService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-// AGREGAR: Registro del servicio de usuario
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 // MVC y autenticación por cookies

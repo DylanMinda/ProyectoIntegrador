@@ -125,21 +125,6 @@
                 </div>
             </div>
         </div>
-
-        @if (ViewBag.EsPlanGratuito)
-        {
-            <div class="plan-limitation-notice">
-                <p><i class="fas fa-exclamation-triangle"></i> Plan Gratuito: Reproducciones limitadas y pausas publicitarias.</p>
-                <p>Reproducción restante: @ViewBag.ReproduccionesRestantes</p>
-            </div>
-            <!-- Aquí puedes mostrar un mensaje de pausa publicitaria -->
-            <div class="pause-message">
-                @if (ViewBag.PauseMessage != null)
-                {
-                    <p>@ViewBag.PauseMessage</p>
-                }
-            </div>
-        }
     </div>
 
     <div class="button-group">

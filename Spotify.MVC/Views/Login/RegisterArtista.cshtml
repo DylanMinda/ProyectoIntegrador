@@ -12,26 +12,42 @@
 
         <form method="post" asp-action="RegisterArtista">
             <div class="form-group">
-                <input type="email" name="email" class="form-control" placeholder="tu@email.com" required />
-                <label>Email</label>
+                <label for="email">Correo electrónico</label>
+                <input type="email" class="form-control" id="email" name="email" required placeholder="Ingrese su correo electrónico">
             </div>
 
             <div class="form-group">
-                <input type="text" name="nombre" class="form-control" placeholder="Nombre completo" required />
-                <label>Nombre</label>
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required placeholder="Ingrese su nombre">
             </div>
 
             <div class="form-group">
-                <input type="password" name="contraseña" class="form-control" placeholder="••••••••" required />
-                <label>Contraseña</label>
+                <label for="password">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="contraseña" required placeholder="Ingrese su contraseña">
             </div>
 
             <div class="form-group">
-                <input type="password" name="confirmPassword" class="form-control" placeholder="••••••••" required />
-                <label>Confirmar Contraseña</label>
+                <label for="confirmPassword">Confirmar Contraseña</label>
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required placeholder="Confirme su contraseña">
             </div>
 
             <button type="submit" class="btn btn-primary">Registrar Artista</button>
+
+            <!-- Mensaje de error -->
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            {
+                <div class="alert alert-danger mt-2">
+                    @ViewBag.ErrorMessage
+                </div>
+            }
+
+            <!-- Mensaje de éxito -->
+            @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+            {
+                <div class="alert alert-success mt-2">
+                    @ViewBag.SuccessMessage
+                </div>
+            }
         </form>
     </div>
 </body>

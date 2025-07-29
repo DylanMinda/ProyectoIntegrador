@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="~/css/playlistsIndex.css">
 
 <div class="main-container">
-    <h1 class="page-title">Mis Albums</h1>
+    <h1 class="page-title">Canciones</h1>
 
     @if (!Model.Any())
     {
@@ -39,23 +39,12 @@
                         </div>
                     </div>
 
-                    <div class="playlist-actions">
-                        <a asp-action="Details" asp-route-id="@cancion.Id" class="action-btn details-btn">
-                            <i class="fas fa-eye"></i> Ver
-                        </a>
-                        <a asp-action="Edit" asp-route-id="@cancion.Id" class="action-btn edit-btn">
-                            <i class="fas fa-edit"></i> Editar
-                        </a>
-                        <a asp-action="Delete" asp-route-id="@cancion.Id" class="action-btn delete-btn">
-                            <i class="fas fa-trash"></i> Eliminar
-                        </a>
-                    </div>
                 </div>
             }
         </div>
     }
     @* Boton que regresa al home *@
-    <a asp-controller="Home" asp-action="DashboardArtista" class="create-btn">
+    <a asp-controller="Home" asp-action="DashboardAdmin" class="create-btn">
         <i class="fas fa-home"></i> Volver al Home
     </a>
 

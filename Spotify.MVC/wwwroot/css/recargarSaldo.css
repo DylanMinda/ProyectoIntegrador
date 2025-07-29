@@ -79,17 +79,13 @@ body {
 }
 
     .main-title::before {
-       
         margin-right: 1rem;
         color: var(--eva-orange);
-        
     }
 
     .main-title::after {
-        
         margin-left: 1rem;
         color: var(--eva-orange);
-       
     }
 
 
@@ -106,13 +102,13 @@ body {
     overflow: hidden;
 }
 
- 
 
 
-.form-container > * {
-    position: relative;
-    z-index: 1;
-}
+
+    .form-container > * {
+        position: relative;
+        z-index: 1;
+    }
 
 /* Form Elements */
 .form-label {
@@ -243,8 +239,3 @@ body {
         padding: 0.8rem 2rem;
     }
 }
-
-
-
-
-

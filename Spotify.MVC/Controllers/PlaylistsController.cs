@@ -19,21 +19,20 @@ namespace Spotify.MVC.Controllers
         // GET: Playlists/Index
         public async Task<IActionResult> Index()
         {
-            if (!User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated)//si el usuario no está autenticado
             {
-                Console.WriteLine("Usuario no autenticado. Redirigiendo al login...");
                 return RedirectToAction("Index", "Login");
             }
 
             // 1. Obtenemos el Id del usuario logueado
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));// Obtenemos el ID del usuario logueado
 
             // 2. Filtramos solo las playlists de este usuario
-            var playlists = await _context.Playlists
-                .Where(p => p.UsuarioId == userId)
-                .Include(p => p.DetallesPlaylists)
-                    .ThenInclude(d => d.Cancion)
-                .ToListAsync();
+            var playlists = await _context.Playlists// Obtenemos las playlists del usuario logueado
+                .Where(p => p.UsuarioId == userId)// Filtramos las playlists por el ID del usuario
+                .Include(p => p.DetallesPlaylists)// Incluimos los detalles de la playlist
+                    .ThenInclude(d => d.Cancion)// Incluimos las canciones de cada detalle de la playlist
+                .ToListAsync();// Convertimos el resultado a una lista asíncrona
 
             return View(playlists);
         }
@@ -41,33 +40,33 @@ namespace Spotify.MVC.Controllers
         // GET: Playlists/Create
         public async Task<IActionResult> Create(string searchTerm = "", List<int> selectedSongs = null)
         {
-            ViewBag.SearchTerm = searchTerm;
+            ViewBag.SearchTerm = searchTerm;// Guardamos el término de búsqueda en ViewBag para usarlo en la vista
 
             // Obtener todas las canciones y aplicar filtro de búsqueda si es necesario
-            var cancionesQuery = _context.Canciones.Include(c => c.Album).ThenInclude(a => a.Artista).AsQueryable();
+            var cancionesQuery = _context.Canciones.Include(c => c.Album).ThenInclude(a => a.Artista).AsQueryable();// Obtenemos todas las canciones y las incluimos con sus álbumes y artistas
 
-            if (!string.IsNullOrEmpty(searchTerm))
+            if (!string.IsNullOrEmpty(searchTerm))// Si hay un término de búsqueda, filtramos las canciones
             {
-                cancionesQuery = cancionesQuery.Where(c =>
-                    c.Titulo.Contains(searchTerm) ||
-                    c.Album.Nombre.Contains(searchTerm) ||
-                    c.Album.Artista.Nombre.Contains(searchTerm));
+                cancionesQuery = cancionesQuery.Where(c =>// Filtramos las canciones por el término de búsqueda
+                    c.Titulo.Contains(searchTerm) ||// Filtramos por el título de la canción
+                    c.Album.Nombre.Contains(searchTerm) ||// Filtramos por el nombre del álbum
+                    c.Album.Artista.Nombre.Contains(searchTerm));// Filtramos por el nombre del artista
             }
 
-            var canciones = await cancionesQuery.Take(20).ToListAsync();
-            ViewBag.Canciones = canciones;
+            var canciones = await cancionesQuery.Take(20).ToListAsync();// Obtenemos las primeras 20 canciones que coinciden con el término de búsqueda
+            ViewBag.Canciones = canciones;// Guardamos las canciones en ViewBag para usarlas en la vista
 
             // Mantener las canciones seleccionadas
-            if (selectedSongs != null && selectedSongs.Any())
+            if (selectedSongs != null && selectedSongs.Any())// Si hay canciones seleccionadas, las filtramos
             {
-                var cancionesSeleccionadas = canciones.Where(c => selectedSongs.Contains(c.Id)).ToList();
-                ViewBag.CancionesSeleccionadas = cancionesSeleccionadas;
-                ViewBag.SelectedSongIds = selectedSongs;
+                var cancionesSeleccionadas = canciones.Where(c => selectedSongs.Contains(c.Id)).ToList();// Filtramos las canciones seleccionadas por los IDs en selectedSongs
+                ViewBag.CancionesSeleccionadas = cancionesSeleccionadas;// Guardamos las canciones seleccionadas en ViewBag para usarlas en la vista
+                ViewBag.SelectedSongIds = selectedSongs;// Guardamos los IDs de las canciones seleccionadas en ViewBag para usarlas en la vista
             }
             else
             {
-                ViewBag.CancionesSeleccionadas = new List<Cancion>();
-                ViewBag.SelectedSongIds = new List<int>();
+                ViewBag.CancionesSeleccionadas = new List<Cancion>();// Si no hay canciones seleccionadas, inicializamos la lista vacía
+                ViewBag.SelectedSongIds = new List<int>();// Inicializamos la lista de IDs de canciones seleccionadas
             }
 
             return View(new Playlist { FechaCreacion = DateTime.Now });
@@ -76,13 +75,12 @@ namespace Spotify.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> SearchSongs(string searchTerm, List<int> selectedSongs)
         {
-            if (!User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated)// Verifica si el usuario está autenticado
             {
-                Console.WriteLine("Usuario no autenticado.");
                 ViewBag.ErrorMessage = "No estás autenticado.";
                 return RedirectToAction("Login", "Account");
             }
-            return RedirectToAction("Create", new { searchTerm = searchTerm, selectedSongs = selectedSongs });
+            return RedirectToAction("Create", new { searchTerm = searchTerm, selectedSongs = selectedSongs });// Redirige a la acción Create con el término de búsqueda y las canciones seleccionadas
         }
 
         // POST: Agregar canción
@@ -91,12 +89,12 @@ namespace Spotify.MVC.Controllers
         {
             selectedSongs ??= new List<int>();  // Si es null, inicializa la lista
 
-            if (!selectedSongs.Contains(songId))
+            if (!selectedSongs.Contains(songId))// Verifica si la canción ya está en la lista de seleccionadas
             {
-                selectedSongs.Add(songId);
+                selectedSongs.Add(songId);// Agrega la canción a la lista de seleccionadas
             }
 
-            return RedirectToAction("Create", new { searchTerm, selectedSongs });
+            return RedirectToAction("Create", new { searchTerm, selectedSongs });// Redirige a la acción Create con el término de búsqueda y las canciones seleccionadas
         }
 
         // POST: Remover canción
@@ -105,9 +103,9 @@ namespace Spotify.MVC.Controllers
         {
             selectedSongs ??= new List<int>();  // Si es null, inicializa la lista
 
-            selectedSongs.Remove(songId);
+            selectedSongs.Remove(songId);// Elimina la canción de la lista de seleccionadas
 
-            return RedirectToAction("Create", new { searchTerm, selectedSongs });
+            return RedirectToAction("Create", new { searchTerm, selectedSongs });//Redirige a la acción Create con el término de búsqueda y las canciones seleccionadas
         }
 
         // POST: Crear playlist
@@ -117,10 +115,9 @@ namespace Spotify.MVC.Controllers
         {
             try
             {
-                // Verifica si el modelo es válido
-                if (ModelState.IsValid)
+                if (ModelState.IsValid)// Verifica si el modelo es válido
                 {
-                    if (!User.Identity.IsAuthenticated)
+                    if (!User.Identity.IsAuthenticated)// Verifica si el usuario está autenticado
                     {
                         return RedirectToAction("Login", "Account");
                     }
@@ -130,34 +127,23 @@ namespace Spotify.MVC.Controllers
                     playlist.UsuarioId = userId;
                     playlist.FechaCreacion = DateTime.UtcNow; // Aseguramos que la fecha esté en UTC
 
-                    // Registrar en la consola para verificar la fecha
-                    Console.WriteLine($"Creando playlist: {playlist.Nombre} para el usuario con ID {userId} a las {playlist.FechaCreacion}");
-
                     // Crear la playlist en la base de datos
                     _context.Add(playlist);
                     await _context.SaveChangesAsync();
-
-                    // Verificar si selectedSongs tiene elementos
-                    Console.WriteLine($"Canciones seleccionadas: {string.Join(", ", selectedSongs)}");
 
                     // Agregar las canciones seleccionadas a la playlist (DetallesPlaylist)
                     if (selectedSongs != null && selectedSongs.Any())
                     {
                         foreach (var songId in selectedSongs)
                         {
-                            var detallePlaylist = new DetallesPlaylist
+                            var detallePlaylist = new DetallesPlaylist// Creamos un nuevo detalle de playlist
                             {
-                                PlaylistId = playlist.Id,
-                                CancionId = songId
+                                PlaylistId = playlist.Id,// Asignamos el ID de la playlist recién creada
+                                CancionId = songId// Asignamos el ID de la canción seleccionada
                             };
-                            Console.WriteLine($"Agregando canción con ID {songId} a la playlist {playlist.Id}");
                             _context.DetallesPlaylist.Add(detallePlaylist); // Relaciona la canción con la playlist
                         }
                         await _context.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        Console.WriteLine("No se han seleccionado canciones.");
                     }
 
                     // Redirigir al Index de Playlists
@@ -171,7 +157,6 @@ namespace Spotify.MVC.Controllers
             catch (Exception ex)
             {
                 // Manejo de excepciones
-                Console.WriteLine($"Error: {ex.Message}");
                 ViewBag.ErrorMessage = "Ocurrió un error: " + ex.Message;
                 return View(playlist);
             }
@@ -182,12 +167,12 @@ namespace Spotify.MVC.Controllers
         // GET: Playlists/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var playlist = await _context.Playlists
-                .Include(p => p.Creador)
-                .Include(p => p.DetallesPlaylists)
-                    .ThenInclude(dp => dp.Cancion)
-                .FirstOrDefaultAsync(p => p.Id == id);
-            if (playlist == null) return NotFound();
+            var playlist = await _context.Playlists// Obtenemos la playlist por ID
+                .Include(p => p.Creador)// Incluimos el creador de la playlist
+                .Include(p => p.DetallesPlaylists)// Incluimos los detalles de la playlist
+                    .ThenInclude(dp => dp.Cancion)// Incluimos las canciones de cada detalle de la playlist
+                .FirstOrDefaultAsync(p => p.Id == id);// Buscamos la playlist por ID
+            if (playlist == null) return NotFound();// Si no se encuentra la playlist, retornamos NotFound
             return View(playlist);
         }
 
@@ -250,45 +235,3 @@ namespace Spotify.MVC.Controllers
 
     }
 }
-// GET: Playlists/Index - MÉTODO ACTUALIZADO
-//public async Task<IActionResult> Index()
-//{
-//    if (!User.Identity.IsAuthenticated)
-//    {
-//        Console.WriteLine("Usuario no autenticado. Redirigiendo al login...");
-//        return RedirectToAction("Index", "Login");
-//    }
-
-//    // 1. Obtenemos el Id del usuario logueado
-//    var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-//    // 2. Obtenemos el usuario completo con sus datos
-//    var usuario = await _context.Usuarios
-//        .Include(u => u.Plan)
-//        .FirstOrDefaultAsync(u => u.Id == userId);
-
-//    if (usuario == null)
-//    {
-//        return RedirectToAction("Index", "Login");
-//    }
-
-//    // 3. Obtenemos las playlists del usuario
-//    var playlists = await _context.Playlists
-//        .Where(p => p.UsuarioId == userId)
-//        .Include(p => p.DetallesPlaylists)
-//            .ThenInclude(d => d.Cancion)
-//        .OrderByDescending(p => p.FechaCreacion) // Las más recientes primero
-//        .ToListAsync();
-
-//    // 4. Creamos el ViewModel
-//    var viewModel = new DashboardViewModel
-//    {
-//        Nombre = usuario.Nombre,
-//        Saldo = usuario.Saldo,
-//        Plan = usuario.Plan,
-//        Playlists = playlists
-//    };
-
-//    return View(viewModel);
-//}
-// GET: Playlists/Create

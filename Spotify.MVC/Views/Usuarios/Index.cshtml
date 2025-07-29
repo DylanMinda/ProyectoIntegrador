@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Lista de Usuarios";
 }
-
+<link rel="stylesheet" href="~/css/usuariosIndex.css">
 <h2>@ViewData["Title"]</h2>
 
 <table class="table">
@@ -30,7 +30,7 @@
                 <td>@(usuario.Plan != null ? usuario.Plan.Nombre : "Sin Plan")</td>
                 <td>
                     <!-- Aquí puedes agregar enlaces para editar o eliminar usuarios -->
-                    <a href="@Url.Action("Edit", "Usuarios", new { id = usuario.Id })">Editar</a> |
+                    @* <a href="@Url.Action("Edit", "Usuarios", new { id = usuario.Id })">Editar</a> | *@
                     <a href="@Url.Action("Delete", "Usuarios", new { id = usuario.Id })">Eliminar</a>
                 </td>
             </tr>
