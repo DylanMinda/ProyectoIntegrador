@@ -141,11 +141,11 @@ namespace Spotify.MVC.Controllers
             return RedirectToAction("Dashboard", "Home");
         }
         // Método para generar código de invitación único
-        private string GenerarCodigoInvitacion()
+        private string GenerarCodigoInvitacion()// Genera un código de invitación aleatorio de 8 caracteres
         {
-            var random = new Random();
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, 8)
+            var random = new Random();// Crear una instancia de Random para generar números aleatorios
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";// Caracteres permitidos en el código de invitación
+            return new string(Enumerable.Repeat(chars, 8)//repite los caracteres 8 veces
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
@@ -153,8 +153,8 @@ namespace Spotify.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> UnirseAPlan(string codigoInvitacion)
         {
-            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));// Obtener el ID del usuario logueado
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);// Buscar el usuario por ID
 
             if (usuario == null)
             {
@@ -169,10 +169,10 @@ namespace Spotify.MVC.Controllers
 
             // Buscar al administrador del plan con el código
             var administrador = await _context.Usuarios
-                .Include(u => u.Plan)
-                .FirstOrDefaultAsync(u => u.CodigoInvitacion == codigoInvitacion);
+                .Include(u => u.Plan)// Incluir el plan del usuario
+                .FirstOrDefaultAsync(u => u.CodigoInvitacion == codigoInvitacion);// Buscar al usuario que tiene el código de invitación
 
-            if (administrador == null || administrador.Plan == null || administrador.Plan.MaximoUsuarios <= 1)
+            if (administrador == null || administrador.Plan == null || administrador.Plan.MaximoUsuarios <= 1)//verificar que el administrador tenga un plan grupal
             {
                 return Json(new { success = false, message = "Código de invitación inválido o no corresponde a un plan grupal" });
             }
@@ -182,9 +182,9 @@ namespace Spotify.MVC.Controllers
                 .Where(u => u.Plan != null && u.Plan.Id == administrador.Plan.Id && u.CodigoInvitacion == codigoInvitacion)
                 .CountAsync();
 
-            if (usuariosEnPlan >= administrador.Plan.MaximoUsuarios)
+            if (usuariosEnPlan >= administrador.Plan.MaximoUsuarios)// Verificar si el plan ha alcanzado su límite máximo de usuarios
             {
-                return Json(new { success = false, message = $"El plan ha alcanzado su límite máximo de {administrador.Plan.MaximoUsuarios} usuarios" });
+                return Json(new { success = false, message = $"El plan ha alcanzado su límite máximo de {administrador.Plan.MaximoUsuarios} usuarios" });// Verificar si el plan ha alcanzado su límite máximo de usuarios
             }
 
             // Verificar que no esté ya en este plan
@@ -210,16 +210,16 @@ namespace Spotify.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> CompartirCodigoInvitacion()
         {
-            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));// Obtener el ID del usuario logueado
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);// Buscar el usuario por ID
 
-            if (usuario == null || usuario.Plan == null)
+            if (usuario == null || usuario.Plan == null)// Verificar si el usuario o su plan son nulos
             {
                 return Json(new { success = false, message = "No tienes un plan activo" });
             }
 
             // Verificar que es un plan grupal
-            if (usuario.Plan.MaximoUsuarios <= 1)
+            if (usuario.Plan.MaximoUsuarios <= 1)// Verificar si el plan es grupal (más de 1 usuario)
             {
                 return Json(new { success = false, message = "Solo puedes compartir códigos en planes grupales" });
             }
@@ -232,15 +232,15 @@ namespace Spotify.MVC.Controllers
 
             // Verificar que es realmente el administrador (primer usuario con este código)
             var administrador = await _context.Usuarios
-                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-                .OrderBy(u => u.FechaRegistro)
-                .FirstOrDefaultAsync();
+                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)// Buscar al administrador del plan
+                .OrderBy(u => u.FechaRegistro)// Ordenar por fecha de registro para obtener al primer usuario
+                .FirstOrDefaultAsync();// Obtener el primer usuario con este código
 
-            if (administrador.Id != usuarioId)
+            if (administrador.Id != usuarioId)// Verificar que el usuario actual es el administrador
             {
                 return Json(new { success = false, message = "Solo el administrador del plan puede compartir el código" });
             }
-
+            // Si todo está bien, devolver el código de invitación para compartir
             return Json(new
             {
                 success = true,
@@ -253,10 +253,10 @@ namespace Spotify.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> MiembrosDelPlan()
         {
-            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));// Obtener el ID del usuario logueado
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);// Buscar el usuario por ID
 
-            if (usuario == null || usuario.Plan == null)
+            if (usuario == null || usuario.Plan == null)//verificar si el usuario o su plan son nulos
             {
                 return RedirectToAction("Index");
             }
@@ -270,9 +270,9 @@ namespace Spotify.MVC.Controllers
 
             // Obtener todos los miembros del plan con el mismo código de invitación
             var miembrosDelPlan = await _context.Usuarios
-                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-                .OrderBy(u => u.FechaRegistro)
-                .ToListAsync();
+                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)// Filtrar usuarios que tienen el mismo plan y código de invitación
+                .OrderBy(u => u.FechaRegistro)// Ordenar por fecha de registro para mostrar al administrador primero
+                .ToListAsync();// Obtener la lista de miembros del plan
 
             // Determinar quién es el administrador (primer usuario)
             var administrador = miembrosDelPlan.FirstOrDefault();
@@ -288,10 +288,10 @@ namespace Spotify.MVC.Controllers
 
         // Expulsar miembro del plan (MEJORADO)
         [HttpPost]
-        public async Task<IActionResult> ExpulsarMiembro(int miembroId)
+        public async Task<IActionResult> ExpulsarMiembro(int miembroId)// Método para expulsar a un miembro del plan
         {
-            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));// Obtener el ID del usuario logueado
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);// Buscar el usuario por ID
 
             if (usuario == null || usuario.Plan == null)
             {
@@ -300,9 +300,9 @@ namespace Spotify.MVC.Controllers
 
             // Verificar que es el administrador
             var administrador = await _context.Usuarios
-                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-                .OrderBy(u => u.FechaRegistro)
-                .FirstOrDefaultAsync();
+                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)// Filtrar usuarios que tienen el mismo plan y código de invitación
+                .OrderBy(u => u.FechaRegistro)// Ordenar por fecha de registro para obtener al administrador
+                .FirstOrDefaultAsync();// Obtener el primer usuario con este código de invitación
 
             if (administrador.Id != usuarioId)
             {
@@ -316,7 +316,7 @@ namespace Spotify.MVC.Controllers
             }
 
             var miembro = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == miembroId);
-            if (miembro == null || miembro.Plan?.Id != usuario.Plan.Id || miembro.CodigoInvitacion != usuario.CodigoInvitacion)
+            if (miembro == null || miembro.Plan?.Id != usuario.Plan.Id || miembro.CodigoInvitacion != usuario.CodigoInvitacion)// Verificar que el miembro existe y pertenece al mismo plan
             {
                 return Json(new { success = false, message = "Miembro no encontrado en tu plan" });
             }
@@ -335,8 +335,8 @@ namespace Spotify.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> AbandonarPlan()
         {
-            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));// Obtener el ID del usuario logueado
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);// Buscar el usuario por ID
 
             if (usuario == null || usuario.Plan == null)
             {
@@ -345,9 +345,9 @@ namespace Spotify.MVC.Controllers
 
             // Verificar si es administrador
             var administrador = await _context.Usuarios
-                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-                .OrderBy(u => u.FechaRegistro)
-                .FirstOrDefaultAsync();
+                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)// Filtrar usuarios que tienen el mismo plan y código de invitación
+                .OrderBy(u => u.FechaRegistro)// Ordenar por fecha de registro para obtener al administrador
+                .FirstOrDefaultAsync();// Obtener el primer usuario con este código de invitación
 
             if (administrador.Id == usuarioId)
             {
@@ -355,11 +355,11 @@ namespace Spotify.MVC.Controllers
             }
 
             // Cambiar a plan gratuito
-            var planGratuito = await _context.Planes.FirstOrDefaultAsync(p => p.PrecioMensual == 0);
+            var planGratuito = await _context.Planes.FirstOrDefaultAsync(p => p.PrecioMensual == 0);// Buscar el plan gratuito
             usuario.Plan = planGratuito;
             usuario.CodigoInvitacion = null; // Limpiar código de invitación
-            _context.Usuarios.Update(usuario);
-            await _context.SaveChangesAsync();
+            _context.Usuarios.Update(usuario);// Actualizar el usuario en la base de datos
+            await _context.SaveChangesAsync();// Guardar los cambios
 
             return Json(new { success = true, message = "Has abandonado el plan grupal exitosamente" });
         }
@@ -368,8 +368,8 @@ namespace Spotify.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CancelarPlan()
         {
-            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));// Obtener el ID del usuario logueado
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);// Buscar el usuario por ID
 
             if (usuario == null || usuario.Plan == null)
             {
@@ -378,9 +378,9 @@ namespace Spotify.MVC.Controllers
 
             // Verificar que es el administrador
             var administrador = await _context.Usuarios
-                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-                .OrderBy(u => u.FechaRegistro)
-                .FirstOrDefaultAsync();
+                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)// Filtrar usuarios que tienen el mismo plan y código de invitación
+                .OrderBy(u => u.FechaRegistro)// Ordenar por fecha de registro para obtener al administrador
+                .FirstOrDefaultAsync();// Obtener el primer usuario con este código de invitación
 
             if (administrador.Id != usuarioId)
             {
@@ -389,19 +389,19 @@ namespace Spotify.MVC.Controllers
 
             // Obtener todos los miembros del plan con el mismo código
             var miembrosDelPlan = await _context.Usuarios
-                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-                .ToListAsync();
+                .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)// Filtrar usuarios que tienen el mismo plan y código de invitación
+                .ToListAsync();// Obtener la lista de miembros del plan
 
             // Cambiar todos los miembros a plan gratuito
-            var planGratuito = await _context.Planes.FirstOrDefaultAsync(p => p.PrecioMensual == 0);
-            foreach (var miembro in miembrosDelPlan)
+            var planGratuito = await _context.Planes.FirstOrDefaultAsync(p => p.PrecioMensual == 0);// Buscar el plan gratuito
+            foreach (var miembro in miembrosDelPlan)// Iterar sobre cada miembro del plan
             {
                 miembro.Plan = planGratuito;
                 miembro.CodigoInvitacion = null; // Limpiar código de invitación
             }
 
-            _context.Usuarios.UpdateRange(miembrosDelPlan);
-            await _context.SaveChangesAsync();
+            _context.Usuarios.UpdateRange(miembrosDelPlan);// Actualizar todos los miembros del plan en la base de datos
+            await _context.SaveChangesAsync();// Guardar los cambios
 
             return Json(new { success = true, message = "Plan cancelado exitosamente. Todos los miembros han sido movidos al plan gratuito." });
         }
@@ -410,8 +410,8 @@ namespace Spotify.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> MiPlan()
         {
-            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));// Obtener el ID del usuario logueado
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);// Buscar el usuario por ID
 
             if (usuario == null)
             {
@@ -425,16 +425,16 @@ namespace Spotify.MVC.Controllers
             }
 
             // Si es plan grupal, obtener información adicional
-            if (usuario.Plan.MaximoUsuarios > 1)
+            if (usuario.Plan.MaximoUsuarios > 1)// Verificar si el plan es grupal (más de 1 usuario)
             {
                 var miembrosDelPlan = await _context.Usuarios
-                    .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-                    .CountAsync();
+                    .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)// Filtrar usuarios que tienen el mismo plan y código de invitación
+                    .CountAsync();// Contar cuántos miembros hay en el plan
 
                 var administrador = await _context.Usuarios
-                    .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)
-                    .OrderBy(u => u.FechaRegistro)
-                    .FirstOrDefaultAsync();
+                    .Where(u => u.Plan != null && u.Plan.Id == usuario.Plan.Id && u.CodigoInvitacion == usuario.CodigoInvitacion)// Filtrar usuarios que tienen el mismo plan y código de invitación
+                    .OrderBy(u => u.FechaRegistro)// Ordenar por fecha de registro para obtener al administrador
+                    .FirstOrDefaultAsync();// Obtener el primer usuario con este código de invitación (el administrador del plan)
 
                 ViewBag.CantidadMiembros = miembrosDelPlan;
                 ViewBag.EsAdministrador = administrador?.Id == usuarioId;

@@ -27,17 +27,17 @@ namespace Spotify.MVC.Controllers
 
         public IActionResult DashboardAdmin()
         {
-            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));// Obtiene el ID del usuario logueado
 
-            var usuario = _context.Usuarios.Include(u => u.Plan)
-                                           .FirstOrDefault(u => u.Id == usuarioId);
+            var usuario = _context.Usuarios.Include(u => u.Plan)// Incluye el plan del usuario
+                                           .FirstOrDefault(u => u.Id == usuarioId);// Busca el usuario por ID
 
-            if (usuario == null || usuario.TipoUsuario != "admin")
+            if (usuario == null || usuario.TipoUsuario != "admin")// Verifica si el usuario es admin
             {
-                return RedirectToAction("Index", "Login");  // Si no est· logueado o no es admin, redirige al login
+                return RedirectToAction("Index", "Login");  // Si no est√° logueado o no es admin, redirige al login
             }
 
-            // Obtener estadÌsticas del sistema
+            // Obtener estad√≠sticas del sistema
             var totalUsers = _context.Usuarios.Count();
             var totalCanciones = _context.Canciones.Count();
 
@@ -45,24 +45,23 @@ namespace Spotify.MVC.Controllers
             {
                 TotalUsers = totalUsers,
                 TotalCanciones = totalCanciones,
-                Usuario = usuario  // InformaciÛn b·sica del admin
+                Usuario = usuario  // Informaci√≥n b√°sica del admin
             };
 
             return View(model);  // Pasa el modelo a la vista de DashboardAdmin
         }
 
-
         public IActionResult Dashboard()
         {
-            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));// Obtiene el ID del usuario logueado
 
-            var usuario = _context.Usuarios.Include(u => u.Plan)
-                                           .Include(u => u.Canciones)
-                                           .FirstOrDefault(u => u.Id == usuarioId);
+            var usuario = _context.Usuarios.Include(u => u.Plan)// Incluye el plan del usuario
+                                           .Include(u => u.Canciones)// Incluye las canciones del usuario
+                                           .FirstOrDefault(u => u.Id == usuarioId);// Busca el usuario por ID
 
             if (usuario == null)
             {
-                return RedirectToAction("Index", "Login");  // Si no est· logueado, redirige al login
+                return RedirectToAction("Index", "Login");  // Si no est√° logueado, redirige al login
             }
 
             var cancion = usuario.Canciones?.FirstOrDefault();
@@ -84,13 +83,13 @@ namespace Spotify.MVC.Controllers
         {
             var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            var usuario = _context.Usuarios.Include(u => u.Plan)
-                                           .Include(u => u.Canciones)  // Aseg˙rate de incluir las canciones del artista
+            var usuario = _context.Usuarios.Include(u => u.Plan)// Incluye el plan del usuario
+                                           .Include(u => u.Canciones)  // Aseg√∫rate de incluir las canciones del artista
                                            .FirstOrDefault(u => u.Id == usuarioId);
 
             if (usuario == null)
             {
-                return RedirectToAction("Index", "Login");  // Si no est· logueado, redirige al login
+                return RedirectToAction("Index", "Login");  // Si no est√° logueado, redirige al login
             }
 
             var model = new
@@ -98,22 +97,21 @@ namespace Spotify.MVC.Controllers
                 Nombre = usuario.Nombre,
                 Plan = usuario.Plan,
                 Canciones = usuario.Canciones,  // Lista de canciones que el artista ha subido
-                CancionUrl = usuario.Canciones?.FirstOrDefault()?.ArchivoUrl // Primera canciÛn del artista
+                CancionUrl = usuario.Canciones?.FirstOrDefault()?.ArchivoUrl // Primera canci√≥n del artista
             };
 
             return View(model);  // Pasa el modelo a la vista de DashboardArtista
         }
 
-  
         public IActionResult Logout()
         {
-            // Eliminar las cookies de autenticaciÛn y limpiar la sesiÛn
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            HttpContext.Session.Clear();
+            // Eliminar las cookies de autenticaci√≥n y limpiar la sesi√≥n
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);// Cierra la sesi√≥n del usuario
+            HttpContext.Session.Clear();// Limpia la sesi√≥n actual
             return RedirectToAction("Index", "Home");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]//Desactiva el cach√© de la respuesta
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

@@ -23,7 +23,7 @@ public class AlbumsController : Controller
         var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         // Buscar al usuario logueado
-        var usuario = await _context.Usuarios.FindAsync(int.Parse(usuarioId));
+        var usuario = await _context.Usuarios.FindAsync(int.Parse(usuarioId));// Verificar si el usuario existe
 
         // Usamos el CRUD genérico para obtener todos los álbumes del artista
         CRUD<Album>.EndPoint = EndPoint;  
@@ -36,11 +36,13 @@ public class AlbumsController : Controller
     // GET: AlbumsController/Details/5
     public async Task<ActionResult> Details(int id)
     {
-        //*Nos muestra los detalles del album del artista logueado* es como una vista//
-        var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+
+        var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;// Verificar si el usuario está logueado
+
 
         // Buscar al usuario logueado
-        var usuario = await _context.Usuarios.FindAsync(int.Parse(usuarioId));
+        var usuario = await _context.Usuarios.FindAsync(int.Parse(usuarioId));// Verificar si el usuario existe
 
 
         // Usando el CRUD genérico para obtener un álbum por su ID
@@ -59,10 +61,11 @@ public class AlbumsController : Controller
     // GET: AlbumsController/Create
     public ActionResult Create()
     {
-        //*Nos muestra el formulario para crear un nuevo album* es como una vista//
-        var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == int.Parse(usuarioId));
+        var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;// Verificar si el usuario está logueado
+
+
+        var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == int.Parse(usuarioId));// Buscar al usuario logueado
 
         // Verificar si el usuario logueado es tipo Artista
         if (usuario == null || usuario.TipoUsuario.ToLower() != "artista")
@@ -113,24 +116,24 @@ public class AlbumsController : Controller
             album.Canciones = new List<Cancion>();  // Establecer canciones como lista vacía
 
             // Validaciones
-            if (string.IsNullOrWhiteSpace(album.Nombre))
+            if (string.IsNullOrWhiteSpace(album.Nombre))// Validar que el nombre no esté vacío
             {
                 ModelState.AddModelError("Nombre", "El nombre del álbum es requerido.");
             }
 
-            if (string.IsNullOrWhiteSpace(album.Genero))
+            if (string.IsNullOrWhiteSpace(album.Genero))// Validar que el género no esté vacío
             {
                 ModelState.AddModelError("Genero", "El género es requerido.");
             }
 
-            if (album.FechaLanzamiento > DateTime.Now.AddYears(1))
+            if (album.FechaLanzamiento > DateTime.Now.AddYears(1))// Validar que la fecha de lanzamiento no sea más de un año en el futuro
             {
                 ModelState.AddModelError("FechaLanzamiento", "La fecha de lanzamiento no puede ser más de un año en el futuro.");
             }
 
             // Verificar si el álbum ya existe
             var existeAlbum = CRUD<Album>.GetAll();
-            if (existeAlbum.Any(a => a.Nombre.ToLower() == album.Nombre.ToLower() && a.ArtistaId == usuario.Id))
+            if (existeAlbum.Any(a => a.Nombre.ToLower() == album.Nombre.ToLower() && a.ArtistaId == usuario.Id))// Verificar si ya existe un álbum con el mismo nombre para el artista
             {
                 ModelState.AddModelError("Nombre", "Ya tienes un álbum con ese nombre.");
             }
