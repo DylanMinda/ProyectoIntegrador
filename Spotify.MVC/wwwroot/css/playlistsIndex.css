@@ -27,7 +27,6 @@ body {
     margin-bottom: 3rem;
     color: #8CE70C;
     text-shadow: 0 0 20px #8CE70C;
-   
 }
 
 
@@ -74,11 +73,9 @@ body {
     background-clip: padding-box;
     position: relative;
     overflow: hidden;
-    
-
 }
 
-  
+
 
 .playlist-header {
     margin-bottom: 1.5rem;

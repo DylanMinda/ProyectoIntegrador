@@ -35,10 +35,6 @@
             <div class="form-section">
                 <h2 class="section-title">Agregar Canciones</h2>
 
-                <div class="search-section">
-                    <input type="text" name="searchTerm" placeholder="Buscar canciones..." class="search-input" value="@ViewBag.SearchTerm" />
-                    <button type="submit" class="search-btn">Buscar</button>
-                </div>
 
                 <div class="songs-container">
                     <div class="songs-grid">
@@ -54,18 +50,6 @@
                         }
                     </div>
                 </div>
-            </div>
-
-            <!-- Canciones Seleccionadas -->
-            <div class="selected-songs">
-                <h3>Canciones Seleccionadas (@ViewBag.SelectedSongIds.Count)</h3>
-                @foreach (var songId in ViewBag.SelectedSongIds)
-                {
-                    var selectedSong = ViewBag.Canciones.FirstOrDefault((Func<dynamic, bool>)(c => c.Id == songId));
-                    <div class="selected-song-item">
-                        <p>@selectedSong?.Titulo</p>
-                    </div>
-                }
             </div>
 
             <button type="submit" class="submit-btn">Crear Playlist</button>

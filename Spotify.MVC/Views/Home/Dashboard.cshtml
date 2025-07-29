@@ -17,16 +17,9 @@
             👤 Perfil
         </a>
 
-        <a asp-controller="Canciones" asp-action="Index" class="menu-item">
-            🎵 Tus canciones
-        </a>
-
         <a asp-controller="Playlists" asp-action="Index" class="menu-item">
             📚 Tu biblioteca
         </a>
-
-        <div class="biblioteca-titulo">Tu biblioteca</div>
-
     </div>
 
     <!-- CONTENIDO PRINCIPAL -->
@@ -38,9 +31,6 @@
             </div>
 
             <div class="header-derecha">
-                <a asp-controller="Planes" asp-action="RecargarSaldo" class="btn-recargar-header">
-                    Recargar Saldo
-                </a>
                 <a asp-controller="Planes" asp-action="Index" class="btn-premium">
                     Descubrir Premium
                 </a>
@@ -59,7 +49,6 @@
             @if (Model.Plan != null)
             {
                 <p><strong>Tu plan actual:</strong> @Model.Plan.Nombre</p>
-                <p><strong>Precio del plan:</strong> $@Model.Plan.PrecioMensual</p>
             }
             else
             {
@@ -68,351 +57,72 @@
         </div>
 
         <div class="seccion-saldo">
-            <h2>Tu Saldo</h2>
-            <p class="saldo-actual">Saldo Actual: $@Model.Saldo.ToString("F2")</p>
+            <h2>Cash</h2>
+            <p class="saldo-actual">Cash: $@Model.Saldo.ToString("F2")</p>
             <a asp-controller="Planes" asp-action="RecargarSaldo" class="btn-recargar">
-                Recargar Saldo
+                INGRESA DATOS PARA FACTURACION
             </a>
         </div>
 
-        <!-- Contenido Destacado -->
-        <div class="seccion-destacada">
-            <div class="item-destacado">
-                <div class="cover-destacado phonk">🎵</div>
-                <div class="info-destacado">
-                    <h3>phonk</h3>
-                </div>
+        <!-- Canciones en tendencia -->
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Canciones en disponibles</h2>
             </div>
-
-            <div class="item-destacado">
-                <div class="cover-destacado arcane">🎮</div>
-                <div class="info-destacado">
-                    <h3>Arcane League of Legends: Season 2</h3>
-                    <p>Soundtrack from the Animated Series</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Hecho para el Usuario -->
-        <div class="seccion">
-            <div class="titulo-seccion">
-                <h2><strong>Hecho Para:</strong> @Model.Nombre</h2>
-                <></>
-                <button class="btn-mostrar-todo">Mostrar todos</button>
-            </div>
-
-            <div class="tarjetas">
-                <div class="tarjeta">
-                    <div class="icono-tarjeta mix1">🎵</div>
-                    <div class="nombre-tarjeta">Mix diario 1</div>
-                    <div class="descripcion-tarjeta">HI$TED, Eternxlkz, DJZRX y más</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta mix2">🎵</div>
-                    <div class="nombre-tarjeta">Mix diario 2</div>
-                    <div class="descripcion-tarjeta">Kordhell, 2KE, SXID y más</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta mix3">🎵</div>
-                    <div class="nombre-tarjeta">Mix diario 3</div>
-                    <div class="descripcion-tarjeta">Lil Peep, RØN1N, XXXTENTACION y más</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta mix4">🎵</div>
-                    <div class="nombre-tarjeta">Mix diario 4</div>
-                    <div class="descripcion-tarjeta">Slipknot, System Of A Down</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta discovery">🔍</div>
-                    <div class="nombre-tarjeta">Descubrimiento Semanal</div>
-                    <div class="descripcion-tarjeta">Joyas ocultas y canciones que no...</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta radar">📡</div>
-                    <div class="nombre-tarjeta">Radar de Novedades</div>
-                    <div class="descripcion-tarjeta">Las novedades de artistas</div>
-                </div>
+            <div class="cards-grid">
+                @if (Model.Canciones != null)
+                {
+                    @foreach (var item in Model.Canciones)
+                    {
+                        <div class="card">
+                            <a href="@Url.Action("Player", "Canciones", new { id = item.Id })">
+                                <div class="card-title">@item.Titulo</div>
+                            </a>
+                        </div>
+                    }
+                }
             </div>
         </div>
 
-        <!-- Recomendaciones -->
+        <!-- Tus Playlists -->
         <div class="seccion">
             <div class="titulo-seccion">
-                <h2>Descubre recomendaciones para ti</h2>
-                <button class="btn-mostrar-todo">Mostrar todos</button>
+                <h2>Tus Playlists</h2>
+                <a asp-controller="Playlists" asp-action="Index" class="btn-mostrar-todo">Ver todas</a>
             </div>
 
             <div class="tarjetas">
-                <div class="tarjeta">
-                    <div class="icono-tarjeta rec1">⚡</div>
-                    <div class="nombre-tarjeta">Cyberpunk Beats</div>
-                    <div class="descripcion-tarjeta">Música electrónica futurista</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta rec2">🎌</div>
-                    <div class="nombre-tarjeta">Anime Soundtracks</div>
-                    <div class="descripcion-tarjeta">Los mejores OSTs de anime</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta rec3">🇧🇷</div>
-                    <div class="nombre-tarjeta">Montagem Brasileira</div>
-                    <div class="descripcion-tarjeta">Lo mejor del funk brasileño</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta rec4">🌃</div>
-                    <div class="nombre-tarjeta">Synthwave Nights</div>
-                    <div class="descripcion-tarjeta">Sonidos retro-futuristas</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta rec5">🎮</div>
-                    <div class="nombre-tarjeta">Gaming Anthems</div>
-                    <div class="descripcion-tarjeta">Música épica para gamers</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta rec6">🤖</div>
-                    <div class="nombre-tarjeta">EVA-01 Vibes</div>
-                    <div class="descripcion-tarjeta">Música inspirada en Evangelion</div>
-                </div>
+                @if (ViewBag.Playlists != null && ((IEnumerable<dynamic>)ViewBag.Playlists).Any())
+                {
+                    @foreach (var playlist in (IEnumerable<dynamic>)ViewBag.Playlists)
+                    {
+                        <div class="tarjeta">
+                            <a href="@Url.Action("Details", "Playlists", new { id = playlist.Id })" style="text-decoration: none; color: inherit;">
+                                <div class="icono-tarjeta">🎵</div>
+                                <div class="nombre-tarjeta">@playlist.Nombre</div>
+                                <div class="descripcion-tarjeta">Playlist • Usuario @playlist.UsuarioId</div>
+                            </a>
+                        </div>
+                    }
+                    <div class="tarjeta">
+                        <a asp-controller="Playlists" asp-action="Create" style="text-decoration: none; color: inherit;">
+                            <div class="icono-tarjeta">➕</div>
+                            <div class="nombre-tarjeta">Crear playlist</div>
+                            <div class="descripcion-tarjeta">Agrega una nueva playlist</div>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="tarjeta">
+                        <a asp-controller="Playlists" asp-action="Create" style="text-decoration: none; color: inherit;">
+                            <div class="icono-tarjeta">🎵</div>
+                            <div class="nombre-tarjeta">No tienes playlists</div>
+                            <div class="descripcion-tarjeta">Crear mi primera playlist</div>
+                        </a>
+                    </div>
+                }
             </div>
         </div>
     </div>
 </div>
-
-
-
-@* @model Spotify.MVC.ViewModels.DashboardViewModel
-@{
-    ViewData["Title"] = "Beathouse - Tu Biblioteca Musical";
-}
-
-<link rel="stylesheet" href="~/css/dashboard - Copia.css">
-
-<div class="contenedor">
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <div class="logo">⚡ Beathouse</div>
-
-        <a asp-controller="Playlists" asp-action="Create" class="boton-crear">
-            + Crear
-        </a>
-
-        <a asp-controller="Usuarios" asp-action="EditarPerfil" class="menu-item">
-            👤 Perfil
-        </a>
-
-        <a asp-controller="Canciones" asp-action="Index" class="menu-item">
-            🎵 Tus canciones
-        </a>
-
-        <a asp-controller="Playlists" asp-action="Index" class="menu-item">
-            📚 Tu biblioteca
-        </a>
-
-        <div class="biblioteca-titulo">Tu biblioteca</div>
-
-        <!-- PLAYLISTS DEL USUARIO -->
-        <div class="playlists-usuario">
-            @if (Model.Playlists != null && Model.Playlists.Any())
-            {
-                @foreach (var playlist in Model.Playlists)
-                {
-                    <a asp-controller="Playlists" asp-action="Details" asp-route-id="@playlist.Id" class="playlist-item">
-                        <div class="playlist-icon">🎵</div>
-                        <div class="playlist-info">
-                            <div class="playlist-nombre">@playlist.Nombre</div>
-                            <div class="playlist-detalles">
-                                @if (playlist.DetallesPlaylists != null && playlist.DetallesPlaylists.Any())
-                                {
-                                    <span>@playlist.DetallesPlaylists.Count canciones</span>
-                                }
-                                else
-                                {
-                                    <span>Playlist vacía</span>
-                                }
-                            </div>
-                        </div>
-                    </a>
-                }
-            }
-            else
-            {
-                <div class="no-playlists">
-                    <p>No tienes playlists creadas</p>
-                    <a asp-controller="Playlists" asp-action="Create" class="crear-primera-playlist">
-                        Crear tu primera playlist
-                    </a>
-                </div>
-            }
-        </div>
-    </div>
-
-    <!-- CONTENIDO PRINCIPAL -->
-    <div class="contenido">
-        <div class="header">
-            <div class="botones-nav">
-                <button class="btn-nav">←</button>
-                <button class="btn-nav">→</button>
-            </div>
-
-            <div class="header-derecha">
-                <a asp-controller="Planes" asp-action="RecargarSaldo" class="btn-recargar-header">
-                    Recargar Saldo
-                </a>
-                <a asp-controller="Planes" asp-action="Index" class="btn-premium">
-                    Descubrir Premium
-                </a>
-                <button class="btn-perfil">
-                    @Model.Nombre.Substring(0, 1).ToUpper()
-                </button>
-                <label>Logout</label>
-                <a asp-controller="Home" asp-action="Logout" class="btn-logout">
-                    🚪
-                </a>
-            </div>
-        </div>
-
-        <!-- Información del Plan y Saldo -->
-        <div class="seccion-plan">
-            @if (Model.Plan != null)
-            {
-                <p><strong>Tu plan actual:</strong> @Model.Plan.Nombre</p>
-                <p><strong>Precio del plan:</strong> $@Model.Plan.PrecioMensual</p>
-            }
-            else
-            {
-                <p>No tienes ningún plan asignado.</p>
-            }
-        </div>
-
-        <div class="seccion-saldo">
-            <h2>Tu Saldo</h2>
-            <div class="saldo-section">
-                <h4>Saldo disponible</h4>
-                <p>@(Model.Saldo?.ToString("C") ?? "$0.00")</p>
-            </div>
-            <a asp-controller="Planes" asp-action="RecargarSaldo" class="btn-recargar">
-                Recargar Saldo
-            </a>
-        </div>
-
-        <!-- Contenido Destacado -->
-        <div class="seccion-destacada">
-            <div class="item-destacado">
-                <div class="cover-destacado phonk">🎵</div>
-                <div class="info-destacado">
-                    <h3>phonk</h3>
-                </div>
-            </div>
-
-            <div class="item-destacado">
-                <div class="cover-destacado arcane">🎮</div>
-                <div class="info-destacado">
-                    <h3>Arcane League of Legends: Season 2</h3>
-                    <p>Soundtrack from the Animated Series</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Hecho para el Usuario -->
-        <div class="seccion">
-            <div class="titulo-seccion">
-                <h2><strong>Hecho Para:</strong> @Model.Nombre</h2>
-                <button class="btn-mostrar-todo">Mostrar todos</button>
-            </div>
-
-            <div class="tarjetas">
-                <div class="tarjeta">
-                    <div class="icono-tarjeta mix1">🎵</div>
-                    <div class="nombre-tarjeta">Mix diario 1</div>
-                    <div class="descripcion-tarjeta">HI$TED, Eternxlkz, DJZRX y más</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta mix2">🎵</div>
-                    <div class="nombre-tarjeta">Mix diario 2</div>
-                    <div class="descripcion-tarjeta">Kordhell, 2KE, SXID y más</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta mix3">🎵</div>
-                    <div class="nombre-tarjeta">Mix diario 3</div>
-                    <div class="descripcion-tarjeta">Lil Peep, RØN1N, XXXTENTACION y más</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta mix4">🎵</div>
-                    <div class="nombre-tarjeta">Mix diario 4</div>
-                    <div class="descripcion-tarjeta">Slipknot, System Of A Down</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta discovery">🔍</div>
-                    <div class="nombre-tarjeta">Descubrimiento Semanal</div>
-                    <div class="descripcion-tarjeta">Joyas ocultas y canciones que no...</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta radar">📡</div>
-                    <div class="nombre-tarjeta">Radar de Novedades</div>
-                    <div class="descripcion-tarjeta">Las novedades de artistas</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recomendaciones -->
-        <div class="seccion">
-            <div class="titulo-seccion">
-                <h2>Descubre recomendaciones para ti</h2>
-                <button class="btn-mostrar-todo">Mostrar todos</button>
-            </div>
-
-            <div class="tarjetas">
-                <div class="tarjeta">
-                    <div class="icono-tarjeta rec1">⚡</div>
-                    <div class="nombre-tarjeta">Cyberpunk Beats</div>
-                    <div class="descripcion-tarjeta">Música electrónica futurista</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta rec2">🎌</div>
-                    <div class="nombre-tarjeta">Anime Soundtracks</div>
-                    <div class="descripcion-tarjeta">Los mejores OSTs de anime</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta rec3">🇧🇷</div>
-                    <div class="nombre-tarjeta">Montagem Brasileira</div>
-                    <div class="descripcion-tarjeta">Lo mejor del funk brasileño</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta rec4">🌃</div>
-                    <div class="nombre-tarjeta">Synthwave Nights</div>
-                    <div class="descripcion-tarjeta">Sonidos retro-futuristas</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta rec5">🎮</div>
-                    <div class="nombre-tarjeta">Gaming Anthems</div>
-                    <div class="descripcion-tarjeta">Música épica para gamers</div>
-                </div>
-
-                <div class="tarjeta">
-                    <div class="icono-tarjeta rec6">🤖</div>
-                    <div class="nombre-tarjeta">EVA-01 Vibes</div>
-                    <div class="descripcion-tarjeta">Música inspirada en Evangelion</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> *@

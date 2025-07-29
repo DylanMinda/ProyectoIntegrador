@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Spotify.APIConsumer;
 using Spotify.Modelos;
 using Spotify.MVC.ViewModels;
+using System.Net;
 using System.Security.Claims;
 
 namespace Spotify.MVC.Controllers
@@ -12,9 +13,11 @@ namespace Spotify.MVC.Controllers
     public class CancionesController : Controller
     {
         private readonly AppDbContext _context;
+        private const string EndPoint = "https://localhost:7028/api/Canciones";
         public CancionesController(AppDbContext context)
         {
             _context = context;
+            CRUD<Cancion>.EndPoint = EndPoint; // Asignar el endpoint para el CRUD genérico
         }
 
         public IActionResult Index()
@@ -51,7 +54,7 @@ namespace Spotify.MVC.Controllers
                 var sessionKey = $"reproducciones_cancion_{id.Value}";// Clave de sesión única para la canción
                 var reproducciones = HttpContext.Session.GetInt32(sessionKey) ?? 0;// Obtener el número de reproducciones desde la sesión, o 0 si no existe
 
-                if (reproducciones >= 3) // Límite de 3 reproducciones gratuitas
+                if (reproducciones >= 5) // Límite de 3 reproducciones gratuitas
                 {
                     TempData["ErrorMessage"] = "Has alcanzado el límite de reproducciones gratuitas para esta canción. Upgrade a Premium para escuchar sin límites.";
                     return RedirectToAction("Index", "Planes");
@@ -59,7 +62,7 @@ namespace Spotify.MVC.Controllers
 
                 // Incrementar contador de reproducciones
                 HttpContext.Session.SetInt32(sessionKey, reproducciones + 1);// Incrementar el contador de reproducciones en la sesión
-                ViewBag.ReproduccionesRestantes = 3 - (reproducciones + 1);// Calcular las reproducciones restantes
+                ViewBag.ReproduccionesRestantes = 5 - (reproducciones + 1);// Calcular las reproducciones restantes
             }
 
             ViewBag.EsPlanGratuito = esPlanGratuito;// Indicar si el usuario tiene un plan gratuito
@@ -165,5 +168,46 @@ namespace Spotify.MVC.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<ActionResult> Delete(int id)
+        {
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // Buscar al usuario logueado
+            var usuario = await _context.Usuarios.FindAsync(int.Parse(usuarioId));
+
+            // Usando el CRUD genérico para obtener el álbum por ID
+            CRUD<Cancion>.EndPoint = EndPoint;
+            var cancion = CRUD<Cancion>.GetById(id);
+
+            return View(cancion);
+        }
+
+        // POST: AlbumsController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                // Buscar al usuario logueado
+                var usuario = await _context.Usuarios.FindAsync(int.Parse(usuarioId));
+                if (usuario == null || usuario.TipoUsuario != "artista")
+                {
+                    
+                    return RedirectToAction(nameof(Index));
+                }
+
+                // Eliminar el álbum usando el CRUD genérico
+                var deleted = CRUD<Cancion>.Delete(id);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }

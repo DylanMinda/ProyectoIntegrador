@@ -9,26 +9,26 @@ using MailKit;
 
 namespace Spotify.MVC.Services
 {
-    public class EmailService : IEmailService
+    public class EmailService : IEmailService // Implementación de IEmailService
     {
-        private readonly string _smtpServer = "smtp.gmail.com"; 
-        private readonly int _smptPort = 587; 
-        private readonly string _fromEmail = "beathousetucasa@gmail.com"; 
-        private readonly string _fromPassword = "miih bbhy lwox drof"; 
+        private readonly string _smtpServer = "smtp.gmail.com"; // Servidor SMTP de Gmail
+        private readonly int _smptPort = 587; // Puerto SMTP para TLS
+        private readonly string _fromEmail = "beathousetucasa@gmail.com"; // Correo electrónico del remitente
+        private readonly string _fromPassword = "miih bbhy lwox drof"; // Contraseña del correo electrónico del remitente (debe ser una contraseña de aplicación si se usa autenticación de dos factores)
 
-        public async Task enviarEmailRecuperacionContraseña(string email)
+        public async Task enviarEmailRecuperacionContraseña(string email)// Método para enviar un correo electrónico de recuperación de contraseña
         {
             try
             {
-                Console.WriteLine("Enviando correo de recuperación...");
-                var tempPassword = Guid.NewGuid().ToString("N").Substring(0, 5); 
-                var mensaje = new MimeMessage();
-                mensaje.From.Add(new MailboxAddress("BeatHouse", _fromEmail)); 
-                mensaje.To.Add(new MailboxAddress("", email)); 
-                mensaje.Subject = "Recuperación de contraseña"; 
+                Console.WriteLine("Enviando correo de recuperación...");// Mensaje de depuración para indicar que se está enviando el correo
+                var tempPassword = Guid.NewGuid().ToString("N").Substring(0, 10); // Generar una nueva contraseña temporal de 10 caracteres
+                var mensaje = new MimeMessage();// Crear un nuevo mensaje MIME
+                mensaje.From.Add(new MailboxAddress("BeatHouse", _fromEmail)); // Agregar el remitente al mensaje
+                mensaje.To.Add(new MailboxAddress("", email)); // Agregar el destinatario al mensaje
+                mensaje.Subject = "Recuperación de contraseña"; // Asunto del mensaje
 
                 // Cuerpo del mensaje
-                mensaje.Body = new TextPart("plain")
+                mensaje.Body = new TextPart("plain")// Crear el cuerpo del mensaje en texto plano
                 {
                     Text = $"¡Hola!\n\nRecibimos una solicitud para recuperar tu contraseña en **BeatHouse**.\n" +
                            $"No te preocupes, hemos generado una nueva contraseña temporal para ti:\n\n" +
@@ -38,19 +38,19 @@ namespace Spotify.MVC.Services
                            "de soporte está aquí para ayudarte.\n\n" +
                            "¡Gracias por ser parte de BeatHouse! 🎶"
                 };
-                using (var cliente = new SmtpClient())
+                using (var cliente = new SmtpClient())// Crear un nuevo cliente SMTP
                 {
-                    await cliente.ConnectAsync(_smtpServer, _smptPort, SecureSocketOptions.StartTls); 
-                    await cliente.AuthenticateAsync(_fromEmail, _fromPassword);
-                    await cliente.SendAsync(mensaje); 
-                    await cliente.DisconnectAsync(true);
+                    await cliente.ConnectAsync(_smtpServer, _smptPort, SecureSocketOptions.StartTls); // Conectar al servidor SMTP usando TLS
+                    await cliente.AuthenticateAsync(_fromEmail, _fromPassword);// Autenticar al cliente SMTP con el correo y la contraseña del remitente
+                    await cliente.SendAsync(mensaje); // Enviar el mensaje
+                    await cliente.DisconnectAsync(true);// Desconectar el cliente SMTP
                 }
 
-                var usuario = CRUD<Usuario>.GetAll().FirstOrDefault(u => u.Email == email); 
-                if (usuario != null)
+                var usuario = CRUD<Usuario>.GetAll().FirstOrDefault(u => u.Email == email); // Buscar el usuario por email
+                if (usuario != null)// Si el usuario existe, actualizar su contraseña
                 {
-                    usuario.Contraseña = tempPassword;
-                    CRUD<Usuario>.Update(usuario.Id, usuario);
+                    usuario.Contraseña = tempPassword;// Asignar la nueva contraseña temporal al usuario
+                    CRUD<Usuario>.Update(usuario.Id, usuario);// Actualizar el usuario en la base de datos
                     Console.WriteLine($"contraseña actualizada: {tempPassword}");
 
                 }

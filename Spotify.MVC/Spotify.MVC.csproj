@@ -7,6 +7,37 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\css\Album\**" />
+    <Compile Remove="wwwroot\css\Canciones\**" />
+    <Compile Remove="wwwroot\css\Home\**" />
+    <Compile Remove="wwwroot\css\Login\**" />
+    <Compile Remove="wwwroot\css\Planes\**" />
+    <Compile Remove="wwwroot\css\Playlist\**" />
+    <Compile Remove="wwwroot\css\Usuario\**" />
+    <Content Remove="wwwroot\css\Album\**" />
+    <Content Remove="wwwroot\css\Canciones\**" />
+    <Content Remove="wwwroot\css\Home\**" />
+    <Content Remove="wwwroot\css\Login\**" />
+    <Content Remove="wwwroot\css\Planes\**" />
+    <Content Remove="wwwroot\css\Playlist\**" />
+    <Content Remove="wwwroot\css\Usuario\**" />
+    <EmbeddedResource Remove="wwwroot\css\Album\**" />
+    <EmbeddedResource Remove="wwwroot\css\Canciones\**" />
+    <EmbeddedResource Remove="wwwroot\css\Home\**" />
+    <EmbeddedResource Remove="wwwroot\css\Login\**" />
+    <EmbeddedResource Remove="wwwroot\css\Planes\**" />
+    <EmbeddedResource Remove="wwwroot\css\Playlist\**" />
+    <EmbeddedResource Remove="wwwroot\css\Usuario\**" />
+    <None Remove="wwwroot\css\Album\**" />
+    <None Remove="wwwroot\css\Canciones\**" />
+    <None Remove="wwwroot\css\Home\**" />
+    <None Remove="wwwroot\css\Login\**" />
+    <None Remove="wwwroot\css\Planes\**" />
+    <None Remove="wwwroot\css\Playlist\**" />
+    <None Remove="wwwroot\css\Usuario\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MailKit" Version="4.13.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
     <PackageReference Include="MimeKit" Version="4.13.0" />
@@ -16,16 +47,6 @@
     <ProjectReference Include="..\Spotify.APIConsumer\Spotify.APIConsumer.csproj" />
     <ProjectReference Include="..\Spotify.API\Spotify.API.csproj" />
     <ProjectReference Include="..\Spotify.Modelos\Spotify.Modelos.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\css\Album\" />
-    <Folder Include="wwwroot\css\Home\" />
-    <Folder Include="wwwroot\css\Login\" />
-    <Folder Include="wwwroot\css\Canciones\" />
-    <Folder Include="wwwroot\css\Usuario\" />
-    <Folder Include="wwwroot\css\Playlist\" />
-    <Folder Include="wwwroot\css\Planes\" />
   </ItemGroup>
 
 </Project>
