@@ -27,22 +27,8 @@
             overflow: hidden;
         }
 
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #8CE70C, #FBAF00, #8CE70C);
-            animation: energyFlow 3s ease-in-out infinite;
-        }
 
-        @keyframes energyFlow {
-            0%, 100% { transform: translateX(-100%); }
-            50% { transform: translateX(100%); }
-        }
-
+  
         h1 {
             color: #8CE70C;
             font-size: 2.5em;
@@ -178,16 +164,6 @@
             color: #8CE70C;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
 
         .eva-accent {
             position: absolute;
@@ -200,16 +176,7 @@
             animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { 
-                transform: scale(1);
-                opacity: 0.8;
-            }
-            50% { 
-                transform: scale(1.2);
-                opacity: 1;
-            }
-        }
+ 
 
         .tech-lines {
             position: absolute;
@@ -238,17 +205,7 @@
             animation: recoveryPulse 3s infinite;
         }
 
-        @keyframes recoveryPulse {
-            0%, 100% { 
-                opacity: 0.7;
-                transform: translateY(-50%) scale(1);
-            }
-            50% { 
-                opacity: 1;
-                transform: translateY(-50%) scale(1.1);
-            }
-        }
-
+     
         @media (max-width: 600px) {
             .container {
                 padding: 30px 20px;

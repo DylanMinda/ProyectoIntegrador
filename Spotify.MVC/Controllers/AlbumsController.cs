@@ -17,7 +17,9 @@ public class AlbumsController : Controller
 
     // GET: AlbumsController
     public async Task<ActionResult> Index()
+
     {
+        //*Nos muestra los albumes del artista logueado* es como una vista//
         var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         // Buscar al usuario logueado
@@ -34,7 +36,10 @@ public class AlbumsController : Controller
     // GET: AlbumsController/Details/5
     public async Task<ActionResult> Details(int id)
     {
+
+
         var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;// Verificar si el usuario está logueado
+
 
         // Buscar al usuario logueado
         var usuario = await _context.Usuarios.FindAsync(int.Parse(usuarioId));// Verificar si el usuario existe
@@ -56,7 +61,9 @@ public class AlbumsController : Controller
     // GET: AlbumsController/Create
     public ActionResult Create()
     {
+
         var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;// Verificar si el usuario está logueado
+
 
         var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == int.Parse(usuarioId));// Buscar al usuario logueado
 

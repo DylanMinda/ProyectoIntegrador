@@ -18,4 +18,14 @@
     <ProjectReference Include="..\Spotify.Modelos\Spotify.Modelos.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\Album\" />
+    <Folder Include="wwwroot\css\Home\" />
+    <Folder Include="wwwroot\css\Login\" />
+    <Folder Include="wwwroot\css\Canciones\" />
+    <Folder Include="wwwroot\css\Usuario\" />
+    <Folder Include="wwwroot\css\Playlist\" />
+    <Folder Include="wwwroot\css\Planes\" />
+  </ItemGroup>
+
 </Project>

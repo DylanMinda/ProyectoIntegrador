@@ -16,7 +16,7 @@ namespace Spotify.MVC.Controllers
         // Vista para el dashboard del Admin
         public IActionResult DashboardAdmin()
         {
-            return View();
+            return View( );
         }
 
         // Ver todos los usuarios

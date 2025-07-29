@@ -49,6 +49,7 @@ namespace Spotify.MVC.Controllers
 
 
         // Comprar un plan
+        // Comprar un plan
         [HttpPost]
         public async Task<IActionResult> ComprarPlan(int planId)
         {
@@ -139,7 +140,6 @@ namespace Spotify.MVC.Controllers
 
             return RedirectToAction("Dashboard", "Home");
         }
-
         // Método para generar código de invitación único
         private string GenerarCodigoInvitacion()// Genera un código de invitación aleatorio de 8 caracteres
         {
@@ -551,5 +551,43 @@ namespace Spotify.MVC.Controllers
 
             return RedirectToAction("Dashboard", "Home");
         }
+
+
+        // MÉTODOS ADICIONALES PARA AGREGAR AL CONTROLADOR (sin dañar nada existente)
+
+        // Método para copiar código (alternativa server-side)
+        [HttpGet]
+        public async Task<IActionResult> ObtenerCodigoInvitacion()
+        {
+            var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuario = await _context.Usuarios.Include(u => u.Plan).FirstOrDefaultAsync(u => u.Id == usuarioId);
+
+            if (usuario == null || usuario.Plan == null)
+            {
+                return Json(new { success = false, message = "No tienes un plan activo" });
+            }
+
+            if (usuario.Plan.MaximoUsuarios <= 1)
+            {
+                return Json(new { success = false, message = "Solo los planes grupales tienen código de invitación" });
+            }
+
+            if (string.IsNullOrEmpty(usuario.CodigoInvitacion))
+            {
+                return Json(new { success = false, message = "No tienes un código de invitación válido" });
+            }
+
+            return Json(new
+            {
+                success = true,
+                codigo = usuario.CodigoInvitacion,
+                message = $"Tu código de invitación es: {usuario.CodigoInvitacion}"
+            });
+        }
+
+       
+     
+
+
     }
 }

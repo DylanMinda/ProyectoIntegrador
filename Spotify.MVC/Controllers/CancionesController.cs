@@ -95,8 +95,6 @@ namespace Spotify.MVC.Controllers
 
             return Json(new { success = true, pausar = false });
         }
-
-
         // Verificar estado de reproducciones restantes
         [HttpGet]
         public IActionResult VerificarLimiteReproducciones(int cancionId)

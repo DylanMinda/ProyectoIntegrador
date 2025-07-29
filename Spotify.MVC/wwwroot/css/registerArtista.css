@@ -27,26 +27,7 @@ body {
     overflow: hidden;
 }
 
-    .container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #8CE70C, #FBAF00, #8CE70C);
-        animation: energyFlow 3s ease-in-out infinite;
-    }
 
-@keyframes energyFlow {
-    0%, 100% {
-        transform: translateX(-100%);
-    }
-
-    50% {
-        transform: translateX(100%);
-    }
-}
 
 h2 {
     color: #8CE70C;
@@ -160,17 +141,6 @@ label {
     animation: pulse 2s infinite;
 }
 
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 0.8;
-    }
-
-    50% {
-        transform: scale(1.2);
-        opacity: 1;
-    }
-}
 
 .tech-lines {
     position: absolute;
